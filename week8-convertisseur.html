@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Money Converter</title>
+        <link rel="stylesheet" href="week8-styles.css">
+    </head>
+    <body>
+        <header>
+            <div class="live-currencies">
+                <div class="currencies">
+                    <a id="gold">Gold</a>
+                    <a id="silver">Silver</a>
+                    <a id="btc">BTC</a>
+                </div>
+
+            </div>
+            <div class="myheader">
+                <a href="#default" class="logo">CompanyLogo</a>
+                <div class="header-right">
+                    <a class="active" href="#home">HOME</a>
+                    <a href="#conversion">CONVERSION HISTORY</a>
+                    <a href="#about">ABOUT</a>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="conversion-container">
+                <div class="container">
+                    <div class="base-currency">
+                        <input class="amount" autocomplete="off" placeholder="Amount" type="number" id="amount1" >
+                        <select class="amount" id="baseCurrency"></select>
+                    </div>
+                    <div class="desired-currency">
+                        <input class="amount" id="amount2" autocomplete="off" placeholder="Amount" type="number" >
+                        <select class="amount" id="desiredCurrency"></select>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <footer>
+
+        </footer>
+        <script src="week8-index.js" defer></script>
+    </body>
+</html>
