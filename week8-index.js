@@ -66,7 +66,7 @@ function populateDropdown(SelectId) {
         option.textContent = currency.name;
         select.appendChild(option);
     });
-}
+};
 
 populateDropdown("baseCurrency");
 populateDropdown("desiredCurrency");
@@ -104,18 +104,23 @@ function populateLiveNavbar() {
         }
 
     });
-}
+};
 
 async function loadRates() {
-    const res = await fetch("https://api.exchangeratesapi.io/v1/latest?access_key=ca1103674bdee54b5f5a046393d48639");
-    const data = await res.json();
-    rates = data.rates;
-    base = data.base;
+    try {
+        const res = await fetch("https://api.exchangeratesapi.io/v1/latest?access_key=ca1103674bdee54b5f5a046393d48639");
+        const data = await res.json();
+        rates = data.rates;
+        base = data.base;
+    } catch (error) {
+        console.error(error);
+    }
+    
 
     populateLiveNavbar();
-}
+};
 
-loadRates()
+loadRates();
 
 function convert(amount, from, to) {
     if (from === to) return amount;
@@ -131,7 +136,7 @@ function convert(amount, from, to) {
     ? amountInBase
     : amountInBase * rates[to];
 
-}
+};
 
 const fromCurrency = document.getElementById("baseCurrency");
 const toCurrency = document.getElementById("desiredCurrency");
@@ -148,7 +153,7 @@ function updateFromFirst() {
     amount2.value = result.toFixed(2);
 
     console.log("function triggered");
-}
+};
 
 function updateFromSecond() {
     const result = convert(
@@ -158,7 +163,7 @@ function updateFromSecond() {
     );
 
     amount1.value = result.toFixed(2);
-}
+};
 
 amount1.addEventListener("input", updateFromFirst);
 fromCurrency.addEventListener("change", updateFromFirst);
