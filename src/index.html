@@ -3,7 +3,7 @@
 <html>
     <head>
         <title>Money Converter</title>
-        <link rel="stylesheet" href="week8-styles.css">
+        <link rel="stylesheet" href="styles/index.css">
     </head>
     <body>
         <header>
@@ -28,11 +28,11 @@
             <div class="conversion-container">
                 <div class="container">
                     <div class="base-currency">
-                        <input class="amount" autocomplete="off" placeholder="Amount" type="number" id="amount1" >
+                        <input class="amount" autocomplete="off" placeholder="Amount" type="number" id="amountFromFirstInput" >
                         <select class="amount" id="baseCurrency"></select>
                     </div>
                     <div class="desired-currency">
-                        <input class="amount" id="amount2" autocomplete="off" placeholder="Amount" type="number" >
+                        <input class="amount" id="amountFromSecondInput" autocomplete="off" placeholder="Amount" type="number" >
                         <select class="amount" id="desiredCurrency"></select>
                     </div>
                 </div>
@@ -41,6 +41,13 @@
         <footer>
 
         </footer>
-        <script src="week8-index.js" defer></script>
+
+        <script type="module">
+            import { main } from './js/logic/logic.js'
+
+            if (typeof document !== "undefined") {
+                main();
+            }
+        </script>
     </body>
 </html>
