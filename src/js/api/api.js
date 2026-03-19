@@ -27,6 +27,7 @@ export const loadRates = async () => {
         // TODO - WHY IS THE KEY EMBEDDED IN THE URL? WHAT IF YOU HAD TO CHANGE KEYS?
         // This URL should be declared in a constant, and the key should be declared in a constant too.
         // There should be NO orange within the logic of your code.
+        // TODO - stocker la reponse de la requete API dans le cache (local storage) avec une date d'expiration (ttl)
         const res = await fetch(
             "https://api.exchangeratesapi.io/v1/latest?access_key=ca1103674bdee54b5f5a046393d48639"
         );

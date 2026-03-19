@@ -1,0 +1,12 @@
+
+1/ INPUT VALIDATION METHOD 
+
+How to write inline JS in an HTML file, to verify that an input value (number) is positive ?
+
+this inline JS : min="0" oninput="this.value = Math.abs(this.value)"
+
+Math.abs() function immediatly convert any entered negative number to its positive equivalent.
+
+Exemple with our convertor, to verify that the amount entered in the input is not negative: 
+
+<input class="amount" autocomplete="off" placeholder="Amount" type="number" id="amountFromFirstInput" min="0" oninput="this.value = Math.abs(this.value)" >

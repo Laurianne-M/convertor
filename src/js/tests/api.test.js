@@ -9,5 +9,5 @@ describe('LoadRates', () => {
         const mockData = getMockRates(); 
 
         expect(data).toStrictEqual(mockData);
-    });
-})
+    } );
+} );

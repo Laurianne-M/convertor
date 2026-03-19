@@ -23,7 +23,8 @@ function populateLiveNavbar({ rates, _ }) {
                 maximumFractionDigits: 2
             });
 
-            select.textContent = `${select.textContent.split(":")[0]}: $${formattedPrice}`;
+            const metalName = select.textContent.split(":")[0]
+            select.textContent = `${metalName}: $${formattedPrice}`;
 
         } else {
             window.alert("an error occured while charging the navbar");
@@ -34,7 +35,7 @@ function populateLiveNavbar({ rates, _ }) {
 
 
 export const convert = (operation) => {
-    const {amount, fromSelectBaseCurrency, toSelectDesiredCurrency, rates, base} = operation;
+    const { amount, fromSelectBaseCurrency, toSelectDesiredCurrency, rates, base } = operation;
     
     if (fromSelectBaseCurrency === toSelectDesiredCurrency) return amount;
 
@@ -70,6 +71,12 @@ export async function updateAmount(amountFromFirstCurrencyInput, amountFromSecon
         return;
     }
 
+     if (amountFromFirstCurrencyInput.value < 0) {
+        alert('Amount must be positive');
+        return;
+    }
+
+
     // Determine values based on whether we are updating from the first or second input
     const amount = reverse 
         ? parseFloat(amountFromSecondCurrencyInput.value) || 0 
@@ -98,6 +105,45 @@ export async function updateAmount(amountFromFirstCurrencyInput, amountFromSecon
     }
 };
 
+/*const checkAmountValue = (amountFromFirstCurrencyInput, amountFromSecondCurrencyInput) => {
+
+    amountFromFirstCurrencyInput.addEventListener(documentEvents.input, () => { 
+        
+    if (Number(amountFromFirstCurrencyInput.value) < 0) {
+        console.log('Amount must be positive');
+        return;
+    } else {  updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, false) }
+    } );
+
+    amountFromSecondCurrencyInput.addEventListener(documentEvents.input, () => { 
+        
+    if (Number(amountFromSecondCurrencyInput.value) < 0) {
+        console.log('Amount must be positive');
+        return;
+    } else {  updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, true) }
+    } );
+    
+}*/
+
+/*const checkAmountValue = (inputAmount) => { 
+    
+    while (Number(inputAmount.value) < 0) {
+        console.log('Amount must be positive');
+        return;
+    }
+}*/
+        
+let isUpdating = false;
+
+const updateLock = async (fn) => {
+     
+
+    if (isUpdating) return;
+    isUpdating = true;
+    await fn();
+    isUpdating = false;
+}
+
 export const main = async () => {
     
     const baseCurrencySelect = html.elements.getBaseCurrencySelect();
@@ -113,11 +159,35 @@ export const main = async () => {
     const amountFromFirstCurrencyInput = html.elements.getAmoutFromFirstInput();
     const amountFromSecondCurrencyInput = html.elements.getAmountFromSecondInput();
 
-    amountFromFirstCurrencyInput.addEventListener(documentEvents.input, () => {updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, false)} );
-
-
-    baseCurrencySelect.addEventListener(documentEvents.change, () => { updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, false) });
-    desiredCurrencySelect.addEventListener(documentEvents.change, () => { updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, false) });
-    amountFromSecondCurrencyInput.addEventListener(documentEvents.input, () =>  { updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, true) });
+    amountFromFirstCurrencyInput.addEventListener(documentEvents.input, () => { updateLock(() => updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, false)) } );
+    baseCurrencySelect.addEventListener(documentEvents.change, () => { updateLock(() => updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, false)) } );
+    desiredCurrencySelect.addEventListener(documentEvents.change, () => { updateLock(() => updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, false)) } );
+    amountFromSecondCurrencyInput.addEventListener(documentEvents.input, () =>  { updateLock(() => updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, true)) } );
 
 }
+
+
+const insertionSort = (arr, comparator) => {
+    for (let i = 1; i < arr.length; i++) {
+        let current = arr[i];
+        let j = i - 1;
+
+        while (j >= 0 && comparator(arr[j], current) > 0) {
+            arr[j + 1] = arr[j];
+            j--;
+        }
+        arr[j + 1] = current;
+    }
+    return arr;
+}
+
+const objects = [
+    { name: "Jabari", age: 30, height: 180 },
+    { name: "Jelani", age: 27, height: 186 },
+    { name: "Jalia", age: 32, height: 200 },
+    { name: "Laurianne", age: 31, height: 169 },
+    { name: "Aurelia", age: 26, height: 190 },
+]
+
+console.log(insertionSort(objects, (left, right) => left.name > right.name))
+console.log(insertionSort(objects, (left, right) => left.age > right.age))
