@@ -27,7 +27,25 @@ describe('UpdateAmount', () => {
     beforeEach(() => {
         vi.clearAllMocks(); // reset mocks between each test
     } ); 
+    
+    it('should call window alert with the correct message if the amount entered is negative', async () => {
+          
+          loadRates.mockResolvedValue( { rates: { EUR: 1.00, USD: 1.1 }, base: 'EUR' } );
+          
+          // Create a spy on the window.alert method
+          const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {} );
+          const firstInput = { value: -100};
+          const secondInput = { value: '' };
 
+          await updateAmount(firstInput, secondInput, false);
+
+          expect(alertSpy).toHaveBeenCalled();
+
+          expect(alertSpy).toHaveBeenCalledWith('Amount must be positive');
+
+          alertSpy.mockRestore();
+    } );
+    
     it('should update the second input with converted amount (not reverse)', async () => {
         loadRates.mockResolvedValue( { rates: { EUR: 1, USD: 1.1 } , base: 'EUR'} );
 

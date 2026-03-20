@@ -72,7 +72,7 @@ export async function updateAmount(amountFromFirstCurrencyInput, amountFromSecon
     }
 
      if (amountFromFirstCurrencyInput.value < 0) {
-        alert('Amount must be positive');
+        window.alert('Amount must be positive');
         return;
     }
 
@@ -104,44 +104,22 @@ export async function updateAmount(amountFromFirstCurrencyInput, amountFromSecon
         amountFromSecondCurrencyInput.value = result.toFixed(2);
     }
 };
-
-/*const checkAmountValue = (amountFromFirstCurrencyInput, amountFromSecondCurrencyInput) => {
-
-    amountFromFirstCurrencyInput.addEventListener(documentEvents.input, () => { 
-        
-    if (Number(amountFromFirstCurrencyInput.value) < 0) {
-        console.log('Amount must be positive');
-        return;
-    } else {  updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, false) }
-    } );
-
-    amountFromSecondCurrencyInput.addEventListener(documentEvents.input, () => { 
-        
-    if (Number(amountFromSecondCurrencyInput.value) < 0) {
-        console.log('Amount must be positive');
-        return;
-    } else {  updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, true) }
-    } );
-    
-}*/
-
-/*const checkAmountValue = (inputAmount) => { 
-    
-    while (Number(inputAmount.value) < 0) {
-        console.log('Amount must be positive');
-        return;
-    }
-}*/
         
 let isUpdating = false;
 
-const updateLock = async (fn) => {
+export const resetUpdateLock = () => { isUpdating = false; };
+export const updateLock = async (fn) => {
      
 
     if (isUpdating) return;
     isUpdating = true;
-    await fn();
-    isUpdating = false;
+    try {
+        await fn();
+    } catch {
+        throw new Error('An issue occured');
+      } finally {
+            isUpdating = false;
+        }   
 }
 
 export const main = async () => {
@@ -165,29 +143,3 @@ export const main = async () => {
     amountFromSecondCurrencyInput.addEventListener(documentEvents.input, () =>  { updateLock(() => updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, true)) } );
 
 }
-
-
-const insertionSort = (arr, comparator) => {
-    for (let i = 1; i < arr.length; i++) {
-        let current = arr[i];
-        let j = i - 1;
-
-        while (j >= 0 && comparator(arr[j], current) > 0) {
-            arr[j + 1] = arr[j];
-            j--;
-        }
-        arr[j + 1] = current;
-    }
-    return arr;
-}
-
-const objects = [
-    { name: "Jabari", age: 30, height: 180 },
-    { name: "Jelani", age: 27, height: 186 },
-    { name: "Jalia", age: 32, height: 200 },
-    { name: "Laurianne", age: 31, height: 169 },
-    { name: "Aurelia", age: 26, height: 190 },
-]
-
-console.log(insertionSort(objects, (left, right) => left.name > right.name))
-console.log(insertionSort(objects, (left, right) => left.age > right.age))

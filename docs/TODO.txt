@@ -10,3 +10,9 @@ Math.abs() function immediatly convert any entered negative number to its positi
 Exemple with our convertor, to verify that the amount entered in the input is not negative: 
 
 <input class="amount" autocomplete="off" placeholder="Amount" type="number" id="amountFromFirstInput" min="0" oninput="this.value = Math.abs(this.value)" >
+
+2/ SPY AND DUMMY FUNCTION FOR TEST
+
+dummy function : const dummy = () => {};
+dummy spy function : const dummy = vi.fn(); 
+
