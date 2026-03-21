@@ -131,7 +131,7 @@ export const main = async () => {
 
     const data = await loadRates();
 
-
+    console.log(data);
     populateLiveNavbar(data);
 
     const amountFromFirstCurrencyInput = html.elements.getAmoutFromFirstInput();
