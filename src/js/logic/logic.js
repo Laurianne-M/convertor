@@ -115,9 +115,7 @@ export const updateLock = async (fn) => {
     isUpdating = true;
     try {
         await fn();
-    } catch {
-        throw new Error('An issue occured');
-      } finally {
+    } finally {
             isUpdating = false;
         }   
 }

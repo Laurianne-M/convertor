@@ -87,7 +87,12 @@ export const loadRates = async () => {
 
             if (!jsonData.rates) { // API returned an error
                 console.warn("API unavailable — using mock data");
-                return getMockRates();
+                const mockData = getMockRates();
+                localStorage.setItem('data', JSON.stringify( {jsonData: mockData, receivedAt: new Date() } ));
+                return {
+                    rates: mockData.rates,
+                    base: mockData.base
+                };
             }
 
             localStorage.setItem('data', JSON.stringify( {jsonData, receivedAt: new Date() } ));
