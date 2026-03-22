@@ -55,12 +55,12 @@ export const getMockRates = () => {
 };*/
 
 
-const getDataFromLocalStorage = () => {
+export const getDataFromLocalStorage = () => {
     const dataStringified = localStorage.getItem('data');
     return dataStringified && JSON.parse(dataStringified) || null; 
 };
 
-const areDataOutdated = (receivedAt) => {
+export const areDataOutdated = (receivedAt) => {
     if (!receivedAt || isNaN(Date.parse(receivedAt))) {
         return true; 
     }
