@@ -3,9 +3,10 @@ import { currencies, metalCode, documentEvents, RATES_LOADING } from '../constan
 import { html } from '../element.js';
 
 
-function populateLiveNavbar({ rates, _ }) {
+export function populateLiveNavbar({ rates, _ }) {
 
     const usdRate = rates[currencies.USD.code];
+    if (!usdRate) throw new Error('USD rate is missing or zero');
 
     Object.keys(metalCode).forEach(id => {
 

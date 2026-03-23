@@ -20,40 +20,6 @@ export const getMockRates = () => {
     };
 }
 
-// TODO - Maybe add a boolean parameter here that allows us to specific whether or not
-// we want real data, or mock data. That way, we do not have to always send a request
-// knowing that it will fall, just to supply the fallback data.
-/*export const loadRates = async () => {
-    try {
-
-        // TODO - WHY IS THE KEY EMBEDDED IN THE URL? WHAT IF YOU HAD TO CHANGE KEYS?
-        // This URL should be declared in a constant, and the key should be declared in a constant too.
-        // There should be NO orange within the logic of your code.
-        // TODO - stocker la reponse de la requete API dans le cache (local storage) avec une date d'expiration (ttl)
-        const res = await fetch(
-            API_EXCHANGE_RATES_URL
-        );
-
-        // If API limit reached or any error
-        if (!res.ok) {
-            throw new Error("API request failed");
-        }
-
-        const data = await res.json();
-
-        return {
-            rates: data.rates,
-            base: data.base,
-        }
-
-    } catch (error) {
-
-        console.warn("API unavailable — using mock data");
-
-       return getMockRates();
-    }
-};*/
-
 
 export const getDataFromLocalStorage = () => {
     const dataStringified = localStorage.getItem('data');
