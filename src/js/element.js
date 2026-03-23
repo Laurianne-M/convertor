@@ -25,7 +25,7 @@ export const elements = {
         element.value = option.code;
         element.textContent = option.name;
         select.appendChild(element);
-    });
+    } );
     }
 };
 

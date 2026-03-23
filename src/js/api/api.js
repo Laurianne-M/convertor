@@ -18,7 +18,7 @@ export const getMockRates = () => {
             XAG: 0.038
         }
     };
-}
+};
 
 
 export const getDataFromLocalStorage = () => {
@@ -29,7 +29,7 @@ export const getDataFromLocalStorage = () => {
 export const areDataOutdated = (receivedAt) => {
     if (!receivedAt || isNaN(Date.parse(receivedAt))) {
         return true; 
-    }
+    };
 
     // Take the actual date and remove 24 hours
     const checkDate = new Date(new Date().getTime() - DAY_IN_MILLISECONDS); 
@@ -44,7 +44,7 @@ export const loadRates = async () => {
         try { 
             const params = {
                 access_key : API_KEY,
-            }
+            };
 
             const queryString = new URLSearchParams(params).toString();
             const urlWithParams = `${API_BASE_URL}?${queryString}`;
@@ -59,20 +59,20 @@ export const loadRates = async () => {
                     rates: mockData.rates,
                     base: mockData.base
                 };
-            }
+            };
 
             localStorage.setItem('data', JSON.stringify( {jsonData, receivedAt: new Date() } ));
 
             return {
-            rates: jsonData.rates,
-            base: jsonData.base,
+                rates: jsonData.rates,
+                base: jsonData.base,
             };
         } catch (error) {
             console.warn("API unavailable — using mock data");
 
             return getMockRates();
-        }
-    }
+        };
+    };
 
     return {
         rates: data.jsonData.rates,

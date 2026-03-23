@@ -3,13 +3,14 @@ import { convert } from "../logic/logic.js";
 
 
 describe('convert', () => {
+
     it('should return amount if the 2 currencies are the same', () => {
         
         const operation = {
             amount: 569,
             fromSelectBaseCurrency: 'USD',
             toSelectDesiredCurrency: 'USD'
-        }
+        };
         const result = convert(operation);
 
         expect(result).toBe(operation.amount);
@@ -25,7 +26,7 @@ describe('convert', () => {
                 'USD': 0
             },
             base: 'EUR'
-        } 
+        };
 
         const result = convert(operation);
 
@@ -86,7 +87,5 @@ describe('convert', () => {
         expect(result).toBe(50); 
 
         
-    } );
-
-    
+    } );    
 } );

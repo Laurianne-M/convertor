@@ -49,5 +49,5 @@ describe('updateLock', () => {
         }
         await updateLock(updateAmount);
         expect(updateAmount).toHaveBeenCalled(1);
-    })
+    } );
 } );

@@ -16,7 +16,6 @@ describe("populateLiveNavbar", () => {
     it('should exit the function if USD rate is equal to 0 or undefined', () => {
 
         expect(() => populateLiveNavbar( {rates: { USD: 0 } } )).toThrow('USD rate is missing or zero');
-
     } );
 
     it('should return a window error if the metal rates is equal to 0', () => {
@@ -44,10 +43,10 @@ describe("populateLiveNavbar", () => {
         
         document.body.innerHTML = '<span id="btc">BTC:</span>'; 
 
-        populateLiveNavbar( { rates: { USD: 1.09, BTC: 0.000015, XAU: 0.00047, XAG: 0.038 } } )
+        populateLiveNavbar( { rates: { USD: 1.09, BTC: 0.000015, XAU: 0.00047, XAG: 0.038 } } );
 
         const btcElement = document.getElementById('btc')
             
-            expect(btcElement.textContent).toBe('BTC: $72,666.67');
+        expect(btcElement.textContent).toBe('BTC: $72,666.67');
     } );
-})
+} );

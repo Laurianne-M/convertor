@@ -22,7 +22,7 @@ export function populateLiveNavbar({ rates, _ }) {
 
             const formattedPrice = price.toLocaleString(undefined, {
                 maximumFractionDigits: 2
-            });
+            } );
 
             const metalName = select.textContent.split(":")[0]
             select.textContent = `${metalName}: $${formattedPrice}`;
@@ -30,8 +30,8 @@ export function populateLiveNavbar({ rates, _ }) {
         } else {
             window.alert("an error occured while charging the navbar");
             console.error("an error occured while charging the navbar");
-        }
-    });
+        };
+    } );
 };
 
 
@@ -91,19 +91,19 @@ export async function updateAmount(amountFromFirstCurrencyInput, amountFromSecon
         ? html.elements.getBaseCurrencySelect().value 
         : html.elements.getDesiredCurrencySelect().value;
 
-    const result = convert({
+    const result = convert( {
         amount: amount,
         fromSelectBaseCurrency: fromSelectBaseCurrency,
         toSelectDesiredCurrency: toSelectDesiredCurrency,
         rates: data.rates,
         base: data.base
-    });
+    } );
 
     if (reverse) {
         amountFromFirstCurrencyInput.value = result.toFixed(2);
     } else {
         amountFromSecondCurrencyInput.value = result.toFixed(2);
-    }
+    };
 };
         
 let isUpdating = false;
@@ -119,7 +119,7 @@ export const updateLock = async (fn) => {
     } finally {
             isUpdating = false;
         }   
-}
+};
 
 export const main = async () => {
     

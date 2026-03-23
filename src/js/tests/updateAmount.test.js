@@ -34,7 +34,7 @@ describe('UpdateAmount', () => {
           
           // Create a spy on the window.alert method
           const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {} );
-          const firstInput = { value: -100};
+          const firstInput = { value: -100 };
           const secondInput = { value: '' };
 
           await updateAmount(firstInput, secondInput, false);
@@ -47,7 +47,7 @@ describe('UpdateAmount', () => {
     } );
     
     it('should update the second input with converted amount (not reverse)', async () => {
-        loadRates.mockResolvedValue( { rates: { EUR: 1, USD: 1.1 } , base: 'EUR'} );
+        loadRates.mockResolvedValue( { rates: { EUR: 1, USD: 1.1 } , base: 'EUR' } );
 
         const firstInput = { value: 100 };
         const secondInput = { value: '' };

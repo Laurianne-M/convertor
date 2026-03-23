@@ -37,6 +37,5 @@ describe('areDataOutdated', () => {
         const today = new Date('2026-03-22').toISOString(); 
 
         expect(areDataOutdated(today)).toBe(false); 
-    })
-
-} )
+    } );
+} );

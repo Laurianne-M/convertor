@@ -23,8 +23,6 @@ describe('loadRates', () => {
         );
 
         expect(await loadRates()).toEqual(expect.objectContaining( { rates: { CAD: 1.4, USD: 1.5 }, base: "EUR" } ));
-
-
     } ); 
 
     it('it should return the mocked Data if data doesnt exist and the API responds with no rates (reach limit)', async () => {
@@ -36,7 +34,6 @@ describe('loadRates', () => {
         );
 
         expect(await loadRates()).toEqual(expect.objectContaining( { rates: getMockRates().rates, base: getMockRates().base } ));
-
     } );
 
     it('it should return mocked Data in case of fetch failure (network error)', async () => {
@@ -44,6 +41,5 @@ describe('loadRates', () => {
 
         expect(await loadRates()).toEqual(expect.objectContaining( { rates: getMockRates().rates, base: getMockRates().base } ));
     } );
-
 } );
 
