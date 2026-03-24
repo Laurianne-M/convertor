@@ -1,0 +1,30 @@
+{
+  "name": "convertor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": { 
+    "dev": "vite",
+    "test:e2e": "playwright test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Laurianne-M/convertor.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Laurianne-M/convertor/issues"
+  },
+  "homepage": "https://github.com/Laurianne-M/convertor#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.5.0",
+    "vite": "^8.0.2"
+  }
+}
