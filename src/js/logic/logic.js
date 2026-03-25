@@ -121,7 +121,7 @@ export const updateLock = async (fn) => {
         }   
 };
 
-export const main = async () => {
+/*export const main = async () => {
     
     const baseCurrencySelect = html.elements.getBaseCurrencySelect();
     const desiredCurrencySelect = html.elements.getDesiredCurrencySelect();
@@ -141,4 +141,4 @@ export const main = async () => {
     desiredCurrencySelect.addEventListener(documentEvents.change, () => { updateLock(() => updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, false)) } );
     amountFromSecondCurrencyInput.addEventListener(documentEvents.input, () =>  { updateLock(() => updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, true)) } );
 
-}
+}*/
