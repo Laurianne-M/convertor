@@ -1,9 +1,12 @@
 import { describe, vi, it, beforeEach, afterEach, expect } from "vitest";
-import { getDataFromLocalStorage, areDataOutdated, getMockRates, loadRates } from "./api.js";  
+import { getDataFromLocalStorage, areDataOutdated, getMockRates, loadRates } from "./api.js"; 
+import { API } from "./api.js";  
 
 describe("getDataFromLocalStorage", () => {
+    let api; 
 
     beforeEach(() => {
+        api = new API(); 
         localStorage.clear();
     } );
 

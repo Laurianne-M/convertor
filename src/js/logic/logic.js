@@ -1,4 +1,3 @@
-import { loadRates } from '../api/api.js';
 import { currencies, metalCode, documentEvents, RATES_LOADING } from '../constants.js'
 import { html } from '../element.js';
 
@@ -63,8 +62,13 @@ export const convert = (operation) => {
     
 };
 
-export async function updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, reverse = false) {
-    const data = await loadRates(); // Get the object containing rates and base
+export async function updateAmount(
+    api,
+    amountFromFirstCurrencyInput, 
+    amountFromSecondCurrencyInput, 
+    reverse = false
+) {
+    const data = await api.loadRates(); // Get the object containing rates and base
 
     // Safety check: Make sure data and data.rates actually exist
     if (!data || !data.rates) {
@@ -120,25 +124,3 @@ export const updateLock = async (fn) => {
             isUpdating = false;
         }   
 };
-
-/*export const main = async () => {
-    
-    const baseCurrencySelect = html.elements.getBaseCurrencySelect();
-    const desiredCurrencySelect = html.elements.getDesiredCurrencySelect();
-    html.elements.populateSelect(baseCurrencySelect, currencies);
-    html.elements.populateSelect(desiredCurrencySelect, currencies);
-
-    const data = await loadRates();
-
-    console.log(data);
-    populateLiveNavbar(data);
-
-    const amountFromFirstCurrencyInput = html.elements.getAmoutFromFirstInput();
-    const amountFromSecondCurrencyInput = html.elements.getAmountFromSecondInput();
-
-    amountFromFirstCurrencyInput.addEventListener(documentEvents.input, () => { updateLock(() => updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, false)) } );
-    baseCurrencySelect.addEventListener(documentEvents.change, () => { updateLock(() => updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, false)) } );
-    desiredCurrencySelect.addEventListener(documentEvents.change, () => { updateLock(() => updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, false)) } );
-    amountFromSecondCurrencyInput.addEventListener(documentEvents.input, () =>  { updateLock(() => updateAmount(amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, true)) } );
-
-}*/
