@@ -16,16 +16,16 @@ export const elements = {
     getAmoutFromFirstInput: () => document.getElementById(id.input.firstAmount),
     getAmountFromSecondInput: () => document.getElementById(id.input.secondAmount),
     populateSelect: (select, options) => {
-    if (!select) return;
+        if (!select) return;
 
-    select.innerHTML = "";
+        select.innerHTML = "";
 
-    Object.values(options).forEach(option => {
-        const element = document.createElement(id.select.option);
-        element.value = option.code;
-        element.textContent = option.name;
-        select.appendChild(element);
-    } );
+        Object.values(options).forEach(option => {
+            const element = document.createElement(id.select.option);
+            element.value = option.code;
+            element.textContent = option.name;
+            select.appendChild(element);
+        });
     }
 };
 
