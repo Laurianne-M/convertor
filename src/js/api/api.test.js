@@ -1,6 +1,10 @@
 import { describe, vi, it, beforeEach, afterEach, expect } from "vitest";
 import { API } from "./api.js";  
 
+const fakeTimeProvider = {
+    currentDate: () => new Date('2026-03-24')
+};
+
 const fakeFetch = vi.fn(() =>
     Promise.resolve({
         json: () => Promise.resolve({ rates: { CAD: 1.4, USD: 1.5 }, base: "EUR" } )
@@ -19,15 +23,10 @@ describe('api', () => {
     let api; 
 
     beforeEach(() => {
-        vi.useFakeTimers();
-        api = new API( { fetch : fakeFetch } ); 
+        api = new API( { fetch : fakeFetch, timeProvider: fakeTimeProvider } ); 
         localStorage.clear();
         vi.clearAllMocks();
-    });
-
-    afterEach(() => {
-        vi.useRealTimers();
-    })      
+    });   
     
     it('should return true if the timestamp is not a number', () => {
         const receivedAt = 'not a number'; 
@@ -44,7 +43,6 @@ describe('api', () => {
     });
 
     it("should fetch and caching new data if they are outdated", async () => {  
-        vi.setSystemTime(new Date('2026-03-24'));
         
         const mockedData = { jsonData: { rates: { CAD:1.4, USD: 1.5 }, base: "EUR" } , receivedAt: new Date('2026-03-20') };
         localStorage.setItem("data", JSON.stringify(mockedData));
@@ -55,9 +53,8 @@ describe('api', () => {
     }); 
 
     it('should return the data if data exist and are not outdated', async () => {
-        vi.setSystemTime(new Date('2026-03-20'));
 
-        const mockedData = { jsonData: { rates: { CAD:1.9, USD: 1.6 }, base: "EUR" } , receivedAt: new Date('2026-03-20') };
+        const mockedData = { jsonData: { rates: { CAD:1.9, USD: 1.6 }, base: "EUR" } , receivedAt: new Date('2026-03-24') };
         localStorage.setItem("data", JSON.stringify(mockedData));
 
         expect(await api.loadRates()).toEqual(expect.objectContaining( { rates: { CAD:1.9, USD: 1.6 }, base: "EUR" } ));

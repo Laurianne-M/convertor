@@ -1,5 +1,6 @@
 import { html } from "./element.js";
 import { API } from './api/api.js';
+import { TimeProvider } from "./timeProvider.js";
 import { populateLiveNavbar, updateLock, updateAmount } from "./logic/logic.js";
 import { currencies, documentEvents } from './constants.js'
 
@@ -10,8 +11,10 @@ export const main = async () => {
     const desiredCurrencySelect = html.elements.getDesiredCurrencySelect();
     html.elements.populateSelect(baseCurrencySelect, currencies);
     html.elements.populateSelect(desiredCurrencySelect, currencies);
-
-    const api = new API( { fetch } ); 
+    
+    const timeProvider = new TimeProvider();
+    const api = new API( { fetch, timeProvider } ); 
+    
 
     const data = await api.loadRates();
 
