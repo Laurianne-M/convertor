@@ -169,14 +169,13 @@ describe("logic", () => {
             api.loadRates = vi.fn().mockResolvedValue( { rates: { EUR: 1.00, USD: 1.1 }, base: 'EUR' } );
         }); 
 
-        
         it('should call window alert with the correct message if the amount entered is negative', async () => {
             // Create a spy on the window.alert method
             const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {} );
             const firstInput = { value: -100 };
             const secondInput = { value: '' };
 
-            await updateAmount(api, firstInput, secondInput, false);
+            await updateAmount(data, firstInput, secondInput, false);
 
             expect(alertSpy).toHaveBeenCalled();
 

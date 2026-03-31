@@ -24,16 +24,6 @@ TODO //
 2. Trouver un moyen de tester uniquement LoadRates pour les tests d'API, et de tester chacunes des autres fonctions de api.js a travers LoadRates (done)
 3. Dans le fichier api.js, creer une classe qui s'appelle API et qui sera instantiable avec une fonction d'instance qui s'appelle loadRates, avec un objet qui aura un parametre dans le constructeur qui s'appelle "dependance", et dependance sera un objet json qui aura une fonction qui s'appelle fetch().
 comme ca on pourra injecter la fonction fetch a travers le constructeur dans main, et dans les tests on pourra creer des nouvelles instances avec un remplacement pour le vrai fetch (lire dependency injection) (done)
-4. Creer un nouveau service qui s'appelle "time provider", qui donne des dates pour mieux mocker le temps dans les tests. 
-5. rendre le site responsive 
-
-class api {
-    constructor( {dependency} ) {
-        this.dependency = dependancy;
-    }
-
-    loadRates() {
-        
-    }
-}
-
+4. Creer un nouveau service qui s'appelle "time provider", qui donne des dates pour mieux mocker le temps dans les tests. (done)
+5. rendre le site responsive
+6. creer un folder "service" et mettre api et et timeprovider dedans 

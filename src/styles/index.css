@@ -1,4 +1,6 @@
-
+body {
+  background-color: black;
+}
 
 .myheader {
     background: #EEAECA;
@@ -62,24 +64,59 @@
 
 .container {
   padding: 30px;
-  background: #EEAECA;
-  background: radial-gradient(circle,rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+  background: black;
   border-radius: 5px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  -webkit-box-shadow: 5px 5px 15px 5px #FF8080, -9px 5px 15px 5px #FFE488, -7px -5px 15px 5px #8CFF85, 12px -5px 15px 5px #80C7FF, 12px 10px 15px 7px #E488FF, -10px 10px 15px 7px #FF616B, -10px -7px 27px 1px #8E5CFF, 5px 5px 15px 5px rgba(0,0,0,0); 
+  box-shadow: 5px 5px 15px 5px #FF8080, -9px 5px 15px 5px #FFE488, -7px -5px 15px 5px #8CFF85, 12px -5px 15px 5px #80C7FF, 12px 10px 15px 7px #E488FF, -10px 10px 15px 7px #FF616B, -10px -7px 27px 1px #8E5CFF, 5px 5px 15px 5px rgba(0,0,0,0);
 }
 
 .container div{
   padding:30px;
 }
 
+.base-currency {
+  text-align: center;  
+}
+
+.desired-currency {
+  text-align: center;
+}
+
 
 .amount {
-  border: solid 2px grey;
+  border: solid 2px rgba(148, 187, 233, 1);
   border-radius: 5px;
-  color: #F0EDED;
+  color: rgba(238, 174, 202, 1);
   background: black;
   padding: 10px;
 }
+
+@use postcss-preset-env {
+  stage: 0;
+}
+
+:root {
+  --color-background: #000119;
+  --stroke-width: calc(1em / 16);
+  --font-size: 30vmin;
+  --font-weight: 700;
+  --letter-spacing: calc(1em / 8);
+}
+
+
+
+  .convertor-title {
+  font-family: Poppins, sans-serif;;
+  background-clip: text;
+  background-image: linear-gradient(to right, #09f1b8, #00a2ff, #ff00d2, #fed90f);
+  color: var(--color-background);
+  font-size: 35px;
+  font-weight: var(--font-weight);
+  letter-spacing: var(--letter-spacing);
+  padding: calc(--stroke-width / 2);
+  -webkit-text-stroke-color: transparent;
+  -webkit-text-stroke-width: var(--stroke-width);
+  }
 
 @media screen and (max-width: 500px) {
   .myheader a {
@@ -90,5 +127,34 @@
   .header-right {
     float: none;
   }
+
+  .live-currencies a {
+    float: none; 
+    display: block; 
+    text-align: center; 
+    padding: 5px;
+  }
+
+  .live-currencies {
+    height: 70px;
+    padding-top: 5px;
+  }
+  
+   #desiredCurrency {
+   margin-top: 10px;
+    width: 195px;
+  }
+  .container {
+    display: block;
+    text-align: center;
+    float: none;
+    
+  }
+  
+  #baseCurrency {
+   margin-top: 10px;
+    width: 195px;
+  }
+
 }
 

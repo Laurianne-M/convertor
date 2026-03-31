@@ -63,13 +63,11 @@ export const convert = (operation) => {
 };
 
 export async function updateAmount(
-    api,
+    data,
     amountFromFirstCurrencyInput, 
     amountFromSecondCurrencyInput, 
     reverse = false
 ) {
-    const data = await api.loadRates(); // Get the object containing rates and base
-
     // Safety check: Make sure data and data.rates actually exist
     if (!data || !data.rates) {
         console.warn(RATES_LOADING);
