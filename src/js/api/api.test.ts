@@ -20,7 +20,7 @@ const limitFetch = vi.fn(() =>
 const errorFetch = vi.fn() (() => Promise.reject(new Error('network failure'))); 
 
 describe('api', () => {
-    let api; 
+    let api: API; 
 
     beforeEach(() => {
         api = new API( { fetch : fakeFetch, timeProvider: fakeTimeProvider } ); 

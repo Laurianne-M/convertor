@@ -1,8 +1,9 @@
 import { currencies, metalCode, documentEvents, RATES_LOADING } from '../constants.js'
 import { html } from '../element.js';
+import type { ConvertOperation, RatesResponse } from '../types';
 
 
-export function populateLiveNavbar({ rates, _ }) {
+export function populateLiveNavbar({ rates }: { rates: Record<string, number> } ) {
 
     const usdRate = rates[currencies.USD.code];
     if (!usdRate) throw new Error('USD rate is missing or zero');
@@ -13,7 +14,8 @@ export function populateLiveNavbar({ rates, _ }) {
         if (!select) return;
 
         const symbol = metalCode[id];
-        const metalRate = rates[symbol];
+        if (!symbol) return;
+        const metalRate = rates[symbol] ?? 0;
 
         if (metalRate !== undefined && metalRate !== 0) {
 
@@ -23,7 +25,7 @@ export function populateLiveNavbar({ rates, _ }) {
                 maximumFractionDigits: 2
             } );
 
-            const metalName = select.textContent.split(":")[0]
+            const metalName = select.textContent?.split(":")[0]
             select.textContent = `${metalName}: $${formattedPrice}`;
 
         } else {
@@ -34,7 +36,7 @@ export function populateLiveNavbar({ rates, _ }) {
 };
 
 
-export const convert = (operation) => {
+export const convert = (operation: ConvertOperation) => {
     const { amount, fromSelectBaseCurrency, toSelectDesiredCurrency, rates, base } = operation;
     
     if (fromSelectBaseCurrency === toSelectDesiredCurrency) return amount;
@@ -49,7 +51,7 @@ export const convert = (operation) => {
 
     const amountInBase = fromSelectBaseCurrency === base
     ? amount
-    : amount / rates[fromSelectBaseCurrency];
+    : amount / (rates[fromSelectBaseCurrency] ?? 1);
     
     // convert base → target
     if (toSelectDesiredCurrency !== base && !rates[toSelectDesiredCurrency]) {
@@ -58,14 +60,14 @@ export const convert = (operation) => {
     
     return toSelectDesiredCurrency === base
     ? amountInBase
-    : amountInBase * rates[toSelectDesiredCurrency];
+    : amountInBase * (rates[toSelectDesiredCurrency] ?? 1);
     
 };
 
 export async function updateAmount(
-    data,
-    amountFromFirstCurrencyInput, 
-    amountFromSecondCurrencyInput, 
+    data: RatesResponse,
+    amountFromFirstCurrencyInput: HTMLInputElement, 
+    amountFromSecondCurrencyInput: HTMLInputElement, 
     reverse = false
 ) {
     // Safety check: Make sure data and data.rates actually exist
@@ -74,7 +76,7 @@ export async function updateAmount(
         return;
     }
 
-     if (amountFromFirstCurrencyInput.value < 0) {
+     if (parseFloat(amountFromFirstCurrencyInput.value) < 0) {
         window.alert('Amount must be positive');
         return;
     }
@@ -86,12 +88,12 @@ export async function updateAmount(
         : parseFloat(amountFromFirstCurrencyInput.value) || 0;
 
     const fromSelectBaseCurrency = reverse 
-        ? html.elements.getDesiredCurrencySelect().value 
-        : html.elements.getBaseCurrencySelect().value;
+        ? html.elements.getDesiredCurrencySelect()?.value 
+        : html.elements.getBaseCurrencySelect()?.value;
 
     const toSelectDesiredCurrency = reverse 
-        ? html.elements.getBaseCurrencySelect().value 
-        : html.elements.getDesiredCurrencySelect().value;
+        ? html.elements.getBaseCurrencySelect()?.value 
+        : html.elements.getDesiredCurrencySelect()?.value;
 
     const result = convert( {
         amount: amount,
@@ -111,7 +113,7 @@ export async function updateAmount(
 let isUpdating = false;
 
 export const resetUpdateLock = () => { isUpdating = false; };
-export const updateLock = async (fn) => {
+export const updateLock = async (fn: any) => {
      
 
     if (isUpdating) return;

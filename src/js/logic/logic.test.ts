@@ -24,7 +24,7 @@ describe("logic", () => {
 
             populateLiveNavbar( { rates: { BTC: 0, USD: 1.09 } } );
             
-            expect(alertSpy).toHaveBeenCalled(1);
+            expect(alertSpy).toHaveBeenCalledTimes(1);
             expect(alertSpy).toBeCalledWith('an error occured while charging the navbar');
         });
 
@@ -34,7 +34,7 @@ describe("logic", () => {
 
             populateLiveNavbar( { rates: { USD: 1.09 } } );
 
-            expect(alertSpy).toHaveBeenCalled(1);
+            expect(alertSpy).toHaveBeenCalledTimes(1);
             expect(alertSpy).toBeCalledWith('an error occured while charging the navbar');
         }); 
         
@@ -45,7 +45,7 @@ describe("logic", () => {
 
             const btcElement = document.getElementById('btc')
                 
-            expect(btcElement.textContent).toBe('BTC: $72,666.67');
+            expect(btcElement?.textContent).toBe('BTC: $72,666.67');
         });
     });
 
@@ -56,7 +56,12 @@ describe("logic", () => {
             const operation = {
                 amount: 569,
                 fromSelectBaseCurrency: 'USD',
-                toSelectDesiredCurrency: 'USD'
+                toSelectDesiredCurrency: 'USD',
+                rates: {
+                    'EUR': 1.1,
+                    'USD': 0
+                },
+                base: 'EUR'
             };
             const result = convert(operation);
 
@@ -162,7 +167,7 @@ describe("logic", () => {
     }
     }));
 
-        let api; 
+        let api: API; 
         beforeEach(() => {
             api = new API( { fetch: fakeFetch } );
             vi.clearAllMocks(); // reset mocks between each test
@@ -172,8 +177,9 @@ describe("logic", () => {
         it('should call window alert with the correct message if the amount entered is negative', async () => {
             // Create a spy on the window.alert method
             const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {} );
-            const firstInput = { value: -100 };
-            const secondInput = { value: '' };
+            const firstInput = { value: -100 } as unknown as HTMLInputElement;
+            const secondInput = { value: '' } as unknown as HTMLInputElement;
+            const data = await api.loadRates(); 
 
             await updateAmount(data, firstInput, secondInput, false);
 
@@ -185,19 +191,21 @@ describe("logic", () => {
         });
         
         it('should update the second input with converted amount (not reverse)', async () => {
-            const firstInput = { value: 100 };
-            const secondInput = { value: '' };
+            const firstInput = { value: 100 }  as unknown as HTMLInputElement;  
+            const secondInput = { value: '' }  as unknown as HTMLInputElement;
+            const data = await api.loadRates(); 
 
-            await updateAmount(api, firstInput, secondInput, false);
+            await updateAmount(data, firstInput, secondInput, false);
             
             expect(secondInput.value).toBe('110.00');
         });
 
         it('should update the first input with converted amount (reverse)', async () => {
-            const firstInput = { value: '' };
-            const secondInput = { value: 110 }; 
+            const firstInput = { value: '' }  as unknown as HTMLInputElement;
+            const secondInput = { value: 110 }  as unknown as HTMLInputElement;
+            const data = await api.loadRates(); 
 
-            await updateAmount(api, firstInput, secondInput, true);
+            await updateAmount(data, firstInput, secondInput, true);
 
             expect(firstInput.value).toBe('100.00');
         });
@@ -205,10 +213,11 @@ describe("logic", () => {
         it('should do nothing if loadRates failed', async () => {
             api.loadRates = vi.fn().mockResolvedValue(null); 
 
-            const firstInput = { value: '' };
-            const secondInput = { value: 100 };
+            const firstInput = { value: '' } as unknown as HTMLInputElement;
+            const secondInput = { value: 100 } as unknown as HTMLInputElement;
+            const data = await api.loadRates();
 
-            await updateAmount(api, firstInput, secondInput, true);
+            await updateAmount(data, firstInput, secondInput, true);
 
             expect(firstInput.value).toBe('');
         });
@@ -224,7 +233,7 @@ describe("logic", () => {
 
             await updateLock(updateAmount);
 
-            expect(updateAmount).toHaveBeenCalled(1);
+            expect(updateAmount).toHaveBeenCalledTimes(1);
         });
 
         it('should block every other call while running', async () => { 
@@ -245,7 +254,7 @@ describe("logic", () => {
             await updateLock(updateAmount);
 
 
-            expect(updateAmount).toHaveBeenCalled(2);
+            expect(updateAmount).toHaveBeenCalledTimes(2);
         }); 
 
         it('should unlock if the function throw an error', async () => {  
@@ -256,7 +265,7 @@ describe("logic", () => {
 
             }
             await updateLock(updateAmount);
-            expect(updateAmount).toHaveBeenCalled(1);
+            expect(updateAmount).toHaveBeenCalledTimes(1);
         });
     });
 });

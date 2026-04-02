@@ -1,3 +1,5 @@
+import type { Metal } from "./types";
+
 export const currencies = {
     // Major Global
     USD: { code: "USD", name: "United States Dollar" },
@@ -43,7 +45,7 @@ export const currencies = {
     TRY: { code: "TRY", name: "Turkish Lira" }
 };
 
-export const metalCode = {
+export const metalCode: Metal = {
     gold: "XAU",
     silver: "XAG",
     btc: "BTC"
@@ -57,4 +59,4 @@ export const documentEvents = {
 export const RATES_LOADING = "Still waiting for rates"; 
 export const DAY_IN_MILLISECONDS = 60 * 60 * 24 * 1000; 
 export const API_BASE_URL = 'https://api.exchangeratesapi.io/v1/latest';
-export const API_KEY = 'ca1103674bdee54b5f5a046393d48639';
+export const API_KEY = 'test';

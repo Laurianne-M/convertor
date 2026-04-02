@@ -22,9 +22,10 @@ export const main = async () => {
     populateLiveNavbar(data);
 
     const amountFromFirstCurrencyInput = html.elements.getAmoutFromFirstInput();
+    if (!amountFromFirstCurrencyInput) return;
     const amountFromSecondCurrencyInput = html.elements.getAmountFromSecondInput();
 
-    amountFromFirstCurrencyInput.value = 1; 
+    amountFromFirstCurrencyInput.value = "1"; 
     desiredCurrencySelect.value = 'EUR';
     updateAmount(data, amountFromFirstCurrencyInput, amountFromSecondCurrencyInput);
 

@@ -17,6 +17,11 @@ dummy function : const dummy = () => {};
 dummy spy function : const dummy = vi.fn(); 
 
 
+3 / Instance declaration in typescript
+
+ex : api is an instance of API class => let api: API; (the type of api is API)
+
+
 
 
 TODO //
