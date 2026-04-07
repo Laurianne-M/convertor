@@ -59,4 +59,4 @@ export const documentEvents = {
 export const RATES_LOADING = "Still waiting for rates"; 
 export const DAY_IN_MILLISECONDS = 60 * 60 * 24 * 1000; 
 export const API_BASE_URL = 'https://api.exchangeratesapi.io/v1/latest';
-export const API_KEY = 'test';
+export const API_KEY = 'ca1103674bdee54b5f5a046393d48639';

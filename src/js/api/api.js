@@ -53,7 +53,7 @@ export class API {
 
                 const queryString = new URLSearchParams(params).toString();
                 const urlWithParams = `${API_BASE_URL}?${queryString}`;
-                const res = await this.dependencies.fetch(urlWithParams);
+                const res = await this.dependencies.fetch.call(window, urlWithParams);
                 const jsonData = await res.json();
 
                 if (!jsonData.rates) { // API returned an error
