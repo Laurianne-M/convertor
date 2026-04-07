@@ -18,3 +18,6 @@ e2e:
 	/bin/bash scripts/e2e.sh
 
 restart: off deploy
+
+install: 
+	cd src && npm install
