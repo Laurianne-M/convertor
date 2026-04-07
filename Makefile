@@ -11,13 +11,13 @@ deploy:
 off:
 	docker compose down
 
+restart: off deploy
+
 test:
 	/bin/bash scripts/test.sh
 
 e2e:
 	/bin/bash scripts/e2e.sh
 
-restart: off deploy
-
 install: 
-	cd src && npm install
+	/bin/bash scripts/install.sh
