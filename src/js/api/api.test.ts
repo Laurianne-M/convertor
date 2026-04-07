@@ -1,3 +1,5 @@
+// @vitest-environment jsdom
+/// <reference types="vitest/globals" />
 import { describe, vi, it, beforeEach, afterEach, expect } from "vitest";
 import { API } from "./api.js";  
 
@@ -17,7 +19,7 @@ const limitFetch = vi.fn(() =>
     })
 );
 
-const errorFetch = vi.fn() (() => Promise.reject(new Error('network failure'))); 
+const errorFetch = vi.fn(() => Promise.reject(new Error('network failure'))); 
 
 describe('api', () => {
     let api: API; 
