@@ -1,22 +1,24 @@
 import { html } from "./element.js";
-import { API } from './api/api.js';
+import { ExchangeRateServiceImp } from "./services/ExchangeRate/ExchangeRateServiceImp.js";
 import { TimeProvider } from "./timeProvider.js";
 import { populateLiveNavbar, updateLock, updateAmount } from "./logic/logic.js";
 import { currencies, documentEvents } from './constants.js'
 
-
 export const main = async () => {
-    
     const baseCurrencySelect = html.elements.getBaseCurrencySelect();
     const desiredCurrencySelect = html.elements.getDesiredCurrencySelect();
     html.elements.populateSelect(baseCurrencySelect, currencies);
     html.elements.populateSelect(desiredCurrencySelect, currencies);
     
     const timeProvider = new TimeProvider();
-    const api = new API( { fetch, timeProvider } ); 
-    
 
-    const data = await api.loadRates();
+    const exchangeRateService = new ExchangeRateServiceImp({
+        fetch, 
+        timeProvider,
+        storage: localStorage,
+    });
+    
+    const data = await exchangeRateService.loadRates();
 
     console.log(data);
     populateLiveNavbar(data);

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { populateLiveNavbar, convert, updateAmount, updateLock, resetUpdateLock } from "../logic/logic";
-import { API } from "../api/api.js";
+import { ExchangeRateServiceImp } from "../services/ExchangeRate/ExchangeRateServiceImp";
 
 describe("logic", () => { 
     describe("populateLiveNavbar", () => {
@@ -167,11 +167,11 @@ describe("logic", () => {
     }
     }));
 
-        let api: API; 
+        let exchangeRateService: ExchangeRateServiceImp; 
         beforeEach(() => {
-            api = new API( { fetch: fakeFetch } );
+            exchangeRateService = new ExchangeRateServiceImp( { fetch: fakeFetch } );
             vi.clearAllMocks(); // reset mocks between each test
-            api.loadRates = vi.fn().mockResolvedValue( { rates: { EUR: 1.00, USD: 1.1 }, base: 'EUR' } );
+            exchangeRateService.loadRates = vi.fn().mockResolvedValue( { rates: { EUR: 1.00, USD: 1.1 }, base: 'EUR' } );
         }); 
 
         it('should call window alert with the correct message if the amount entered is negative', async () => {
@@ -179,7 +179,7 @@ describe("logic", () => {
             const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => {} );
             const firstInput = { value: -100 } as unknown as HTMLInputElement;
             const secondInput = { value: '' } as unknown as HTMLInputElement;
-            const data = await api.loadRates(); 
+            const data = await exchangeRateService.loadRates(); 
 
             await updateAmount(data, firstInput, secondInput, false);
 
@@ -193,7 +193,7 @@ describe("logic", () => {
         it('should update the second input with converted amount (not reverse)', async () => {
             const firstInput = { value: 100 }  as unknown as HTMLInputElement;  
             const secondInput = { value: '' }  as unknown as HTMLInputElement;
-            const data = await api.loadRates(); 
+            const data = await exchangeRateService.loadRates(); 
 
             await updateAmount(data, firstInput, secondInput, false);
             
@@ -203,7 +203,7 @@ describe("logic", () => {
         it('should update the first input with converted amount (reverse)', async () => {
             const firstInput = { value: '' }  as unknown as HTMLInputElement;
             const secondInput = { value: 110 }  as unknown as HTMLInputElement;
-            const data = await api.loadRates(); 
+            const data = await exchangeRateService.loadRates(); 
 
             await updateAmount(data, firstInput, secondInput, true);
 
@@ -211,11 +211,11 @@ describe("logic", () => {
         });
 
         it('should do nothing if loadRates failed', async () => {
-            api.loadRates = vi.fn().mockResolvedValue(null); 
+            exchangeRateService.loadRates = vi.fn().mockResolvedValue(null); 
 
             const firstInput = { value: '' } as unknown as HTMLInputElement;
             const secondInput = { value: 100 } as unknown as HTMLInputElement;
-            const data = await api.loadRates();
+            const data = await exchangeRateService.loadRates();
 
             await updateAmount(data, firstInput, secondInput, true);
 

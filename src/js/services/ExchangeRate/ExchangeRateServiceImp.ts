@@ -1,16 +1,25 @@
-import { DAY_IN_MILLISECONDS, API_BASE_URL, API_KEY } from "../constants.js";
+import type { ExchangeRateService, ExchangeRates, ExchangeRateAPIResponse } from "./ExchangeRateService";
+import { ExchangeRate } from "./ExchangeRateFallbackData";
+import type { TimeProvider } from "../../timeProvider";
+import { DAY_IN_MILLISECONDS, API_BASE_URL, API_KEY } from "../../constants.js"
 
-export class API {
-    constructor(dependencies) {
-        this.dependencies = dependencies;
+interface ExchangeRateServiceImplDependencies {
+    timeProvider: TimeProvider
+    storage: Storage
+    fetch: (url: string) => Promise<Response>
+} 
+
+export class ExchangeRateServiceImp implements ExchangeRateService {
+
+    constructor(private readonly dependencies: ExchangeRateServiceImplDependencies) {
     } 
     
-    getDataFromLocalStorage = async () => {
-        const dataStringified = localStorage.getItem('data');
+    private getDataFromLocalStorage = async () => {
+        const dataStringified = this.dependencies.storage.getItem('data');
         return dataStringified && JSON.parse(dataStringified) || null; 
     };
 
-    areDataOutdated = (receivedAt) => {
+    private areDataOutdated = (receivedAt: string) => {
 
         if (!receivedAt || isNaN(Date.parse(receivedAt))) {
             return true; 
@@ -22,27 +31,11 @@ export class API {
         return new Date(receivedAt).getTime() < checkDate.getTime(); 
     }; 
 
-    getMockRates = () => {
-    return {
-        success: true,
-        timestamp: Date.now(),
-        base: "EUR",
-        date: "2026-03-12",
-        rates: {
-            USD: 1.09,
-            EUR: 1,
-            GBP: 0.86,
-            JPY: 162.4,
-            CAD: 1.48,
-            AUD: 1.66,
-            BTC: 0.000015,
-            XAU: 0.00047,
-            XAG: 0.038
-        }
-    };
+    private getMockRates = (): ExchangeRateAPIResponse => {
+    return ExchangeRate.fallbackData
 };
 
-    loadRates = async () => {
+    public loadRates = async (): Promise<ExchangeRates> => {
         const data = await this.getDataFromLocalStorage(); 
 
         if (!data || this.areDataOutdated(data && data.receivedAt)) {
@@ -59,14 +52,27 @@ export class API {
                 if (!jsonData.rates) { // API returned an error
                     console.warn("API unavailable — using mock data");
                     const mockData = this.getMockRates();
-                    localStorage.setItem('data', JSON.stringify( {jsonData: mockData, receivedAt: this.dependencies.timeProvider.currentDate() } ));
+                    this.dependencies.storage.setItem(
+                        'data', 
+                        JSON.stringify({
+                            jsonData: mockData,
+                            receivedAt: this.dependencies.timeProvider.currentDate()
+                        }
+                    ));
+
                     return {
                         rates: mockData.rates,
                         base: mockData.base
                     };
                 };
 
-                localStorage.setItem('data', JSON.stringify( {jsonData, receivedAt: this.dependencies.timeProvider.currentDate() } ));
+                this.dependencies.storage.setItem(
+                    'data', 
+                    JSON.stringify({
+                        jsonData,
+                        receivedAt: this.dependencies.timeProvider.currentDate()
+                    })
+                );
 
                 return {
                     rates: jsonData.rates,
