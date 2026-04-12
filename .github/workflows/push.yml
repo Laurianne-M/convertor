@@ -12,14 +12,14 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: 20
-    - name: Install Playwright browsers
+    - name: Install dependencies
+      run: make install
+    - name: Install Playwright browsers  
       run: npx playwright install --with-deps chromium
-      working-directory: src
-    - name: Test
-      run: |
-        make install
-        make e2e
-        make test
+      working-directory: src        # ← uses the correct local version
+    - name: E2E tests
+      run: make e2e
+    - name: Unit tests
+      run: make test
     - name: Build
       run: make build-all
-
