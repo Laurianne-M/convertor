@@ -1,10 +1,10 @@
 import type { ExchangeRateService, ExchangeRates, ExchangeRateAPIResponse } from "./ExchangeRateService";
 import { ExchangeRate } from "./ExchangeRateFallbackData";
-import type { TimeProvider } from "../../timeProvider";
+import type { TimeProviderServiceImpl } from "../TimeProvider/TImeProviderServiceImp";
 import { DAY_IN_MILLISECONDS, API_BASE_URL, API_KEY } from "../../constants.js"
 
 interface ExchangeRateServiceImplDependencies {
-    timeProvider: TimeProvider
+    timeProvider: TimeProviderServiceImpl
     storage: Storage
     fetch: (url: string) => Promise<Response>
 } 

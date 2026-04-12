@@ -1,6 +1,24 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { populateLiveNavbar, convert, updateAmount, updateLock, resetUpdateLock } from "../logic/logic";
-import { ExchangeRateServiceImp } from "../services/ExchangeRate/ExchangeRateServiceImp";
+import { 
+  describe, 
+  it, 
+  expect, 
+  vi, 
+  beforeEach 
+} from "vitest";
+
+import { 
+  populateLiveNavbar, 
+  convert, 
+  updateAmount, 
+  updateLock, 
+  resetUpdateLock 
+} from "./logic";
+
+import { 
+  ExchangeRateServiceImp 
+} from "../services/ExchangeRate/ExchangeRateServiceImp";
+
+import { ExchangeRateServiceFake } from "../services/ExchangeRate/ExchangeRateServiceFake";
 
 describe("logic", () => { 
     describe("populateLiveNavbar", () => {
@@ -8,13 +26,23 @@ describe("logic", () => {
             vi.clearAllMocks();
         });
 
-        it('should exit the function if the id of the metal currency we are looking for doesnt exist ', () => {
+        it('exit the function if the currency ID doesnt exist ', () => {
             document.body.innerHTML = '';
 
-            expect(populateLiveNavbar( { rates: { USD: 1.09, BTC: 0.000015, XAU: 0.00047, XAG: 0.038, CAD: 1.01 } } )).toBeUndefined();
+            const result = populateLiveNavbar({
+              rates: { 
+                USD: 1.09,
+                BTC: 0.000015,
+                XAU: 0.00047,
+                XAG: 0.038,
+                CAD: 1.01 
+              }
+            });
+
+            expect(result).toBeUndefined();
         });
 
-        it('should exit the function if USD rate is equal to 0 or undefined', () => {
+        it('exit the function if USD rate is equal to 0 or undefined', () => {
             expect(() => populateLiveNavbar( {rates: { USD: 0 } } )).toThrow('USD rate is missing or zero');
         });
 
@@ -140,38 +168,29 @@ describe("logic", () => {
     });
 
     describe('UpdateAmount', () => {
-        const fakeFetch = vi.fn(() =>
-        Promise.resolve({
-            json: () => Promise.resolve({ rates: { EUR: 1.0, USD: 1.1 }, base: "EUR" } )
-        })
-    );
+        const fakeTimeProvider = {
+          currentDate: () => new Date('2026-03-24')
+        };
 
-    vi.mock("../api/api.js");
-    vi.mock('../element.js', () => ( {
-    elements: {
-        getBaseCurrencySelect: vi.fn().mockReturnValue( { value: 'EUR' } ),
-        getDesiredCurrencySelect: vi.fn().mockReturnValue( { value: 'USD' } ),
-        getAmoutFromFirstInput: vi.fn(),
-        getAmountFromSecondInput: vi.fn(),
-        populateSelect: vi.fn(),
-    },
-    html: {
-        id: {},
-        elements: {
-        getBaseCurrencySelect: vi.fn().mockReturnValue( { value: 'EUR' } ),
-        getDesiredCurrencySelect: vi.fn().mockReturnValue( { value: 'USD' } ),
-        getAmoutFromFirstInput: vi.fn(),
-        getAmountFromSecondInput: vi.fn(),
-        populateSelect: vi.fn(),
-        }
-    }
-    }));
+        const fakeRates = {
+          rates: {
+            USD: 1.1,
+            EUR: 1.0,
+            GBP: 1.2,
+            JPY: 1.3,
+            CAD: 1.4,
+            AUD: 1.2,
+            BTC: 3.0,
+            XAU: 2.0,
+            XAG: 2.4
+          },
+          base: 'EUR'
+        };
 
-        let exchangeRateService: ExchangeRateServiceImp; 
+        let exchangeRateService: ExchangeRateServiceFake; 
         beforeEach(() => {
-            exchangeRateService = new ExchangeRateServiceImp( { fetch: fakeFetch } );
+            exchangeRateService = new ExchangeRateServiceFake(fakeTimeProvider, fakeRates);
             vi.clearAllMocks(); // reset mocks between each test
-            exchangeRateService.loadRates = vi.fn().mockResolvedValue( { rates: { EUR: 1.00, USD: 1.1 }, base: 'EUR' } );
         }); 
 
         it('should call window alert with the correct message if the amount entered is negative', async () => {
@@ -181,7 +200,7 @@ describe("logic", () => {
             const secondInput = { value: '' } as unknown as HTMLInputElement;
             const data = await exchangeRateService.loadRates(); 
 
-            await updateAmount(data, firstInput, secondInput, false);
+            await updateAmount(data, firstInput, secondInput, false, 'EUR', 'USD');
 
             expect(alertSpy).toHaveBeenCalled();
 
@@ -195,7 +214,7 @@ describe("logic", () => {
             const secondInput = { value: '' }  as unknown as HTMLInputElement;
             const data = await exchangeRateService.loadRates(); 
 
-            await updateAmount(data, firstInput, secondInput, false);
+            await updateAmount(data, firstInput, secondInput, false, 'EUR', 'USD');
             
             expect(secondInput.value).toBe('110.00');
         });
@@ -205,7 +224,7 @@ describe("logic", () => {
             const secondInput = { value: 110 }  as unknown as HTMLInputElement;
             const data = await exchangeRateService.loadRates(); 
 
-            await updateAmount(data, firstInput, secondInput, true);
+            await updateAmount(data, firstInput, secondInput, true, 'EUR', 'USD');
 
             expect(firstInput.value).toBe('100.00');
         });
@@ -217,7 +236,7 @@ describe("logic", () => {
             const secondInput = { value: 100 } as unknown as HTMLInputElement;
             const data = await exchangeRateService.loadRates();
 
-            await updateAmount(data, firstInput, secondInput, true);
+            await updateAmount(data, firstInput, secondInput, true, 'EUR', 'USD');
 
             expect(firstInput.value).toBe('');
         });

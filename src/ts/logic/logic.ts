@@ -1,6 +1,6 @@
 import { currencies, metalCode, documentEvents, RATES_LOADING } from '../constants.js'
 import { html } from '../element.js';
-import type { ConvertOperation, RatesResponse } from '../types';
+import type { ConvertOperation, RatesResponse } from '../types/index.js';
 
 
 export function populateLiveNavbar({ rates }: { rates: Record<string, number> } ) {
@@ -68,7 +68,9 @@ export async function updateAmount(
     data: RatesResponse,
     amountFromFirstCurrencyInput: HTMLInputElement, 
     amountFromSecondCurrencyInput: HTMLInputElement, 
-    reverse = false
+    reverse = false,
+    fromCurrency: string,
+    toCurrency: string
 ) {
     // Safety check: Make sure data and data.rates actually exist
     if (!data || !data.rates) {
@@ -88,12 +90,12 @@ export async function updateAmount(
         : parseFloat(amountFromFirstCurrencyInput.value) || 0;
 
     const fromSelectBaseCurrency = reverse 
-        ? html.elements.getDesiredCurrencySelect()?.value 
-        : html.elements.getBaseCurrencySelect()?.value;
+        ? toCurrency
+        : fromCurrency
 
     const toSelectDesiredCurrency = reverse 
-        ? html.elements.getBaseCurrencySelect()?.value 
-        : html.elements.getDesiredCurrencySelect()?.value;
+        ? fromCurrency
+        : toCurrency
 
     const result = convert( {
         amount: amount,

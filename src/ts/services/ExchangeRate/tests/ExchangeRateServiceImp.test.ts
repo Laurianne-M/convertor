@@ -4,7 +4,6 @@ import { describe, vi, it, beforeEach, afterEach, expect } from "vitest";
 import { JSDOM } from 'jsdom';
 import { ExchangeRateServiceImp as ExchangeRateServiceImpl } from "../ExchangeRateServiceImp";
 import { ExchangeRate } from "../ExchangeRateFallbackData";
-import { TimeProvider } from "../../../timeProvider";
 
 const dom = new JSDOM('', { url: 'http://localhost' });
 global.localStorage = dom.window.localStorage;
