@@ -29,12 +29,6 @@ export const main = async () => {
 
     amountFromFirstCurrencyInput.value = "1"; 
     desiredCurrencySelect.value = 'EUR';
-    /*updateAmount(data, amountFromFirstCurrencyInput, amountFromSecondCurrencyInput);
-
-    amountFromFirstCurrencyInput.addEventListener(documentEvents.input, () => { updateLock(() => updateAmount(data, amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, false)) } );
-    baseCurrencySelect.addEventListener(documentEvents.change, () => { updateLock(() => updateAmount(data, amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, false)) } );
-    desiredCurrencySelect.addEventListener(documentEvents.change, () => { updateLock(() => updateAmount(data, amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, false)) } );
-    amountFromSecondCurrencyInput.addEventListener(documentEvents.input, () =>  { updateLock(() => updateAmount(data, amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, true)) } );*/
 
     updateAmount(data, amountFromFirstCurrencyInput, amountFromSecondCurrencyInput, false, baseCurrencySelect?.value, desiredCurrencySelect?.value);
 
