@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 
 export  const setupCurrencies = async (page: Page, base = 'EUR', desired = 'USD') => {
-    await page.goto('http://localhost:5173/');
+    await page.goto('http://localhost:5174/');
     await page.selectOption('#baseCurrency', base);
     await page.selectOption('#desiredCurrency', desired);
 }

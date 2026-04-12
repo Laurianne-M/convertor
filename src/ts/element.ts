@@ -15,8 +15,8 @@ const id = {
 export const elements = {
     getBaseCurrencySelect: () => document.getElementById(id.select.baseCurrency) as HTMLSelectElement,
     getDesiredCurrencySelect: () => document.getElementById(id.select.desiredCurrency) as HTMLSelectElement,
-    getAmoutFromFirstInput: () => document.getElementById(id.input.firstAmount) as HTMLInputElement,
-    getAmountFromSecondInput: () => document.getElementById(id.input.secondAmount) as HTMLInputElement,
+    getFirstInputAmount: () => document.getElementById(id.input.firstAmount) as HTMLInputElement,
+    getSecondInputAmount: () => document.getElementById(id.input.secondAmount) as HTMLInputElement,
     populateSelect: (select: HTMLSelectElement, options: Record<string, Currency>) => {
         if (!select) return;
         select.innerHTML = "";
