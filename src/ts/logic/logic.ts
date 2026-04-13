@@ -1,128 +1,133 @@
-import { currencies, metalCode, documentEvents, RATES_LOADING } from '../constants.js'
-import { html } from '../element.js';
+import { currencies, metalCode, RATES_LOADING, NAV_BAR_ERROR } from '../constants.js'
 import type { ConvertOperation, RatesResponse } from '../types/index.js';
 
 
-export function populateLiveNavbar({ rates }: { rates: Record<string, number> } ) {
+export function populateLiveNavbar({ rates }: { rates: Record<string, number> }) {
 
-    const usdRate = rates[currencies.USD.code];
-    if (!usdRate) throw new Error('USD rate is missing or zero');
+  const usdRate = rates[currencies.USD.code];
+  if (!usdRate) throw new Error('USD rate is missing or zero');
 
-    Object.keys(metalCode).forEach(id => {
+  Object.keys(metalCode).forEach(id => {
 
-        const select = document.getElementById(id);
-        if (!select) return;
+    const select = document.getElementById(id);
+    if (!select) return;
 
-        const symbol = metalCode[id];
-        if (!symbol) return;
-        const metalRate = rates[symbol] ?? 0;
+    const symbol = metalCode[id];
+    if (!symbol) return;
+    const metalRate = rates[symbol] ?? 0;
 
-        if (metalRate !== undefined && metalRate !== 0) {
+    if (metalRate !== undefined && metalRate !== 0) {
 
-            const price = usdRate / metalRate;
+      const price = usdRate / metalRate;
 
-            const formattedPrice = price.toLocaleString(undefined, {
-                maximumFractionDigits: 2
-            } );
+      const formattedPrice = price.toLocaleString(undefined, {
+        maximumFractionDigits: 2
+      });
 
-            const metalName = select.textContent?.split(":")[0]
-            select.textContent = `${metalName}: $${formattedPrice}`;
+      const metalName = select.textContent?.split(":")[0]
+      select.textContent = `${metalName}: $${formattedPrice}`;
 
-        } else {
-            window.alert("an error occured while charging the navbar");
-            console.error("an error occured while charging the navbar");
-        };
-    } );
+    } else {
+      window.alert(NAV_BAR_ERROR);
+      console.error(NAV_BAR_ERROR);
+    };
+  });
 };
 
 
 export const convert = (operation: ConvertOperation) => {
-    const { amount, fromSelectBaseCurrency, toSelectDesiredCurrency, rates, base } = operation;
-    
-    if (fromSelectBaseCurrency === toSelectDesiredCurrency) return amount;
+  const {
+    amount,
+    fromSelectBaseCurrency,
+    toSelectDesiredCurrency,
+    rates,
+    base
+  } = operation;
 
-    
-    // convert to base first
-    if (fromSelectBaseCurrency !== base) {
-        if (!rates[fromSelectBaseCurrency] || rates[fromSelectBaseCurrency] === 0) {
-            return 0; 
-        }
+  if (fromSelectBaseCurrency === toSelectDesiredCurrency) return amount;
+
+
+  // convert to base first
+  if (fromSelectBaseCurrency !== base) {
+    if (!rates[fromSelectBaseCurrency] || rates[fromSelectBaseCurrency] === 0) {
+      return 0;
     }
+  }
 
-    const amountInBase = fromSelectBaseCurrency === base
+  const amountInBase = fromSelectBaseCurrency === base
     ? amount
     : amount / (rates[fromSelectBaseCurrency] ?? 1);
-    
-    // convert base → target
-    if (toSelectDesiredCurrency !== base && !rates[toSelectDesiredCurrency]) {
-        return 0;
-    }
-    
-    return toSelectDesiredCurrency === base
+
+  // convert base → target
+  if (toSelectDesiredCurrency !== base && !rates[toSelectDesiredCurrency]) {
+    return 0;
+  }
+
+  return toSelectDesiredCurrency === base
     ? amountInBase
     : amountInBase * (rates[toSelectDesiredCurrency] ?? 1);
-    
+
 };
 
 export async function updateAmount(
-    data: RatesResponse,
-    amountFromFirstCurrencyInput: HTMLInputElement, 
-    amountFromSecondCurrencyInput: HTMLInputElement, 
-    reverse = false,
-    fromCurrency: string,
-    toCurrency: string
+  data: RatesResponse,
+  amountFromFirstCurrencyInput: HTMLInputElement,
+  amountFromSecondCurrencyInput: HTMLInputElement,
+  reverse = false,
+  fromCurrency: string,
+  toCurrency: string
 ) {
-    // Safety check: Make sure data and data.rates actually exist
-    if (!data || !data.rates) {
-        console.warn(RATES_LOADING);
-        return;
-    }
+  // Safety check: Make sure data and data.rates actually exist
+  if (!data || !data.rates) {
+    console.warn(RATES_LOADING);
+    return;
+  }
 
-     if (parseFloat(amountFromFirstCurrencyInput.value) < 0) {
-        window.alert('Amount must be positive');
-        return;
-    }
+  if (parseFloat(amountFromFirstCurrencyInput.value) < 0) {
+    window.alert('Amount must be positive');
+    return;
+  }
 
 
-    // Determine values based on whether we are updating from the first or second input
-    const amount = reverse 
-        ? parseFloat(amountFromSecondCurrencyInput.value) || 0 
-        : parseFloat(amountFromFirstCurrencyInput.value) || 0;
+  // Determine values based on whether we are updating from the first or second input
+  const amount = reverse
+    ? parseFloat(amountFromSecondCurrencyInput.value) || 0
+    : parseFloat(amountFromFirstCurrencyInput.value) || 0;
 
-    const fromSelectBaseCurrency = reverse 
-        ? toCurrency
-        : fromCurrency
+  const fromSelectBaseCurrency = reverse
+    ? toCurrency
+    : fromCurrency
 
-    const toSelectDesiredCurrency = reverse 
-        ? fromCurrency
-        : toCurrency
+  const toSelectDesiredCurrency = reverse
+    ? fromCurrency
+    : toCurrency
 
-    const result = convert( {
-        amount: amount,
-        fromSelectBaseCurrency: fromSelectBaseCurrency,
-        toSelectDesiredCurrency: toSelectDesiredCurrency,
-        rates: data.rates,
-        base: data.base
-    } );
+  const result = convert({
+    amount: amount,
+    fromSelectBaseCurrency: fromSelectBaseCurrency,
+    toSelectDesiredCurrency: toSelectDesiredCurrency,
+    rates: data.rates,
+    base: data.base
+  });
 
-    if (reverse) {
-        amountFromFirstCurrencyInput.value = result.toFixed(2);
-    } else {
-        amountFromSecondCurrencyInput.value = result.toFixed(2);
-    };
+  if (reverse) {
+    amountFromFirstCurrencyInput.value = result.toFixed(2);
+  } else {
+    amountFromSecondCurrencyInput.value = result.toFixed(2);
+  };
 };
-        
+
 let isUpdating = false;
 
 export const resetUpdateLock = () => { isUpdating = false; };
 export const updateLock = async (fn: any) => {
-     
 
-    if (isUpdating) return;
-    isUpdating = true;
-    try {
-        await fn();
-    } finally {
-            isUpdating = false;
-        }   
+
+  if (isUpdating) return;
+  isUpdating = true;
+  try {
+    await fn();
+  } finally {
+    isUpdating = false;
+  }
 };
