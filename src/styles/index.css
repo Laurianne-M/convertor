@@ -1,60 +1,34 @@
 body {
-  background-color: black;
-}
+    font-family: 'Montserrat', sans-serif;
+    background-image: linear-gradient(#bfe9ff,#ff6e7f);
+    width: 100%;
+    height: 140vh;
+    overflow-x: hidden;
+    padding-top: 60px;
 
-.myheader {
-    background: #EEAECA;
-    background: radial-gradient(circle,rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
-    display: flex;
-    padding: 20px 10px;
-    overflow: hidden;
 }
 
 .live-currencies{
-    background: black;
+    color: rgb(255, 255, 255);
+    background-image: linear-gradient(rgba(255, 192, 203, 1),rgba(128,0,128,0.5));
     display: flex;
     padding: 20px 10px;
     overflow: hidden;
     justify-content: center;
+    position: fixed;
+    top: 0;
+    width: 100%; /* Required: fixed elements lose their width by default */
+    z-index: 1000;
+
+
 }
 
 .live-currencies a {
-  color: white;
+  color: #5D4157;
   padding: 50px;
   font-family: Questrial, sans-serif;
 }
 
-
-.myheader a {
-    float: left;
-    color: black;
-    text-align: center;
-    padding: 12px;
-    text-decoration: none;
-    font-size: 18px;
-    line-height: 25px;
-    border-radius: 4px;
-    font-family: Questrial, sans-serif;
-}
-
-.myheader a.logo {
-    font-size: 25px;
-    font-weight: bold;
-}
-
-.myheader a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-.myheader a.active {
-  background-color: #EEAECA;
-  color: purple;
-}
-
-.header-right {
-  float: right;
-}
 
 .conversion-container {
   display: flex;
@@ -63,19 +37,30 @@ body {
 }
 
 .container {
-  padding: 30px;
-  background: black;
-  border-radius: 5px;
-  -webkit-box-shadow: 5px 5px 15px 5px #FF8080, -9px 5px 15px 5px #FFE488, -7px -5px 15px 5px #8CFF85, 12px -5px 15px 5px #80C7FF, 12px 10px 15px 7px #E488FF, -10px 10px 15px 7px #FF616B, -10px -7px 27px 1px #8E5CFF, 5px 5px 15px 5px rgba(0,0,0,0); 
-  box-shadow: 5px 5px 15px 5px #FF8080, -9px 5px 15px 5px #FFE488, -7px -5px 15px 5px #8CFF85, 12px -5px 15px 5px #80C7FF, 12px 10px 15px 7px #E488FF, -10px 10px 15px 7px #FF616B, -10px -7px 27px 1px #8E5CFF, 5px 5px 15px 5px rgba(0,0,0,0);
+    background-image: linear-gradient(rgba(191,233,255,0.3),rgba(225,110,127,0.5));
+    border-radius: 49% 51% 48% 52% / 49% 50% 50% 51%  ;
+    width: 500px;
+    height: 500px;
+    margin: auto;
+    box-shadow:8px 6px 3px rgba(0, 0, 0, 0.03);
+    max-width: 1000px;
+    transition: 0.7s ease;
+    position: sticky;
+    top: 0;
+}
+
+.container:hover {
+    border-radius:31% 69% 83% 17% / 83% 27% 73% 17%;
+    width: 500px;
 }
 
 .container div{
-  padding:30px;
+  padding:20px;
 }
 
 .base-currency {
-  text-align: center;  
+  text-align: center;
+  margin-top: 160px;
 }
 
 .desired-currency {
@@ -84,39 +69,65 @@ body {
 
 
 .amount {
-  border: solid 2px rgba(148, 187, 233, 1);
-  border-radius: 5px;
-  color: rgba(238, 174, 202, 1);
-  background: black;
-  padding: 10px;
+  background-image: linear-gradient(90deg,#D3959B,#BFE6BA);
+  border-radius: 30px;
+  padding: 15px 40px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  border: none;
+  color: #5D4157;
+  padding: 12px;
+  box-shadow: 10px 10px 5.3px rgba(0, 0, 0, 0.028)
 }
 
-@use postcss-preset-env {
-  stage: 0;
+  .bulle-1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    background-image: linear-gradient(rgba(255, 192, 203, 0.1),rgba(128,0,128,0.5));
+    border-radius: 49% 51% 48% 52% / 49% 50% 50% 51%  ;
+    box-shadow: 6.7px 6.7px 5.3px rgba(0, 0, 0, 0.05) ;
+    width: 200px;
+    height: 200px;
+    transition: 0.7s ease;
+    position: relative;
+    left: 70%;
+    bottom: 400px;
+    font-size: 1.1em;
 }
 
-:root {
-  --color-background: #000119;
-  --stroke-width: calc(1em / 16);
-  --font-size: 30vmin;
-  --font-weight: 700;
-  --letter-spacing: calc(1em / 8);
+.bulle-1:hover{
+    border-radius:12% 88% 24% 76% / 54% 43% 57% 46%  ;
+    color: #5D4157;
+}
+
+.bulle-2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.1),rgba(0,210,255,0.7));
+    border-radius: 49% 51% 48% 52% / 49% 50% 50% 51%  ;
+    box-shadow: 6.7px 6.7px 5.3px rgba(0, 0, 0, 0.05) ;
+    width: 130px;
+    height: 130px;
+    transition: 0.7s ease;
+    position: relative;
+    left: 64%;
+    bottom: 350px;
+    font-size: 1.1em;   
+}
+
+.bulle-2:hover{
+  border-radius: 70% 30% 45% 55% / 30% 20% 80% 70%   ;
+  color: #5D4157;
 }
 
 
 
-  .convertor-title {
-  font-family: Poppins, sans-serif;;
-  background-clip: text;
-  background-image: linear-gradient(to right, #09f1b8, #00a2ff, #ff00d2, #fed90f);
-  color: var(--color-background);
-  font-size: 35px;
-  font-weight: var(--font-weight);
-  letter-spacing: var(--letter-spacing);
-  padding: calc(--stroke-width / 2);
-  -webkit-text-stroke-color: transparent;
-  -webkit-text-stroke-width: var(--stroke-width);
-  }
+
 
 @media screen and (max-width: 500px) {
   .myheader a {
