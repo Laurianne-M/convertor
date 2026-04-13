@@ -1,3 +1,3 @@
 export interface TimeProvider {
-    currentDate: () => Date; 
+  currentDate: () => Date; 
 }
