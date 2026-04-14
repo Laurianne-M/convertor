@@ -1,5 +1,5 @@
 import { currencies, metalCode, RATES_LOADING, NAV_BAR_ERROR } from '../constants.js'
-import type { ConvertOperation, RatesResponse } from '../types/index.js';
+import type { ConvertOperation, RatesResponse } from '../types/logic.types.ts';
 
 
 export function populateLiveNavbar({ rates }: { rates: Record<string, number> }) {

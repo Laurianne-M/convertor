@@ -118,7 +118,7 @@ describe("logic", () => {
 
       expect(result).toBe(0);
     });
-// continue here 
+
     it('should return amountInBase if toSelectDesiredCurrency = base', () => {
       const operation = {
         amount: 500,
@@ -138,7 +138,7 @@ describe("logic", () => {
       expect(result).toBe(amountInBase);
     });
 
-    it('should multiply the amount by the rates if toSelectDesiredCurrency is different from the base', () => {
+    it('should convert correclty if toSelectDesiredCurrency is different from the base', () => {
       const operation = {
         amount: 500,
         fromSelectBaseCurrency: 'EUR',
@@ -154,9 +154,8 @@ describe("logic", () => {
       expect(result).toBe(750);
     });
 
-    it('should divide the amount by the rate if that rate is diferent from the Select Base Currency', () => {
+    it('should convert correclty if that rate is diferent from the Select Base Currency', () => {
       const operation = {
-
         amount: 100,
         fromSelectBaseCurrency: 'USD',
         toSelectDesiredCurrency: 'EUR',
@@ -191,7 +190,7 @@ describe("logic", () => {
         XAG: 2.4
       },
       base: 'EUR'
-    };
+    } as const; 
 
     let exchangeRateService: ExchangeRateServiceFake;
     beforeEach(() => {
@@ -199,7 +198,7 @@ describe("logic", () => {
       vi.clearAllMocks(); // reset mocks between each test
     });
 
-    it('should call window alert with the correct message if the amount entered is negative', async () => {
+    it('should call window alert with the correct message if amount is negative', async () => {
       // Create a spy on the window.alert method
       const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => { });
       const firstInput = { value: -100 } as unknown as HTMLInputElement;
@@ -264,7 +263,9 @@ describe("logic", () => {
     it('should block every other call while running', async () => {
       const updateAmount = vi.fn();
 
-      const slowUpdateAmount = async () => new Promise(resolve => setTimeout(resolve, 100));
+      const slowUpdateAmount = async () => new Promise(
+        resolve => setTimeout(resolve, 100)
+      );
 
       updateLock(slowUpdateAmount); // start of a slow function
       await updateLock(updateAmount); // try to run immediately after

@@ -1,4 +1,4 @@
-import type { Metal } from "./types";
+import type { Metal } from "./types/api.types";
 
 export const currencies = {
   // Major Global
