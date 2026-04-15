@@ -4,6 +4,7 @@ import { describe, vi, it, beforeEach, afterEach, expect } from "vitest";
 import { JSDOM } from 'jsdom';
 import { ExchangeRateServiceImp as ExchangeRateServiceImpl } from "../ExchangeRateServiceImp";
 import { ExchangeRate } from "../ExchangeRateFallbackData";
+import { StorageServiceFake } from "../../Storage/StorageServiceFake";
 
 const dom = new JSDOM('', { url: 'http://localhost' });
 global.localStorage = dom.window.localStorage;
@@ -25,6 +26,8 @@ const limitFetch = vi.fn(() =>
 );
 
 const errorFetch = vi.fn(() => Promise.reject(new Error('network failure')));
+
+const localStorage = new StorageServiceFake();
 
 describe('exchangeRateService', () => {
   let exchangeRateService: ExchangeRateServiceImpl;
@@ -57,7 +60,7 @@ describe('exchangeRateService', () => {
       receivedAt: new Date('2026-03-20')
     };
 
-    localStorage.setItem("data", JSON.stringify(mockedData));
+    localStorage.set("data", mockedData);
 
     await exchangeRateService.loadRates();
 
@@ -74,7 +77,7 @@ describe('exchangeRateService', () => {
         receivedAt: new Date('2026-03-24')
     };
 
-    localStorage.setItem("data", JSON.stringify(mockedData));
+    localStorage.set("data", mockedData);
 
     const result = await exchangeRateService.loadRates();
     const localStorageData = { rates: { CAD: 1.9, USD: 1.6 }, base: "EUR" };
