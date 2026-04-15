@@ -10,6 +10,8 @@ import {
   TimeProviderServiceImpl
 } from "./services/TimeProvider/TImeProviderServiceImp.js";
 
+import { StorageServiceImpl } from "./services/Storage/StorageServiceImpl.js";
+
 import {
   populateLiveNavbar,
   updateLock,
@@ -28,11 +30,12 @@ export const main = async () => {
   html.elements.populateSelect(desiredCurrencySelect, currencies);
     
   const timeProvider = new TimeProviderServiceImpl();
+  const storage = new StorageServiceImpl();
 
   const exchangeRateService = new ExchangeRateServiceImp({
     fetch, 
     timeProvider,
-    storage: localStorage,
+    storage
   });
     
   const data = await exchangeRateService.loadRates();

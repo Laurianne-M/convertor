@@ -6,10 +6,11 @@ import type {
 import { ExchangeRate } from "./ExchangeRateFallbackData";
 import type { TimeProviderServiceImpl } from "../TimeProvider/TImeProviderServiceImp";
 import { DAY_IN_MILLISECONDS, API_BASE_URL, API_KEY } from "../../constants.js"
+import type { StorageService } from "../Storage/StorageService";
 
 interface ExchangeRateServiceImplDependencies {
   timeProvider: TimeProviderServiceImpl
-  storage: Storage
+  storage: StorageService
   fetch: (url: string) => Promise<Response>
 }
 
@@ -21,8 +22,7 @@ export class ExchangeRateServiceImp implements ExchangeRateService {
   }
 
   private getDataFromLocalStorage = async () => {
-    const dataStringified = this.dependencies.storage.getItem('data');
-    return dataStringified && JSON.parse(dataStringified) || null;
+    return this.dependencies.storage.get<{ jsonData: ExchangeRateAPIResponse; receivedAt: string }>('data');
   };
 
   private areDataOutdated = (receivedAt: string) => {
@@ -60,13 +60,13 @@ export class ExchangeRateServiceImp implements ExchangeRateService {
         if (!jsonData.rates) { // API returned an error
           console.warn("API unavailable — using mock data");
           const mockData = this.getMockRates();
-          this.dependencies.storage.setItem(
-            'data',
-            JSON.stringify({
+          this.dependencies.storage.set(
+            'data', 
+            {
               jsonData: mockData,
               receivedAt: this.dependencies.timeProvider.currentDate()
             }
-            ));
+            );
 
           return {
             rates: mockData.rates,
@@ -74,12 +74,12 @@ export class ExchangeRateServiceImp implements ExchangeRateService {
           };
         };
 
-        this.dependencies.storage.setItem(
+        this.dependencies.storage.set(
           'data',
-          JSON.stringify({
+          {
             jsonData,
             receivedAt: this.dependencies.timeProvider.currentDate()
-          })
+          }
         );
 
         return {
