@@ -5,6 +5,7 @@ import { JSDOM } from 'jsdom';
 import { ExchangeRateServiceImp as ExchangeRateServiceImpl } from "../ExchangeRateServiceImp";
 import { ExchangeRate } from "../ExchangeRateFallbackData";
 import { StorageServiceFake } from "../../Storage/StorageServiceFake";
+import { LoggerServiceFake } from "../../Logger/LoggerServiceFake";
 
 const dom = new JSDOM('', { url: 'http://localhost' });
 global.localStorage = dom.window.localStorage;
@@ -28,6 +29,7 @@ const limitFetch = vi.fn(() =>
 const errorFetch = vi.fn(() => Promise.reject(new Error('network failure')));
 
 const localStorage = new StorageServiceFake();
+const fakeLogger = new LoggerServiceFake();
 
 describe('exchangeRateService', () => {
   let exchangeRateService: ExchangeRateServiceImpl;
@@ -98,7 +100,8 @@ describe('exchangeRateService', () => {
     exchangeRateService = new ExchangeRateServiceImpl({
       fetch: limitFetch,
       timeProvider: fakeTimeProvider,
-      storage: localStorage
+      storage: localStorage,
+      logger: fakeLogger
     })
 
     // When: The user loads the exchange rates
@@ -113,7 +116,8 @@ describe('exchangeRateService', () => {
     exchangeRateService = new ExchangeRateServiceImpl({
       fetch: errorFetch,
       timeProvider: fakeTimeProvider,
-      storage: localStorage
+      storage: localStorage,
+      logger: fakeLogger
     });
 
     const response = await exchangeRateService.loadRates();

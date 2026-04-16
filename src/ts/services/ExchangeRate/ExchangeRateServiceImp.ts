@@ -7,11 +7,13 @@ import { ExchangeRate } from "./ExchangeRateFallbackData";
 import type { TimeProviderServiceImpl } from "../TimeProvider/TImeProviderServiceImp";
 import { DAY_IN_MILLISECONDS, API_BASE_URL, API_KEY } from "../../constants.js"
 import type { StorageService } from "../Storage/StorageService";
+import type { LoggerService } from "../Logger/LoggerService";
 
 interface ExchangeRateServiceImplDependencies {
   timeProvider: TimeProviderServiceImpl
   storage: StorageService
   fetch: (url: string) => Promise<Response>
+  logger: LoggerService;
 }
 
 export class ExchangeRateServiceImp implements ExchangeRateService {
@@ -58,7 +60,7 @@ export class ExchangeRateServiceImp implements ExchangeRateService {
         const jsonData = await res.json();
 
         if (!jsonData.rates) { // API returned an error
-          console.warn("API unavailable — using mock data");
+          this.dependencies.logger.warn("API unavailable — using mock data");
           const mockData = this.getMockRates();
           this.dependencies.storage.set(
             'data', 
@@ -87,7 +89,7 @@ export class ExchangeRateServiceImp implements ExchangeRateService {
           base: jsonData.base,
         };
       } catch (error) {
-        console.warn("API unavailable — using mock data");
+        this.dependencies.logger.warn("API unavailable — using mock data");
 
         return this.getMockRates();
       };

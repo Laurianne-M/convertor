@@ -23,6 +23,8 @@ import {
   documentEvents
 } from './constants.js'
 
+import { LoggerServiceImpl } from "./services/Logger/LoggerServiceImpl.js";
+
 export const main = async () => {
   const baseCurrencySelect = html.elements.getBaseCurrencySelect();
   const desiredCurrencySelect = html.elements.getDesiredCurrencySelect();
@@ -31,12 +33,17 @@ export const main = async () => {
     
   const timeProvider = new TimeProviderServiceImpl();
   const storage = new StorageServiceImpl();
+  const logger = new LoggerServiceImpl();
+
 
   const exchangeRateService = new ExchangeRateServiceImp({
     fetch, 
     timeProvider,
-    storage
+    storage,
+    logger
   });
+
+
     
   const data = await exchangeRateService.loadRates();
 
