@@ -16,6 +16,10 @@ import {
 
 import { ExchangeRateServiceFake } from "../services/ExchangeRate/ExchangeRateServiceFake";
 
+import { LoggerServiceFake } from "../services/Logger/LoggerServiceFake";
+
+const logger = new LoggerServiceFake();
+
 describe("logic", () => {
   describe("populateLiveNavbar", () => {
     beforeEach(() => {
@@ -32,14 +36,15 @@ describe("logic", () => {
           XAU: 0.00047,
           XAG: 0.038,
           CAD: 1.01
-        }
+        },
+        logger
       });
 
       expect(result).toBeUndefined();
     });
 
     it('exit the function if USD rate is equal to 0 or undefined', () => {
-      const response = () => populateLiveNavbar({ rates: { USD: 0 } });
+      const response = () => populateLiveNavbar({ rates: { USD: 0 }, logger });
 
       expect(response).toThrow('USD rate is missing or zero');
     });
@@ -48,7 +53,7 @@ describe("logic", () => {
       const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => { });
       document.body.innerHTML = '<span id="btc"></span>';
 
-      populateLiveNavbar({ rates: { BTC: 0, USD: 1.09 } });
+      populateLiveNavbar({ rates: { BTC: 0, USD: 1.09 }, logger });
 
       expect(alertSpy).toHaveBeenCalledTimes(1);
       expect(alertSpy).toBeCalledWith('an error occured while charging the navbar');
@@ -58,7 +63,7 @@ describe("logic", () => {
       const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => { });
       document.body.innerHTML = '<span id="btc"></span>';
 
-      populateLiveNavbar({ rates: { USD: 1.09 } });
+      populateLiveNavbar({ rates: { USD: 1.09 }, logger });
 
       expect(alertSpy).toHaveBeenCalledTimes(1);
       expect(alertSpy).toBeCalledWith('an error occured while charging the navbar');
@@ -73,7 +78,7 @@ describe("logic", () => {
           BTC: 0.000015,
           XAU: 0.00047,
           XAG: 0.038
-        }
+        }, logger
       });
 
       const btcElement = document.getElementById('btc')
@@ -205,7 +210,7 @@ describe("logic", () => {
       const secondInput = { value: '' } as unknown as HTMLInputElement;
       const data = await exchangeRateService.loadRates();
 
-      await updateAmount(data, firstInput, secondInput, false, 'EUR', 'USD');
+      await updateAmount(data, firstInput, secondInput, false, 'EUR', 'USD', logger);
 
       expect(alertSpy).toHaveBeenCalled();
 
@@ -219,7 +224,7 @@ describe("logic", () => {
       const secondInput = { value: '' } as unknown as HTMLInputElement;
       const data = await exchangeRateService.loadRates();
 
-      await updateAmount(data, firstInput, secondInput, false, 'EUR', 'USD');
+      await updateAmount(data, firstInput, secondInput, false, 'EUR', 'USD', logger);
 
       expect(secondInput.value).toBe('110.00');
     });
@@ -229,7 +234,7 @@ describe("logic", () => {
       const secondInput = { value: 110 } as unknown as HTMLInputElement;
       const data = await exchangeRateService.loadRates();
 
-      await updateAmount(data, firstInput, secondInput, true, 'EUR', 'USD');
+      await updateAmount(data, firstInput, secondInput, true, 'EUR', 'USD', logger);
 
       expect(firstInput.value).toBe('100.00');
     });
@@ -241,7 +246,7 @@ describe("logic", () => {
       const secondInput = { value: 100 } as unknown as HTMLInputElement;
       const data = await exchangeRateService.loadRates();
 
-      await updateAmount(data, firstInput, secondInput, true, 'EUR', 'USD');
+      await updateAmount(data, firstInput, secondInput, true, 'EUR', 'USD', logger);
 
       expect(firstInput.value).toBe('');
     });

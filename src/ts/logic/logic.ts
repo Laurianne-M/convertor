@@ -1,8 +1,9 @@
 import { currencies, metalCode, RATES_LOADING, NAV_BAR_ERROR } from '../constants.js'
+import type { LoggerService } from '../services/Logger/LoggerService.js';
 import type { ConvertOperation, RatesResponse } from '../types/logic.types.ts';
 
 
-export function populateLiveNavbar({ rates }: { rates: Record<string, number> }) {
+export function populateLiveNavbar({ rates, logger }: { rates: Record<string, number>, logger: LoggerService }) {
 
   const usdRate = rates[currencies.USD.code];
   if (!usdRate) throw new Error('USD rate is missing or zero');
@@ -29,7 +30,7 @@ export function populateLiveNavbar({ rates }: { rates: Record<string, number> })
 
     } else {
       window.alert(NAV_BAR_ERROR);
-      console.error(NAV_BAR_ERROR);
+      logger.warn(NAV_BAR_ERROR);
     };
   });
 };
@@ -75,11 +76,12 @@ export async function updateAmount(
   amountFromSecondCurrencyInput: HTMLInputElement,
   reverse = false,
   fromCurrency: string,
-  toCurrency: string
+  toCurrency: string,
+  logger: LoggerService
 ) {
   // Safety check: Make sure data and data.rates actually exist
   if (!data || !data.rates) {
-    console.warn(RATES_LOADING);
+    logger.warn(RATES_LOADING);
     return;
   }
 

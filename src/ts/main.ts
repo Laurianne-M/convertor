@@ -48,7 +48,7 @@ export const main = async () => {
   const data = await exchangeRateService.loadRates();
 
   console.log(data);
-  populateLiveNavbar(data);
+  populateLiveNavbar( { rates: data.rates, logger } );
 
   const amountFromFirstCurrencyInput = html.elements.getFirstInputAmount();
   if (!amountFromFirstCurrencyInput) return;
@@ -63,7 +63,8 @@ export const main = async () => {
     amountFromSecondCurrencyInput,
     false,
     baseCurrencySelect?.value,
-    desiredCurrencySelect?.value
+    desiredCurrencySelect?.value,
+    logger
   );
 
   amountFromFirstCurrencyInput.addEventListener(
@@ -74,7 +75,8 @@ export const main = async () => {
         amountFromSecondCurrencyInput,
         false,
         baseCurrencySelect?.value,
-        desiredCurrencySelect?.value
+        desiredCurrencySelect?.value,
+        logger
       ))
     }
   );
@@ -87,7 +89,8 @@ export const main = async () => {
         amountFromSecondCurrencyInput,
         false,
         baseCurrencySelect?.value,
-        desiredCurrencySelect?.value
+        desiredCurrencySelect?.value,
+        logger
       ))
     }
   );
@@ -100,7 +103,8 @@ export const main = async () => {
         amountFromSecondCurrencyInput,
         false,
         baseCurrencySelect?.value,
-        desiredCurrencySelect?.value
+        desiredCurrencySelect?.value,
+        logger
       ))
     }
   );
@@ -113,7 +117,8 @@ export const main = async () => {
         amountFromSecondCurrencyInput,
         true,
         baseCurrencySelect?.value,
-        desiredCurrencySelect?.value
+        desiredCurrencySelect?.value,
+        logger
       ))
     }
   );
