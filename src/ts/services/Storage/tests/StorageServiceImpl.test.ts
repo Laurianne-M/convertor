@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { StorageServiceImpl } from "../StorageServiceImpl";
 import { ExchangeRate } from "../../ExchangeRate/ExchangeRateFallbackData";
-import { isTypedArray } from "util/types";
 
 const storage = new StorageServiceImpl();
 
