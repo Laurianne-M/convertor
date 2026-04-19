@@ -4,62 +4,41 @@ import { LoggerServiceImpl } from "../LoggerServiceImpl";
 
 describe('LoggerServiceImpl', () => {
   let logger: LoggerServiceImpl;
-  let warnSpy: any;
-  let errorSpy: any;
-  let infoSpy: any;
-  let debugSpy: any;
 
 
   beforeEach(() => {
     logger = new LoggerServiceImpl();
-    warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-    errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    infoSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
-    debugSpy = vi.spyOn(console, 'debug').mockImplementation(() => {});
-    
   })
 
-  afterEach(() => {
-    warnSpy.mockRestore(); 
-    errorSpy.mockRestore();
-    infoSpy.mockRestore();
-    debugSpy.mockRestore(); 
-  })
-  it('should return console.info when called', () => {
-    const message = 'Test info messsage';
+  it.each([
+    ['debug', 'debug'],
+    ['warn', 'warn'], 
+    ['info', 'info'],
+    ['error', 'error']
+  ])('logger.%s() should call console.%s()', (method, consoleMethod) => {
+    const spy = vi.spyOn(console, consoleMethod as any).mockImplementation(() => {});
+    const message = `Testing ${method}`; 
 
-    logger.info(message);
+    (logger as any)[method](message); 
 
-    expect(infoSpy).toHaveBeenCalledOnce();
-    expect(infoSpy).toHaveBeenCalledWith(message);
-  })
+    expect(spy).toHaveBeenCalledWith(message); 
 
-  it('should return console.warn when called', () => {
-    const message = 'Test warning message';
+    spy.mockRestore(); 
+  });
 
-    logger.warn(message);
+   it.each([
+    ['debug', 'debug'],
+    ['warn', 'warn'], 
+    ['info', 'info'],
+    ['error', 'error']
+  ])('logger.%s() should call console.%s() even with object', (method, consoleMethod) => {
+    const spy = vi.spyOn(console, consoleMethod as any).mockImplementation(() => {});
+    const data = { id: 1, message: `Testing ${method}`}; 
 
-    expect(warnSpy).toHaveBeenCalledOnce();
-    expect(warnSpy).toHaveBeenCalledWith(message); 
-  })
+    (logger as any)[method](data); 
 
-  it('should return console.error when called', () => {
-    const message = 'Test error message'; 
+    expect(spy).toHaveBeenCalledWith(data); 
 
-    logger.error(message);
-
-    expect(errorSpy).toHaveBeenCalledOnce();
-    expect(errorSpy).toHaveBeenCalledWith(message); 
-
-  })
-
-  it('should return console.debug when called', () => {
-    const message = 'Test debug message'; 
-
-    logger.debug(message); 
-
-    expect(debugSpy).toHaveBeenCalledOnce();
-    expect(debugSpy).toHaveBeenCalledWith(message); 
-
-  })
+    spy.mockRestore(); 
+  });
 })
