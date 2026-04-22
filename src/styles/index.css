@@ -35,46 +35,6 @@
   font-display: swap;
 }
 
-<<<<<<< HEAD
-/* Outfit */
-@font-face {
-  font-family: 'Outfit';
-  src: url('./fonts/outfit-light.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Outfit';
-  src: url('./fonts/outfit-regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Outfit';
-  src: url('./fonts/outfit-medium.woff2') format('woff2');
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Outfit';
-  src: url('./fonts/outfit-semibold.woff2') format('woff2');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Outfit';
-  src: url('./fonts/outfit-bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-=======
->>>>>>> 7c94aec (tests-results gitignore)
 /* Space Mono */
 @font-face {
   font-family: 'Space Mono';
