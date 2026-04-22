@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { setupCurrencies, takeScreenshot, fillAndConvert } from "../helpers";
+import { setupCurrencies, takeScreenshot, fillAndConvert } from "../helpers/helpers";
 
 test.beforeEach(async ({ page }) => {
   await page.route('https://api.exchangeratesapi.io/v1/latest**', async route => {
