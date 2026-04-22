@@ -11,7 +11,7 @@ export const setupCurrencies = async (
 }
 
 export const takeScreenshot = async (page: Page, name: String) => {
-  await page.screenshot({ path: `./tests_screenshots/${name}.png` });
+  await page.screenshot({ path: `./ts/e2e/tests/tests_screenshots/${name}.png` });
 }
 
 export const fillAndConvert = async (
