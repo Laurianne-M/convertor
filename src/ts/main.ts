@@ -10,7 +10,7 @@ import {
   TimeProviderServiceImpl
 } from "./services/TimeProvider/TImeProviderServiceImp.js";
 
-import { StorageServiceImpl } from "./services/Storage/StorageServiceImpl.js";
+import { StorageServiceImpl } from "./services/Storage/StorageServiceImpl";
 
 import {
   populateLiveNavbar,
