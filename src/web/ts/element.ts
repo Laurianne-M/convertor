@@ -1,4 +1,7 @@
-import type { Currency } from "./types/api.types";
+type Currency = {
+  code: string
+  name: string
+}
 
 const id = {
   select : {

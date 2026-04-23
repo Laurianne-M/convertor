@@ -1,4 +1,4 @@
-import type { Metal } from "./types/api.types";
+type Metal = Record<string, string> 
 
 export const currencies = {
   // Major Global
