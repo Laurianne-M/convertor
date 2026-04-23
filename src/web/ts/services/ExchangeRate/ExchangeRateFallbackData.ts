@@ -1,9 +1,10 @@
 import type { ExchangeRateAPIResponse } from "./ExchangeRateService";
+import type { TimeProvider } from "../TimeProvider/TimeProviderService";
 
 export namespace ExchangeRate {
-  export const fallbackData: ExchangeRateAPIResponse = {
+  export const fallbackData = (timeProvider: TimeProvider): ExchangeRateAPIResponse => ({
     success: true,
-    timestamp: Date.now(),
+    timestamp: timeProvider.currentDate().getTime(),
     base: "EUR",
     date: "2026-03-12",
     rates: {
@@ -17,5 +18,5 @@ export namespace ExchangeRate {
       XAU: 0.00047,
       XAG: 0.038
     }
-  } as const
+  })
 }

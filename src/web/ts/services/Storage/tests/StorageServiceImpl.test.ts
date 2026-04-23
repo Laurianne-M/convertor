@@ -1,8 +1,11 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { StorageServiceImpl } from "../StorageServiceImpl";
 import { ExchangeRate } from "../../ExchangeRate/ExchangeRateFallbackData";
+import { TimeProviderServiceFake } from "../../TimeProvider/TimeProviderServiceFake";
 
 const storage = new StorageServiceImpl();
+const fakeTimeProvider = new TimeProviderServiceFake(new Date('2026-03-12T00:00:00Z'));
+const mockExchangeRate = ExchangeRate.fallbackData(fakeTimeProvider);
 
 describe('StorageServiceImpl', () => {
   beforeEach( () => {
@@ -10,11 +13,11 @@ describe('StorageServiceImpl', () => {
   })
 
   it('should return the data if they exist', () => {
-    storage.set('data', ExchangeRate);
+    storage.set('data', mockExchangeRate);
      
     const result = storage.get('data');
 
-    expect(result).toMatchObject(ExchangeRate);
+    expect(result).toMatchObject(mockExchangeRate);
 
   })
 
@@ -25,11 +28,11 @@ describe('StorageServiceImpl', () => {
   })
 
   it('should return new data if overwrite', () => {
-    storage.set('data', ExchangeRate);
+    storage.set('data', mockExchangeRate);
 
     const ExchangeRateV2 = {
     success: true,
-    timestamp: Date.now(),
+    timestamp: fakeTimeProvider.currentDate().getTime(),
     base: "EUR",
     date: "2026-03-12",
     rates: {
