@@ -1,16 +1,14 @@
 import type { StorageService } from "./StorageService";
 
 export class StorageServiceFake implements StorageService {
-  private store = new Map<string, string>();
+  public store = new Map<string, unknown>();
 
   get<T>(key: string): T | null {
-    const item = this.store.get(key);
-    if (item === undefined) return null;
-    return JSON.parse(item) as T;
+    return (this.store.get(key) as T) ?? null;
   }
 
   set<T>(key: string, value: T): void {
-    this.store.set(key, JSON.stringify(value));
+    this.store.set(key, value);
   }
 
   remove(key: string): void {
