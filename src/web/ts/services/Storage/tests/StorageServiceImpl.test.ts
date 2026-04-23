@@ -34,7 +34,7 @@ describe('StorageServiceImpl', () => {
     success: true,
     timestamp: fakeTimeProvider.currentDate().getTime(),
     base: "EUR",
-    date: "2026-03-12",
+    date: fakeTimeProvider.currentDate().toISOString().split('T')[0],
     rates: {
       USD: 2.10,
       EUR: 1,

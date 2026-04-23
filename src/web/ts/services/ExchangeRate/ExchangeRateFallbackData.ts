@@ -6,7 +6,7 @@ export namespace ExchangeRate {
     success: true,
     timestamp: timeProvider.currentDate().getTime(),
     base: "EUR",
-    date: "2026-03-12",
+    date: timeProvider.currentDate().toISOString().split('T')[0]?? '',
     rates: {
       USD: 1.09,
       EUR: 1,
