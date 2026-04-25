@@ -42,7 +42,7 @@ export class ExchangeRateServiceImp implements ExchangeRateService {
   };
 
   private getMockRates = (): ExchangeRateAPIResponse => {
-    return ExchangeRate.fallbackData
+    return ExchangeRate.fallbackData(this.dependencies.timeProvider)
   };
 
   public loadRates = async (): Promise<ExchangeRates> => {
