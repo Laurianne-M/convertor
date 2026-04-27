@@ -1,13 +1,56 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach } from "vitest";
 import { TimeProviderServiceImpl } from "../TImeProviderServiceImp";
 
-describe('TimeProviderServiceImpl', () => {
-  it('should return the current date', () => {
-    const timeProvider = new TimeProviderServiceImpl(); 
+let timeProvider: TimeProviderServiceImpl;
 
-    const result = timeProvider.currentDate()
+beforeEach(() => {
+  timeProvider = new TimeProviderServiceImpl(); 
+})
 
+describe('currentDate', () => {
 
-    expect(result.toISOString().split('T')[0]).toBe(new Date().toISOString().split('T')[0])
+  it('should return a date closer to the current date', () => {
+    const before = Date.now();
+    const result = timeProvider.currentDate();
+    const after = Date.now(); 
+
+    expect(result.getTime()).toBeGreaterThanOrEqual(before);
+    expect(result.getTime()).toBeLessThanOrEqual(after);
+  })
+
+ 
+})
+
+describe('parseDate', () => {
+   it('should parse a valid date string', () => {
+    const result = timeProvider.parseDate('2026-03-24');
+
+    expect(result).toEqual(new Date('2026-03-24'));
+  })
+
+  it('should return an invalid Date for an invalid string', () => {
+    const result = timeProvider.parseDate('not-a-date');
+
+    expect(isNaN(result.getTime())).toBe(true);
+  })
+})
+
+describe('isOlderThan', () => {
+  it('should return true if date is older than 24 hours', () => {
+    const oldDate = new Date('2026-03-20'); 
+    const duration = 24 * 60 * 60 * 1000;
+
+    const result = timeProvider.isOlderThan(oldDate, duration);
+
+    expect(result).toBe(true);
+  })
+
+  it('should return false if date is not older than 24 hours', () => {
+    const recentDate = new Date(Date.now() - 1000);
+    const duration = 24 * 60 * 60 * 1000;
+
+    const result = timeProvider.isOlderThan(recentDate, duration); 
+
+    expect(result).toBe(false);
   })
 })
