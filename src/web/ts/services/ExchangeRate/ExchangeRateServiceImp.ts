@@ -29,17 +29,16 @@ export class ExchangeRateServiceImp implements ExchangeRateService {
 
   private areDataOutdated = (receivedAt: string) => {
 
-    if (!receivedAt || isNaN(Date.parse(receivedAt))) {
+    if (!receivedAt || isNaN(this.dependencies.timeProvider.parseDate(receivedAt).getTime())) {
       return true;
     };
 
     // Take the actual date and remove 24 hours
-    const checkDate = new Date(
-      this.dependencies.timeProvider.currentDate().getTime() - DAY_IN_MILLISECONDS
+    return this.dependencies.timeProvider.isOlderThan(
+      this.dependencies.timeProvider.parseDate(receivedAt), 
+      DAY_IN_MILLISECONDS
     );
-    // If the data received is lower than the checkDate, then data is outdated
-    return new Date(receivedAt).getTime() < checkDate.getTime();
-  };
+  }
 
   private getMockRates = (): ExchangeRateAPIResponse => {
     return ExchangeRate.fallbackData(this.dependencies.timeProvider)

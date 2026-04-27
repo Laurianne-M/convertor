@@ -14,4 +14,10 @@ export class TimeProviderServiceFake implements TimeProvider {
   advanceTime(ms: number): void {
     this.currentTime = new Date(this.currentTime.getTime() - ms)
   }
+
+  isOlderThan = (date: Date, ms: number): boolean => {
+     return this.currentDate().getTime() - date.getTime() > ms;
+  }
+
+  parseDate = (dateString: string): Date => new Date(dateString);
 }

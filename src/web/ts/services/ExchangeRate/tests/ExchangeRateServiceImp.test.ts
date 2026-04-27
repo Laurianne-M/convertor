@@ -7,15 +7,12 @@ import { ExchangeRate } from "../ExchangeRateFallbackData";
 import { StorageServiceFake } from "../../Storage/StorageServiceFake";
 import { LoggerServiceFake } from "../../Logger/LoggerServiceFake";
 import { FakeFetch, FakeErrorFetch } from "../FakeFetch";
+import { TimeProviderServiceFake } from "../../TimeProvider/TimeProviderServiceFake";
 
 const dom = new JSDOM('', { url: 'http://localhost' });
 global.localStorage = dom.window.localStorage;
 
-const fakeTimeProvider = {
-  currentDate: () => new Date('2026-03-24')
-};
-
-
+const fakeTimeProvider = new TimeProviderServiceFake(new Date('2026-03-24'))
 let fakeFetch: FakeFetch;
 
 const limitFetch = new FakeFetch({
