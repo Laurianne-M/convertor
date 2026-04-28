@@ -7,6 +7,7 @@ let storageFake: StorageServiceFake;
 let fakeTimeProvider = new TimeProviderServiceFake(new Date('2026-03-12T00:00:00Z'));
 const mockData = ExchangeRate.fallbackData(fakeTimeProvider);
 
+
 beforeEach(() => {
   storageFake = new StorageServiceFake();
   storageFake.clear();

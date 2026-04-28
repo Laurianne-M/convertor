@@ -18,6 +18,8 @@ import { ExchangeRateServiceFake } from "../services/ExchangeRate/ExchangeRateSe
 
 import { LoggerServiceFake } from "../services/Logger/LoggerServiceFake";
 
+import { TimeProviderServiceFake } from "../services/TimeProvider/TimeProviderServiceFake";
+
 const logger = new LoggerServiceFake();
 
 describe("logic", () => {
@@ -178,9 +180,9 @@ describe("logic", () => {
   });
 
   describe('UpdateAmount', () => {
-    const fakeTimeProvider = {
-      currentDate: () => new Date('2026-03-24')
-    };
+    const fakeTimeProvider = new TimeProviderServiceFake(new Date('2026-03-24'));
+
+
 
     const fakeRates = {
       rates: {
@@ -199,7 +201,7 @@ describe("logic", () => {
 
     let exchangeRateService: ExchangeRateServiceFake;
     beforeEach(() => {
-      exchangeRateService = new ExchangeRateServiceFake(fakeTimeProvider, fakeRates);
+      exchangeRateService = new ExchangeRateServiceFake(fakeRates, fakeTimeProvider);
       vi.clearAllMocks(); // reset mocks between each test
     });
 
