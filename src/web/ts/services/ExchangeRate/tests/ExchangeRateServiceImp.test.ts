@@ -45,7 +45,6 @@ describe('exchangeRateService', () => {
       logger: fakeLogger,
     });
     localStorage.clear();
-    vi.clearAllMocks();
   });
 
   it("should cached data from localStorage without fetching again", async () => {
