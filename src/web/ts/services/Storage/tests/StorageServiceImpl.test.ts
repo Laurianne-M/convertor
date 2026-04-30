@@ -2,8 +2,10 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { StorageServiceImpl } from "../StorageServiceImpl";
 import { ExchangeRate } from "../../ExchangeRate/ExchangeRateFallbackData";
 import { TimeProviderServiceFake } from "../../TimeProvider/TimeProviderServiceFake";
+import { LoggerServiceFake } from "../../Logger/LoggerServiceFake";
 
-const storage = new StorageServiceImpl();
+const logger = new LoggerServiceFake();
+const storage = new StorageServiceImpl(logger);
 const fakeTimeProvider = new TimeProviderServiceFake(new Date('2026-03-12T00:00:00Z'));
 const mockExchangeRate = ExchangeRate.fallbackData(fakeTimeProvider);
 
@@ -23,7 +25,6 @@ describe('StorageServiceImpl', () => {
 
   it('should return null if data not exist', () => {
     const result = storage.get('data'); 
-
     expect(result).toBe(null)
   })
 
