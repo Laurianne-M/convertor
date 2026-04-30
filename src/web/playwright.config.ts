@@ -7,7 +7,7 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   timeout: 60000,
   testDir: './ts/tests/e2e',
-  snapshotPathTemplate: './ts/tests/e2e/screenshots/{projectName}/{arg}{ext}' ,
+  snapshotPathTemplate: '{testDir}/screenshots/{projectName}/{arg}{ext}' ,
   testMatch: '**/*.spec.ts',
   testIgnore: '**/*.test.js',
   /* Run tests in files in parallel */
