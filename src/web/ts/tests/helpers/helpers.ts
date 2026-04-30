@@ -1,4 +1,5 @@
 import type { Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 
 export const setupCurrencies = async (
   page: Page,
@@ -11,7 +12,7 @@ export const setupCurrencies = async (
 }
 
 export const takeScreenshot = async (page: Page, name: String) => {
-  await page.screenshot({ path: `./web/ts/tests/e2e/tests_screenshots/${name}.png` });
+  await expect(page).toHaveScreenshot(`${name}.png`);
 }
 
 export const fillAndConvert = async (

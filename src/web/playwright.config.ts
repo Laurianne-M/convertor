@@ -7,6 +7,7 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   timeout: 60000,
   testDir: './ts/tests/e2e',
+  snapshotPathTemplate: './ts/tests/e2e/screenshots/{projectName}/{arg}{ext}' ,
   testMatch: '**/*.spec.ts',
   testIgnore: '**/*.test.js',
   /* Run tests in files in parallel */
@@ -27,6 +28,15 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
+
+  expect: {
+        toHaveScreenshot: {
+      animations: 'disabled',
+      scale: 'css',
+      threshold: 0.2,
+      maxDiffPixelRatio: 0.05,
+  }
+},
 
   /* Configure projects for major browsers */
   projects: [
