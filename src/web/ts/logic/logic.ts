@@ -1,6 +1,15 @@
-import { currencies, metalCode, RATES_LOADING, NAV_BAR_ERROR } from '../constants.js'
+import { currencies, metalCode, RATES_LOADING, NAV_BAR_ERROR, UI_STRINGS_BANNER } from '../constants.js'
 import type { LoggerService } from '../services/Logger/LoggerService.js';
 import type { ConvertOperation, RatesResponse } from '../types/logic.types.js';
+
+export function populateContainer(container: any): void {
+  UI_STRINGS_BANNER.liveCurrencies.forEach(({id, label}: {id: string; label: string}) => {
+    const a = document.createElement('a');
+    a.id = id;
+    a.textContent = label;
+    container.appendChild(a);
+  });
+}
 
 
 export function populateLiveNavbar({ rates, logger }: { rates: Record<string, number>, logger: LoggerService }) {

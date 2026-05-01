@@ -12,6 +12,9 @@ const id = {
   input : {
     firstAmount: "amountFromFirstInput",
     secondAmount: "amountFromSecondInput", 
+  }, 
+  container : {
+    currencies: "liveCurrenciesContainer"
   }
 };
 
@@ -30,6 +33,10 @@ export const elements = {
 
   getSecondInputAmount: () => document.getElementById(
     id.input.secondAmount
+  ) as HTMLInputElement,
+
+  getLiveCurrenciesContainer: () => document.getElementById(
+    id.container.currencies
   ) as HTMLInputElement,
 
   populateSelect: (

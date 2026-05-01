@@ -56,6 +56,14 @@ export const documentEvents = {
   change: "change"
 };
 
+export const UI_STRINGS_BANNER = {
+  liveCurrencies: [
+    {id: 'gold', label: 'Gold'},
+    {id: 'silver', label: 'Silver'},
+    { id: 'btc', label:'BTC'}
+  ]
+}
+
 export const RATES_LOADING = "Still waiting for rates"; 
 export const DAY_IN_MILLISECONDS = 60 * 60 * 24 * 1000; 
 export const API_BASE_URL = 'https://api.exchangeratesapi.io/v1/latest';

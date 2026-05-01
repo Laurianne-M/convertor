@@ -47,7 +47,10 @@ export class ExchangeRateServiceImp implements ExchangeRateService {
   public loadRates = async (): Promise<ExchangeRates> => {
     const data = await this.getDataFromLocalStorage();
 
+    this.dependencies.logger.debug(`storage data: ${JSON.stringify(data)}`);
+
     if (!data || this.areDataOutdated(data && data.receivedAt)) {
+       this.dependencies.logger.debug('fetching from API...');
       try {
         const params = {
           access_key: API_KEY,

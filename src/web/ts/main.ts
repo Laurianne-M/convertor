@@ -15,7 +15,8 @@ import { StorageServiceImpl } from "./services/Storage/StorageServiceImpl.js";
 import {
   populateLiveNavbar,
   updateLock,
-  updateAmount
+  updateAmount,
+  populateContainer
 } from "./logic/logic.js";
 
 import {
@@ -28,13 +29,13 @@ import { LoggerServiceImpl } from "./services/Logger/LoggerServiceImpl.js";
 export const main = async () => {
   const baseCurrencySelect = html.elements.getBaseCurrencySelect();
   const desiredCurrencySelect = html.elements.getDesiredCurrencySelect();
+  const liveCurrenciesContainer = html.elements.getLiveCurrenciesContainer();
   html.elements.populateSelect(baseCurrencySelect, currencies);
   html.elements.populateSelect(desiredCurrencySelect, currencies);
     
   const timeProvider = new TimeProviderServiceImpl();
-  const storage = new StorageServiceImpl();
   const logger = new LoggerServiceImpl();
-
+  const storage = new StorageServiceImpl(logger);
 
   const exchangeRateService = new ExchangeRateServiceImp({
     fetch, 
@@ -46,8 +47,9 @@ export const main = async () => {
 
     
   const data = await exchangeRateService.loadRates();
-
   console.log(data);
+
+  populateContainer(liveCurrenciesContainer); 
   populateLiveNavbar( { rates: data.rates, logger } );
 
   const amountFromFirstCurrencyInput = html.elements.getFirstInputAmount();
