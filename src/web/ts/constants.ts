@@ -1,12 +1,34 @@
+import t from 'i18n'
+import strings from './strings'
+import fallbackStrings from './strings'
+
+function t(key: string): string {
+  const language = getCurrentLanguage()
+  const translation = strings[language]
+  const value = translation[key] ?? fallbackStrings[key] ?? key
+  return value
+}
+
 type Metal = Record<string, string> 
+
+export default type SupportedSymbols {
+  currencies: Currencies
+  metals: Metals
+  cryptoCurrencies: CryptoCurrencies
+}
+
+export type Symbol {
+  code: string
+  labelKey: string
+}
 
 export const currencies = {
   // Major Global
-  USD: { code: "USD", name: "United States Dollar" },
-  EUR: { code: "EUR", name: "Euro" },
-  GBP: { code: "GBP", name: "British Pound Sterling" },
-  JPY: { code: "JPY", name: "Japanese Yen" },
-  CHF: { code: "CHF", name: "Swiss Franc" },
+  USD: { code: "USD", name: t(strings.symbols_currency_label_usd) },
+  EUR: { code: "EUR", name: t(strings.symbols_currency_label_usd) },
+  GBP: { code: "GBP", name: t(strings.symbols_currency_label_usd)},
+  JPY: { code: "JPY", name: t(strings.symbols_currency_label_usd) },
+  CHF: { code: "CHF", name: t(strings.symbols_currency_label_usd) },
   CAD: { code: "CAD", name: "Canadian Dollar" },
   AUD: { code: "AUD", name: "Australian Dollar" },
   NZD: { code: "NZD", name: "New Zealand Dollar" },
@@ -46,10 +68,26 @@ export const currencies = {
 } as const; 
 
 export const metalCode: Metal = {
-  gold: "XAU",
-  silver: "XAG",
+  gold: t(strings.symbols_metal_label_gold),
+  silver: t(strings.symbols_metal_label_silver),
   btc: "BTC"
 };
+
+type Metals {
+  gold: Symbol
+  silver: Symbol
+}
+
+type Cryptocurrencies {
+  bitcoint: Symbol
+  etherium: Symbol
+}
+
+const cryptocurrencies: Metals {
+  bitcoin: { code: "BTC", labelKey: stringKey.symbols_crypto_label_bitcoin },
+  etherium: { code: "ETH", labelKey: stringKey.symbols_crypto_label_etherium }
+}
+
 
 export const documentEvents = {
   input: "input",
