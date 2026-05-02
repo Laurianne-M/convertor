@@ -56,11 +56,15 @@ export const documentEvents = {
   change: "change"
 };
 
-export const UI_STRINGS_BANNER = {
+export const UI_STRINGS = {
   liveCurrencies: [
     {id: 'gold', label: 'Gold'},
     {id: 'silver', label: 'Silver'},
     { id: 'btc', label:'BTC'}
+  ],
+  title: 'Money Convertor',
+  subtitle: [
+    {id: 'currencyConvertor', label: 'CURRENCY CONVERTOR'}
   ]
 }
 

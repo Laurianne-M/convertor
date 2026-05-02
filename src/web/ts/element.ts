@@ -14,7 +14,9 @@ const id = {
     secondAmount: "amountFromSecondInput", 
   }, 
   container : {
-    currencies: "liveCurrenciesContainer"
+    currencies: "liveCurrenciesContainer",
+    title: "titleContainer",
+    subtitle: "subtitleContainer"
   }
 };
 
@@ -37,6 +39,14 @@ export const elements = {
 
   getLiveCurrenciesContainer: () => document.getElementById(
     id.container.currencies
+  ) as HTMLInputElement,
+
+  getTitleContainer: () => document.getElementById(
+    id.container.title
+  ) as HTMLInputElement,
+
+  getSubtitleContainer: () => document.getElementById(
+    id.container.subtitle
   ) as HTMLInputElement,
 
   populateSelect: (
