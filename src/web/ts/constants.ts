@@ -1,49 +1,51 @@
+import { t, StringKey } from './i18n/i18n.ts'
+
 type Metal = Record<string, string> 
 
 export const currencies = {
   // Major Global
-  USD: { code: "USD", name: "United States Dollar" },
-  EUR: { code: "EUR", name: "Euro" },
-  GBP: { code: "GBP", name: "British Pound Sterling" },
-  JPY: { code: "JPY", name: "Japanese Yen" },
-  CHF: { code: "CHF", name: "Swiss Franc" },
-  CAD: { code: "CAD", name: "Canadian Dollar" },
-  AUD: { code: "AUD", name: "Australian Dollar" },
-  NZD: { code: "NZD", name: "New Zealand Dollar" },
+  USD: { code: "USD", name: t(StringKey.symbols_currency_label_usd) },
+  EUR: { code: "EUR", name: t(StringKey.symbols_currency_label_eur) },
+  GBP: { code: "GBP", name: t(StringKey.symbols_currency_label_gbp) },
+  JPY: { code: "JPY", name: t(StringKey.symbols_currency_label_jpy) },
+  CHF: { code: "CHF", name: t(StringKey.symbols_currency_label_chf) },
+  CAD: { code: "CAD", name: t(StringKey.symbols_currency_label_cad) },
+  AUD: { code: "AUD", name: t(StringKey.symbols_currency_label_aud) },
+  NZD: { code: "NZD", name: t(StringKey.symbols_currency_label_nzd) },
 
   // Asia
-  CNY: { code: "CNY", name: "Chinese Yuan" },
-  HKD: { code: "HKD", name: "Hong Kong Dollar" },
-  SGD: { code: "SGD", name: "Singapore Dollar" },
-  KRW: { code: "KRW", name: "South Korean Won" },
-  INR: { code: "INR", name: "Indian Rupee" },
-  THB: { code: "THB", name: "Thai Baht" },
-  MYR: { code: "MYR", name: "Malaysian Ringgit" },
-  IDR: { code: "IDR", name: "Indonesian Rupiah" },
-  PHP: { code: "PHP", name: "Philippine Peso" },
+  CNY: { code: "CNY", name: t(StringKey.symbols_currency_label_cny) },
+  HKD: { code: "HKD", name: t(StringKey.symbols_currency_label_hkd) },
+  SGD: { code: "SGD", name: t(StringKey.symbols_currency_label_sgd) },
+  KRW: { code: "KRW", name: t(StringKey.symbols_currency_label_krw) },
+  INR: { code: "INR", name: t(StringKey.symbols_currency_label_inr) },
+  THB: { code: "THB", name: t(StringKey.symbols_currency_label_thb) },
+  MYR: { code: "MYR", name: t(StringKey.symbols_currency_label_myr) },
+  IDR: { code: "IDR", name: t(StringKey.symbols_currency_label_idr) },
+  PHP: { code: "PHP", name: t(StringKey.symbols_currency_label_php) },
 
   // Europe (Non-Euro)
-  SEK: { code: "SEK", name: "Swedish Krona" },
-  NOK: { code: "NOK", name: "Norwegian Krone" },
-  DKK: { code: "DKK", name: "Danish Krone" },
-  PLN: { code: "PLN", name: "Polish Zloty" },
-  CZK: { code: "CZK", name: "Czech Koruna" },
-  HUF: { code: "HUF", name: "Hungarian Forint" },
+  SEK: { code: "SEK", name: t(StringKey.symbols_currency_label_sek) },
+  NOK: { code: "NOK", name: t(StringKey.symbols_currency_label_nok) },
+  DKK: { code: "DKK", name: t(StringKey.symbols_currency_label_dkk) },
+  PLN: { code: "PLN", name: t(StringKey.symbols_currency_label_pln) },
+  CZK: { code: "CZK", name: t(StringKey.symbols_currency_label_czk) },
+  HUF: { code: "HUF", name: t(StringKey.symbols_currency_label_huf) },
 
   // Americas
-  MXN: { code: "MXN", name: "Mexican Peso" },
-  BRL: { code: "BRL", name: "Brazilian Real" },
-  ARS: { code: "ARS", name: "Argentine Peso" },
-  CLP: { code: "CLP", name: "Chilean Peso" },
-  COP: { code: "COP", name: "Colombian Peso" },
+  MXN: { code: "MXN", name: t(StringKey.symbols_currency_label_mxn) },
+  BRL: { code: "BRL", name: t(StringKey.symbols_currency_label_brl) },
+  ARS: { code: "ARS", name: t(StringKey.symbols_currency_label_ars) },
+  CLP: { code: "CLP", name: t(StringKey.symbols_currency_label_clp) },
+  COP: { code: "COP", name: t(StringKey.symbols_currency_label_cop) },
 
   // Middle East & Africa
-  AED: { code: "AED", name: "UAE Dirham" },
-  SAR: { code: "SAR", name: "Saudi Riyal" },
-  ZAR: { code: "ZAR", name: "South African Rand" },
-  ILS: { code: "ILS", name: "Israeli Shekel" },
-  TRY: { code: "TRY", name: "Turkish Lira" }
-} as const; 
+  AED: { code: "AED", name: t(StringKey.symbols_currency_label_aed) },
+  SAR: { code: "SAR", name: t(StringKey.symbols_currency_label_sar) },
+  ZAR: { code: "ZAR", name: t(StringKey.symbols_currency_label_zar) },
+  ILS: { code: "ILS", name: t(StringKey.symbols_currency_label_ils) },
+  TRY: { code: "TRY", name: t(StringKey.symbols_currency_label_try) },
+} as const;
 
 export const metalCode: Metal = {
   gold: "XAU",
@@ -58,13 +60,13 @@ export const documentEvents = {
 
 export const UI_STRINGS = {
   liveCurrencies: [
-    {id: 'gold', label: 'Gold'},
-    {id: 'silver', label: 'Silver'},
-    { id: 'btc', label:'BTC'}
+    { id: 'gold', label: t(StringKey.symbols_metals_label_gold) },
+    { id: 'silver', label: t(StringKey.symbols_metals_label_silver) },
+    { id: 'btc', label: t(StringKey.symbols_crypto_label_bitcoin)},
   ],
-  title: 'Money Convertor',
+  title: t(StringKey.website_title),
   subtitle: [
-    {id: 'currencyConvertor', label: 'CURRENCY CONVERTOR'}
+    {id: 'currencyConvertor', label: t(StringKey.homepage_title)}
   ]
 }
 
