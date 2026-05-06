@@ -13,7 +13,13 @@ const strings: Record<string, Record<string, any>> = {
 const fallbackStrings = stringsEn;
 
 function getCurrentLanguage(): string {
-  return navigator.language.split('-')[0] || 'en';
+  return localStorage.getItem('lang')
+  ?? navigator.language.split('-')[0]
+  ?? 'en';    
+}
+
+export function setLocale(lang: string): void {
+  localStorage.setItem('lang', lang);
 }
 
 export function t(key: StringKey): string {
@@ -61,5 +67,8 @@ export enum StringKey {
   symbols_currency_label_sar = "symbols_currency_label_sar", 
   symbols_currency_label_zar = "symbols_currency_label_zar", 
   symbols_currency_label_ils = "symbols_currency_label_ils",
-  symbols_currency_label_try = "symbols_currency_label_try"
+  symbols_currency_label_try = "symbols_currency_label_try",
+  lang_en = 'lang_en',
+  lang_fr = 'lang_fr',
+  lang_es = 'lang_es',
 }

@@ -36,5 +36,8 @@
   "symbols_currency_label_sar": "Riyal Saudí",
   "symbols_currency_label_zar": "Rand Sudafricano",
   "symbols_currency_label_ils": "Séquel Israelí",
-  "symbols_currency_label_try": "Lira Turca"
+  "symbols_currency_label_try": "Lira Turca",
+  "lang_en": "Inglés",
+  "lang_fr": "Francés",
+  "lang_es": "Español"
 }

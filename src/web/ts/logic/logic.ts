@@ -15,6 +15,28 @@ export function populateTitle(title: string): void {
   document.title = title; 
 }
 
+export function populateLangSelector(
+  languages: { id: string, label: string, flag: string, active: boolean}[],
+  onLangChange: (lang: string) => void
+): void {
+  const select = document.getElementById('langSelect') as HTMLSelectElement;
+
+  languages.forEach(({ id, label, flag, active} ) => {
+    const option = document.createElement('option'); 
+    option.value = id;
+    option.textContent = `${flag} ${label}`;
+    option.selected = active;
+    select.appendChild(option);
+    });
+
+  select.onclick = () =>
+     {
+      onLangChange(select.value)
+     };
+  }
+
+
+
 
 export function populateLiveNavbar({ rates, logger }: { rates: Record<string, number>, logger: LoggerService }) {
 

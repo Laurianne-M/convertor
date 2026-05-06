@@ -66,7 +66,12 @@ export const UI_STRINGS = {
   ],
   title: t(StringKey.website_title),
   subtitle: [
-    {id: 'currencyConvertor', label: t(StringKey.homepage_title)}
+    { id: 'currencyConvertor', label: t(StringKey.homepage_title) }
+  ],
+  language: [
+    { id: 'en', label: t(StringKey.lang_en), flag: '🇺🇸', active: true },
+    { id: 'fr', label: t(StringKey.lang_fr), flag: '🇫🇷', active: false },
+    { id: 'es', label: t(StringKey.lang_es), flag: '🇪🇸', active: false }
   ]
 }
 

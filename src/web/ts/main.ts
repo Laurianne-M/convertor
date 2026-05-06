@@ -17,8 +17,11 @@ import {
   updateLock,
   updateAmount,
   populateContainer,
-  populateTitle
+  populateTitle,
+  populateLangSelector
 } from "./logic/logic.js";
+
+import { setLocale } from "./i18n/i18n.js";
 
 import {
   currencies,
@@ -59,6 +62,10 @@ export const main = async () => {
   populateContainer(subtitleContainer, subtitle);
   populateTitle(title);
   populateLiveNavbar( { rates: data.rates, logger } );
+  populateLangSelector(UI_STRINGS.language, (lang) => {
+    setLocale(lang);
+    location.reload();
+  })
 
   const amountFromFirstCurrencyInput = html.elements.getFirstInputAmount();
   if (!amountFromFirstCurrencyInput) return;
