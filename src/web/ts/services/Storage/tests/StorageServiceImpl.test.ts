@@ -1,9 +1,13 @@
+// @vitest-environment happy-dom
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { JSDOM } from 'jsdom';
 import { StorageServiceImpl } from "../StorageServiceImpl";
 import { ExchangeRate } from "../../ExchangeRate/ExchangeRateFallbackData";
 import { TimeProviderServiceFake } from "../../TimeProvider/TimeProviderServiceFake";
 import { LoggerServiceFake } from "../../Logger/LoggerServiceFake";
 
+const dom = new JSDOM('', { url: 'http://localhost' });
+global.localStorage = dom.window.localStorage;
 const logger = new LoggerServiceFake();
 const storage = new StorageServiceImpl(logger);
 const fakeTimeProvider = new TimeProviderServiceFake(new Date('2026-03-12T00:00:00Z'));

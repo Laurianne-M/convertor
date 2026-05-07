@@ -12,21 +12,25 @@ const strings: Record<string, Record<string, any>> = {
 }
 const fallbackStrings = stringsEn;
 
-function getCurrentLanguage(): string {
-  return localStorage.getItem('lang')
-  ?? navigator.language.split('-')[0]
-  ?? 'en';    
-}
+
 
 export function setLocale(lang: string): void {
   localStorage.setItem('lang', lang);
 }
 
 export function t(key: StringKey): string {
-  const language = getCurrentLanguage();
-  const translation = strings[language] ?? fallbackStrings;
-  const value = translation[key] ?? fallbackStrings[key] ?? key;
-  return value;
+  let lang = 'en';
+
+  try {
+    lang = localStorage.getItem('lang') 
+      ?? navigator.language?.split('-')[0] 
+      ?? 'en';
+  } catch {
+    // test environment — default to 'en'
+  }
+
+  const translation = strings[lang] ?? fallbackStrings;
+  return translation[key] ?? fallbackStrings[key] ?? key;
 }
 
 export enum StringKey {

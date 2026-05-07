@@ -1,4 +1,4 @@
-import { t, StringKey } from './i18n/i18n.ts'
+import { t, StringKey } from './i18n/i18n';
 
 type Metal = Record<string, string> 
 
