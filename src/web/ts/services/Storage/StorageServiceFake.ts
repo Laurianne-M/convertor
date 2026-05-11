@@ -4,7 +4,7 @@ export class StorageServiceFake implements StorageService {
   public store = new Map<string, unknown>();
 
   get<T>(key: string): T | null {
-    return (this.store.get(key) as T) ?? null;
+    return (this.store.get(key) as T);
   }
 
   set<T>(key: string, value: T): void {
