@@ -1,2 +1,2 @@
-cd src
+cd src/web
 npm test
