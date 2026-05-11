@@ -4,11 +4,11 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Install dependencies from the source package manifest
-COPY src/package*.json ./
+COPY src/web/package*.json ./
 RUN npm install
 
 # Copy source files and build the static site
-COPY src/ .
+COPY src/web/ .
 RUN npm exec vite build
 
 # Production stage: serve the compiled files with nginx
