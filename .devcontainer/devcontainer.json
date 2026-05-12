@@ -22,5 +22,5 @@
   ],
   "remoteUser": "node",
   "postCreateCommand": "npm install",
-  "workspaceFolder": "/workspaces/convertor/src/web"
+  "workspaceFolder": "/workspaces/convertor"
 }
