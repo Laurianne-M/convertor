@@ -18,6 +18,6 @@
     "-p", "5174:5174"
   ],
   "remoteUser": "node",
-  "postCreateCommand": "make install",
+  "postCreateCommand": "cd src/web && make install",
   "workspaceFolder": "/workspaces/convertor"
 }
