@@ -1,6 +1,10 @@
 node_modules
 coverage
 test-results
+.env
+.env.local
+.env.*.local
+
 
 # Playwright
 test-results/
