@@ -2,5 +2,5 @@
 set -e
 set -x
 
-npm install
+npm ci
 npx playwright install
