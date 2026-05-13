@@ -26,5 +26,9 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-  }
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+  },
+  "include": ["**/*.ts", "**/*.json"],
+  "exclude": ["node_modules"]
 }

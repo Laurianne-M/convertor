@@ -39,5 +39,7 @@
   "symbols_currency_label_try": "Turkish Lira",
   "lang_en": "English",
   "lang_fr": "French",
-  "lang_es": "Spanish"
+  "lang_es": "Spanish",
+  "usd_rates_error": "USD rate is missing or zero",
+  "window_alert_negative_number": "Amount must be positive"
 }

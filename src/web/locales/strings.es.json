@@ -39,5 +39,7 @@
   "symbols_currency_label_try": "Lira Turca",
   "lang_en": "Inglés",
   "lang_fr": "Francés",
-  "lang_es": "Español"
+  "lang_es": "Español",
+  "usd_rates_error": "La tasa de USD está ausente o es cero",
+  "window_alert_negative_number": "El monto debe ser positivo"
 }
