@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { setupCurrencies, takeScreenshot, fillAndConvert, loadPage } from "../helpers/helpers";
 
 test.beforeEach(async ({ page }) => {
-await loadPage(page);
+  await loadPage(page);
 });
 
 
@@ -37,9 +37,9 @@ test('second input changes on changes to first Select', async ({ page }) => {
   await setupCurrencies(page);
   await page.waitForTimeout(500);
   await page.fill('#amountFromFirstInput', '100');
-  await takeScreenshot(page, 'before_changed_of_first_Select_currency_Test');
+  await expect(page).toHaveScreenshot('before_changed_of_first_Select_currency_Test.png');
   await page.selectOption('#baseCurrency', 'CAD');
-  await takeScreenshot(page, 'after_changed_of_first_Select_currency_Test');
+  await expect(page).toHaveScreenshot('after_changed_of_first_Select_currency_Test.png');
 
   const result = await page.inputValue('#amountFromSecondInput');
 
@@ -51,11 +51,11 @@ test('first input changes on changes to second input + select', async ({ page })
   await setupCurrencies(page);
   await page.waitForTimeout(500);
   await page.fill('#amountFromFirstInput', '100');
-  await takeScreenshot(page, 'before_changed_of_second_Select_currency_Test');
+  await expect(page).toHaveScreenshot('before_changed_of_second_Select_currency_Test.png');
   await page.selectOption('#desiredCurrency', 'CAD');
   await page.waitForTimeout(500);
   await page.fill('#amountFromSecondInput', '100');
-  await takeScreenshot(page, 'after_changed_of_second_Select_currency_Test');
+  await expect(page).toHaveScreenshot('after_changed_of_second_Select_currency_Test.png');
 
   const result = await page.inputValue('#amountFromFirstInput');
 

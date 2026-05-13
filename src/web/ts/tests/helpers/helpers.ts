@@ -44,5 +44,6 @@ export const loadPage = async (page: Page) => {
       }),
     });
   });
+  
   await page.goto('http://localhost:5174/');
 }
