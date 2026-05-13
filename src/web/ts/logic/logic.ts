@@ -1,6 +1,7 @@
 import { currencies, metalCode, RATES_LOADING, NAV_BAR_ERROR } from '../constants.js'
 import type { LoggerService } from '../services/Logger/LoggerService.js';
 import type { ConvertOperation, RatesResponse } from '../types/logic.types.js';
+import { StringKey, t } from '../i18n/i18n.js';
 
 export function populateContainer(container: any, uiString: any): void {
   uiString.forEach(({id, label}: {id: string; label: string}) => {
@@ -121,7 +122,7 @@ export async function updateAmount(
   }
 
   if (parseFloat(amountFromFirstCurrencyInput.value) < 0) {
-    window.alert('Amount must be positive');
+    window.alert(t(StringKey.window_alert_negative_number));
     return;
   }
 

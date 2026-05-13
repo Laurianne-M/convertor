@@ -75,4 +75,5 @@ export enum StringKey {
   lang_en = 'lang_en',
   lang_fr = 'lang_fr',
   lang_es = 'lang_es',
+  window_alert_negative_number = 'window_alert_negative_number'
 }
