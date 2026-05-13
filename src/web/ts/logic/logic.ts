@@ -42,7 +42,7 @@ export function populateLangSelector(
 export function populateLiveNavbar({ rates, logger }: { rates: Record<string, number>, logger: LoggerService }) {
 
   const usdRate = rates[currencies.USD.code];
-  if (!usdRate) throw new Error(t(StringKey.usd_rates_error));
+  if (!usdRate) throw new Error('USD rate is missing or zero');
 
   Object.keys(metalCode).forEach(id => {
 

@@ -75,6 +75,5 @@ export enum StringKey {
   lang_en = 'lang_en',
   lang_fr = 'lang_fr',
   lang_es = 'lang_es',
-  usd_rates_error = 'usd_rates_error',
   window_alert_negative_number = 'window_alert_negative_number'
 }
