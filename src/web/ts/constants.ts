@@ -80,3 +80,18 @@ export const DAY_IN_MILLISECONDS = 60 * 60 * 24 * 1000;
 export const API_BASE_URL = 'https://api.exchangeratesapi.io/v1/latest';
 export const API_KEY = import.meta.env.VITE_EXCHANGE_RATES_API_KEY;
 export const NAV_BAR_ERROR = "an error occured while charging the navbar";
+
+export const MOCK_RATES_RESPONSE = {
+  status: 200,
+  contentType: "application/json",
+  body: {
+    success: true,
+    base: "EUR",
+    rates: {
+      USD: 1.1,
+      EUR: 1.0,
+      GBP: 0.85,
+      CAD: 1.60,
+    },
+  },
+};

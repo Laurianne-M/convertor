@@ -1,5 +1,6 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
+import { MOCK_RATES_RESPONSE, API_BASE_URL } from '../../constants';
 
 export const setupCurrencies = async (
   page: Page,
@@ -28,20 +29,11 @@ export const fillAndConvert = async (
 }
 
 export const loadPage = async (page: Page) => {
-  await page.route('https://api.exchangeratesapi.io/v1/latest**', async route => {
+  await page.route(`${API_BASE_URL}**`, async route => {
     await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({
-        success: true,
-        base: 'EUR',
-        rates: {
-          USD: 1.1,
-          EUR: 1.0,
-          GBP: 0.85,
-          CAD: 1.60
-        }
-      }),
+      status: MOCK_RATES_RESPONSE.status,
+      contentType: MOCK_RATES_RESPONSE.contentType,
+      body: JSON.stringify(MOCK_RATES_RESPONSE.body),
     });
   });
   
