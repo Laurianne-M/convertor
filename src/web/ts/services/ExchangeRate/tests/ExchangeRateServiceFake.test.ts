@@ -4,7 +4,7 @@ import { ExchangeRateServiceFake } from "../ExchangeRateServiceFake";
 import { TimeProviderServiceFake } from "../../TimeProvider/TimeProviderServiceFake";
 
 
-const fakeTimeProvider = new TimeProviderServiceFake(new Date('2026-03-12T00:00:00Z'))
+const fakeTimeProvider = new TimeProviderServiceFake()
 let exchangeRatesFake = new ExchangeRateServiceFake(
   {
     rates: {

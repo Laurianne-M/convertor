@@ -10,7 +10,7 @@ const dom = new JSDOM('', { url: 'http://localhost' });
 global.localStorage = dom.window.localStorage;
 const logger = new LoggerServiceFake();
 const storage = new StorageServiceImpl(logger);
-const fakeTimeProvider = new TimeProviderServiceFake(new Date('2026-03-12T00:00:00Z'));
+const fakeTimeProvider = new TimeProviderServiceFake();
 const mockExchangeRate = ExchangeRate.fallbackData(fakeTimeProvider);
 
 describe('StorageServiceImpl', () => {

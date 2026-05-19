@@ -1,23 +1,35 @@
 import type { TimeProvider } from "./TimeProviderService";
 
-export class TimeProviderServiceFake implements TimeProvider {
-  private currentTime: Date;
+export interface TimeProviderServiceFakeOverrides {
+  currentDate?: Date,
+  isOlderThan?: boolean
+  parsedDate?: Date
+}
 
-  constructor(initialTime: Date) {
-    this.currentTime = initialTime;
+const epoque = new Date("1970-01-01T00:00:00Z")
+
+const defaultOverrides: TimeProviderServiceFakeOverrides = {
+  currentDate: epoque,
+  isOlderThan: false,
+  parsedDate: epoque
+}
+
+export class TimeProviderServiceFake implements TimeProvider {
+  public overrides: TimeProviderServiceFakeOverrides
+
+  constructor(overrides: TimeProviderServiceFakeOverrides = defaultOverrides) {
+    this.overrides = overrides;
   }
 
   currentDate = (): Date => {
-    return new Date(this.currentTime);
-  }
-
-  advanceTime(ms: number): void {
-    this.currentTime = new Date(this.currentTime.getTime() - ms)
+    return this.overrides.currentDate || epoque;
   }
 
   isOlderThan = (date: Date, ms: number): boolean => {
-     return this.currentDate().getTime() - date.getTime() > ms;
+     return this.overrides.isOlderThan || false;
   }
 
-  parseDate = (dateString: string): Date => new Date(dateString);
+  parseDate = (dateString: string): Date => {
+    return this.overrides.parsedDate || epoque
+  }
 }

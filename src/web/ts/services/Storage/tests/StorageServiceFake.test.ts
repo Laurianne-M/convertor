@@ -4,7 +4,7 @@ import { ExchangeRate } from "../../ExchangeRate/ExchangeRateFallbackData";
 import { TimeProviderServiceFake } from "../../TimeProvider/TimeProviderServiceFake";
 
 let storageFake: StorageServiceFake;
-let fakeTimeProvider = new TimeProviderServiceFake(new Date('2026-03-12T00:00:00Z'));
+let fakeTimeProvider = new TimeProviderServiceFake();
 const mockData = ExchangeRate.fallbackData(fakeTimeProvider);
 
 
