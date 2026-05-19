@@ -2,7 +2,7 @@
 This application is a small proof-of-concept currency converter that allows the
 user to do basic currency convertions with current rates.
 
-![screenshot of the application](screenshot-of-website.png)
+![screenshot of the application](images/screenshot-of-website.png)
 
 # Installation
 This is a Node-based project, and therefore the following is required:
