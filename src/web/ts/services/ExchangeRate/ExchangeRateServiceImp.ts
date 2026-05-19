@@ -17,10 +17,10 @@ interface ExchangeRateServiceImplDependencies {
 }
 
 export class ExchangeRateServiceImp implements ExchangeRateService {
+  private readonly dependencies: ExchangeRateServiceImplDependencies
 
-  constructor(
-    private readonly dependencies: ExchangeRateServiceImplDependencies
-  ) {
+  constructor(dependencies: ExchangeRateServiceImplDependencies) {
+    this.dependencies = dependencies
   }
 
   private getDataFromLocalStorage = async () => {

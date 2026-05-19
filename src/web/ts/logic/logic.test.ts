@@ -15,19 +15,13 @@ import {
 } from "./logic";
 
 import { ExchangeRateServiceFake } from "../services/ExchangeRate/ExchangeRateServiceFake";
-
 import { LoggerServiceFake } from "../services/Logger/LoggerServiceFake";
-
 import { TimeProviderServiceFake } from "../services/TimeProvider/TimeProviderServiceFake";
 
 const logger = new LoggerServiceFake();
 
 describe("logic", () => {
   describe("populateLiveNavbar", () => {
-    beforeEach(() => {
-      vi.clearAllMocks();
-    });
-
     it('exit the function if the currency ID doesnt exist ', () => {
       document.body.innerHTML = '';
 
@@ -201,8 +195,10 @@ describe("logic", () => {
 
     let exchangeRateService: ExchangeRateServiceFake;
     beforeEach(() => {
-      exchangeRateService = new ExchangeRateServiceFake(fakeRates, fakeTimeProvider);
-      vi.clearAllMocks(); // reset mocks between each test
+      exchangeRateService = new ExchangeRateServiceFake(
+        { rates: fakeRates },
+        fakeTimeProvider
+      );
     });
 
     it('should call window alert with the correct message if amount is negative', async () => {
