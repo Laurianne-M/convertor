@@ -1,33 +1,19 @@
 import type { Page } from '@playwright/test';
-import { expect } from '@playwright/test';
-import { MOCK_RATES_RESPONSE } from './constants';
 
 const API_BASE_URL = process.env.API_BASE_URL;
-
-export const setupCurrencies = async (
-  page: Page,
-  base = 'EUR',
-  desired = 'USD'
-) => {
-  await page.selectOption('#baseCurrency', base);
-  await page.selectOption('#desiredCurrency', desired);
-}
-
-export const takeScreenshot = async (page: Page, name: String) => {
-  await expect(page).toHaveScreenshot(`${name}.png`);
-}
-
-export const fillAndConvert = async (
-  page: Page,
-  inputId: string,
-  amount: string,
-  screenshotPrefix: string,
-  outputId: string
-): Promise<string> => {
-  await takeScreenshot(page, `before_${screenshotPrefix}`);
-  await page.fill(inputId, amount);
-  await takeScreenshot(page, `after_${screenshotPrefix}`);
-  return page.inputValue(outputId);
+const MOCK_RATES_RESPONSE = {
+  status: 200,
+  contentType: 'application/json',
+  body: {
+    success: true,
+    base: 'EUR',
+    rates: {
+      USD: 2,
+      EUR: 3,
+      GBP: 4,
+      CAD: 5
+    }
+  }
 }
 
 export const loadPage = async (page: Page) => {
@@ -40,4 +26,6 @@ export const loadPage = async (page: Page) => {
   });
   
   await page.goto('http://localhost:5174/');
+  await page.selectOption('#baseCurrency', 'EUR');
+  await page.selectOption('#desiredCurrency', 'USD');
 }
