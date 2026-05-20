@@ -1,6 +1,8 @@
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
-import { MOCK_RATES_RESPONSE, API_BASE_URL } from '../../constants';
+import { MOCK_RATES_RESPONSE } from './constants';
+
+const API_BASE_URL = process.env.API_BASE_URL;
 
 export const setupCurrencies = async (
   page: Page,
