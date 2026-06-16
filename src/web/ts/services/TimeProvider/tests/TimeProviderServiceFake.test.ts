@@ -1,52 +1,49 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { TimeProviderServiceFake } from "../TimeProviderServiceFake";
 
-let timeProviderFake: TimeProviderServiceFake; 
+describe('TimeProviderServiceFake', () => {
+  let timeProviderFake: TimeProviderServiceFake; 
 
-beforeEach(() => {
-  timeProviderFake = new TimeProviderServiceFake(new Date('2026-03-24')); 
-})
-
-describe('currentDate', () => {
-  it('should return the initial time', () => {
-    const result = timeProviderFake.currentDate(); 
-
-    expect(result).toEqual(new Date('2026-03-24'))
+  beforeEach(() => {
+    timeProviderFake = new TimeProviderServiceFake(); 
   })
 
+  describe('currentDate', () => {
+    it('defaults to epoque', () => {
+      const result = timeProviderFake.currentDate(); 
+      expect(result).toEqual(new Date('1970-01-01T00:00:00Z'));
+    })
 
-})
-
-describe('parseDate', () => {
-  it('should parse a valid date string', () => {
-    const result = timeProviderFake.parseDate('2026-03-24'); 
-
-     expect(result).toEqual(new Date('2026-03-24'));
+    it('returns the overridden current date', () => {
+      timeProviderFake.overrides.currentDate = new Date('2026-03-24');
+      const result = timeProviderFake.currentDate(); 
+      expect(result).toEqual(new Date('2026-03-24'));
+    })
   })
 
-  it('should return an invalid Date for an invalid string', () => {
-    const result = timeProviderFake.parseDate('not-a-date');
+  describe('parseDate', () => {
+    it('defaults to epoque', () => {
+      const result = timeProviderFake.parseDate('any date string'); 
+      expect(result).toEqual(new Date('1970-01-01T00:00:00Z'));
+    })
 
-    expect(isNaN(result.getTime())).toBe(true);
-  })
-})
-
-describe('isOlderThan', () => {
-  it('should return true if the date is older than 24 hours', () => {
-    const oldDate = new Date('2026-03-20');
-    const duration =  24 * 60 * 60 * 1000;
-
-    const result = timeProviderFake.isOlderThan(oldDate, duration);
-
-    expect(result).toBe(true)                                  
+    it('returns the overridden parsed date', () => {
+      timeProviderFake.overrides.parsedDate = new Date('2026-03-24');
+      const result = timeProviderFake.parseDate('any date string'); 
+      expect(result).toEqual(new Date('2026-03-24'));
+    })
   })
 
-  it('should return false if the date is not older than 24 hours', () => {
-    const recentDate = new Date('2026-03-24'); 
-    const duration = 24 * 60 * 60 * 1000;
+  describe('isOlderThan', () => {
+    it('defaults to false', () => {
+      const result = timeProviderFake.isOlderThan(new Date(), 1000); 
+      expect(result).toBe(false);
+    })
 
-    const result = timeProviderFake.isOlderThan(recentDate, duration); 
-
-    expect(result).toBe(false);
+    it('returns the overridden isOlderThan value', () => {
+      timeProviderFake.overrides.isOlderThan = true;
+      const result = timeProviderFake.isOlderThan(new Date(), 1000); 
+      expect(result).toBe(true);
+    })
   })
 })
