@@ -1,10 +1,10 @@
 import { currencies, metalCode, RATES_LOADING, NAV_BAR_ERROR } from '../constants.js'
 import type { LoggerService } from '../services/Logger/LoggerService.js';
-import type { ConvertOperation, RatesResponse } from '../types/logic.types.js';
+import type { ConvertOperation, RatesResponse } from './logic.types.js';
 import { StringKey, t } from '../i18n/i18n.js';
 
 export function populateContainer(container: any, uiString: any): void {
-  uiString.forEach(({id, label}: {id: string; label: string}) => {
+  uiString.forEach(({ id, label }: {id: string; label: string}) => {
     const a = document.createElement('a');
     a.id = id;
     a.textContent = label;
@@ -17,7 +17,12 @@ export function populateTitle(title: string): void {
 }
 
 export function populateLangSelector(
-  languages: { id: string, label: string, flag: string, active: boolean}[],
+  languages: {
+    id: string,
+    label: string,
+    flag: string,
+    active: boolean
+  }[],
   onLangChange: (lang: string) => void
 ): void {
   const select = document.getElementById('langSelect') as HTMLSelectElement;
@@ -28,24 +33,16 @@ export function populateLangSelector(
     option.textContent = `${flag} ${label}`;
     option.selected = active;
     select.appendChild(option);
-    });
+  });
 
-  select.onclick = () =>
-     {
-      onLangChange(select.value)
-     };
-  }
-
-
-
+  select.onclick = () => onLangChange(select.value);
+}
 
 export function populateLiveNavbar({ rates, logger }: { rates: Record<string, number>, logger: LoggerService }) {
-
   const usdRate = rates[currencies.USD.code];
   if (!usdRate) throw new Error('USD rate is missing or zero');
 
   Object.keys(metalCode).forEach(id => {
-
     const select = document.getElementById(id);
     if (!select) return;
 
@@ -54,9 +51,7 @@ export function populateLiveNavbar({ rates, logger }: { rates: Record<string, nu
     const metalRate = rates[symbol] ?? 0;
 
     if (metalRate !== undefined && metalRate !== 0) {
-
       const price = usdRate / metalRate;
-
       const formattedPrice = price.toLocaleString(undefined, {
         maximumFractionDigits: 2
       });
@@ -65,12 +60,11 @@ export function populateLiveNavbar({ rates, logger }: { rates: Record<string, nu
       select.textContent = `${metalName}: $${formattedPrice}`;
 
     } else {
-      window.alert(NAV_BAR_ERROR);
       logger.warn(NAV_BAR_ERROR);
+      window.alert(NAV_BAR_ERROR);
     };
   });
 };
-
 
 export const convert = (operation: ConvertOperation) => {
   const {
@@ -82,7 +76,6 @@ export const convert = (operation: ConvertOperation) => {
   } = operation;
 
   if (fromSelectBaseCurrency === toSelectDesiredCurrency) return amount;
-
 
   // convert to base first
   if (fromSelectBaseCurrency !== base) {
@@ -103,7 +96,6 @@ export const convert = (operation: ConvertOperation) => {
   return toSelectDesiredCurrency === base
     ? amountInBase
     : amountInBase * (rates[toSelectDesiredCurrency] ?? 1);
-
 };
 
 export async function updateAmount(
@@ -121,24 +113,18 @@ export async function updateAmount(
     return;
   }
 
-  if (parseFloat(amountFromFirstCurrencyInput.value) < 0) {
+  const firstInputValue = parseFloat(amountFromFirstCurrencyInput.value)
+  const secondInputValue = parseFloat(amountFromSecondCurrencyInput.value)
+
+  if (firstInputValue < 0) {
     window.alert(t(StringKey.window_alert_negative_number));
     return;
   }
 
-
   // Determine values based on whether we are updating from the first or second input
-  const amount = reverse
-    ? parseFloat(amountFromSecondCurrencyInput.value) || 0
-    : parseFloat(amountFromFirstCurrencyInput.value) || 0;
-
-  const fromSelectBaseCurrency = reverse
-    ? toCurrency
-    : fromCurrency
-
-  const toSelectDesiredCurrency = reverse
-    ? fromCurrency
-    : toCurrency
+  const amount = (reverse ? secondInputValue : firstInputValue) || 0;
+  const fromSelectBaseCurrency = reverse ? toCurrency : fromCurrency
+  const toSelectDesiredCurrency = reverse ? fromCurrency : toCurrency
 
   const result = convert({
     amount: amount,
@@ -148,23 +134,24 @@ export async function updateAmount(
     base: data.base
   });
 
-  if (reverse) {
-    amountFromFirstCurrencyInput.value = result.toFixed(2);
-  } else {
-    amountFromSecondCurrencyInput.value = result.toFixed(2);
-  };
+  const inputToUpdate = reverse
+    ? amountFromFirstCurrencyInput
+    : amountFromSecondCurrencyInput
+
+  inputToUpdate.value = result.toFixed(2)
 };
 
 let isUpdating = false;
 
-export const resetUpdateLock = () => { isUpdating = false; };
-export const updateLock = async (fn: any) => {
+export const resetUpdateLock = () => isUpdating = false;
 
-
+export const updateLock = async (action: () => Promise<unknown>) => {
   if (isUpdating) return;
+  
   isUpdating = true;
+
   try {
-    await fn();
+    await action();
   } finally {
     isUpdating = false;
   }
