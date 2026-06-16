@@ -1,22 +1,33 @@
-import type { ExchangeRateService, ExchangeRates } from "./ExchangeRateService";
 import type { TimeProvider } from "../TimeProvider/TimeProviderService";
+import { ExchangeRate } from "./ExchangeRateFallbackData";
+import type { ExchangeRateService, ExchangeRates } from "./ExchangeRateService";
+
+export interface ExchangeRateServiceFakeOverrides {
+  rates?: ExchangeRates
+  error?: Error
+}
 
 export class ExchangeRateServiceFake implements ExchangeRateService {
-  public loadRatesCallCount = 0;
-  private ratesToReturn: ExchangeRates;
-  private timeProvider: TimeProvider
+  public overrides: ExchangeRateServiceFakeOverrides;
+  private readonly timeProvider
 
   constructor(
-    ratesToReturn: ExchangeRates,
+    overrides: ExchangeRateServiceFakeOverrides = {},
     timeProvider: TimeProvider
   ) {
-    this.ratesToReturn = ratesToReturn;
-    this.timeProvider = timeProvider;
+    this.overrides = overrides
+    this.timeProvider = timeProvider
   }
 
-  loadRates = async (): Promise<ExchangeRates> => {
-    this.loadRatesCallCount++;
-    
-    return this.ratesToReturn;
+  loadRates = async (): Promise<ExchangeRates> => {  
+    if (this.overrides.error) {
+      return Promise.reject(this.overrides.error)
+    } else {
+      let rates = this.overrides.rates
+        ? this.overrides.rates
+        : ExchangeRate.fallbackData(this.timeProvider)
+      
+      return Promise.resolve(rates)
+    }
   }
 }
