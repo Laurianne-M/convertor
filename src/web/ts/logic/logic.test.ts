@@ -174,7 +174,7 @@ describe("logic", () => {
   });
 
   describe('UpdateAmount', () => {
-    const fakeTimeProvider = new TimeProviderServiceFake(new Date('2026-03-24'));
+    const fakeTimeProvider = new TimeProviderServiceFake();
 
 
 

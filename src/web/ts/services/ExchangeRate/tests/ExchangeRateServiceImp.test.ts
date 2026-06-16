@@ -12,7 +12,9 @@ import { TimeProviderServiceFake } from "../../TimeProvider/TimeProviderServiceF
 const dom = new JSDOM('', { url: 'http://localhost' });
 global.localStorage = dom.window.localStorage;
 
-const fakeTimeProvider = new TimeProviderServiceFake(new Date('2026-03-24'))
+const fakeTimeProvider = new TimeProviderServiceFake({
+  currentDate: new Date('2026-03-24')
+})
 let fakeFetch: FakeFetch;
 
 const limitFetch = new FakeFetch({
@@ -56,6 +58,7 @@ describe('exchangeRateService', () => {
   });
 
   it("should fetch and caching new data if they are outdated", async () => {
+    fakeTimeProvider.overrides.isOlderThan = true
 
     const mockedData = {
       jsonData: {
