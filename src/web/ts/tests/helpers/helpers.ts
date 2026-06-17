@@ -27,7 +27,7 @@ export const fillAndConvert = async (
   return page.inputValue(outputId);
 }
 
-export const loadPage = async (page: Page) => {
+export const loadPage = async ({ page }: { page: Page })  => {
   await page.route('https://api.exchangeratesapi.io/v1/latest**', async route => {
     await route.fulfill({
       status: 200,

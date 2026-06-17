@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { setupCurrencies, takeScreenshot, fillAndConvert, loadPage } from "../helpers/helpers";
 
 test.beforeEach(async ({ page }) => {
-  await loadPage(page);
+  await loadPage({ page: page });
 });
 
 
