@@ -6,7 +6,6 @@ export const setupCurrencies = async (
   base = 'EUR',
   desired = 'USD'
 ) => {
-  await page.goto('http://localhost:5174/');
   await page.selectOption('#baseCurrency', base);
   await page.selectOption('#desiredCurrency', desired);
 }
@@ -26,4 +25,24 @@ export const fillAndConvert = async (
   await page.fill(inputId, amount);
   await takeScreenshot(page, `after_${screenshotPrefix}`);
   return page.inputValue(outputId);
+}
+
+export const loadPage = async ({ page }: { page: Page })  => {
+  await page.route('https://api.exchangeratesapi.io/v1/latest**', async route => {
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        success: true,
+        base: 'EUR',
+        rates: {
+          USD: 1.1,
+          EUR: 1.0,
+          GBP: 0.85,
+          CAD: 1.60
+        }
+      }),
+    });
+  });
+  await page.goto('http://localhost:5174/');
 }

@@ -1,23 +1,8 @@
 import { test, expect } from "@playwright/test";
-import { setupCurrencies, takeScreenshot, fillAndConvert } from "../helpers/helpers";
+import { setupCurrencies, takeScreenshot, fillAndConvert, loadPage } from "../helpers/helpers";
 
 test.beforeEach(async ({ page }) => {
-  await page.route('https://api.exchangeratesapi.io/v1/latest**', async route => {
-    await route.fulfill({
-      status: 200,
-      contentType: 'application/json',
-      body: JSON.stringify({
-        success: true,
-        base: 'EUR',
-        rates: {
-          USD: 1.1,
-          EUR: 1.0,
-          GBP: 0.85,
-          CAD: 1.60
-        }
-      }),
-    });
-  });
+  await loadPage({ page: page });
 });
 
 
