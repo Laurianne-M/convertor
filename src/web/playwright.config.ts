@@ -33,8 +33,8 @@ export default defineConfig({
         toHaveScreenshot: {
       animations: 'disabled',
       scale: 'css',
-      threshold: 0.2,
-      maxDiffPixelRatio: 0.05,
+      threshold: 0.05,
+      maxDiffPixelRatio: 0.01,
   }
 },
 
