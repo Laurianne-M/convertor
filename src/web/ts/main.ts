@@ -31,6 +31,8 @@ import {
 
 import { LoggerServiceImpl } from "./services/Logger/LoggerServiceImpl.js";
 
+import { ServiceContainer } from "./containers/ServiceContainer.js";
+
 export const main = async () => {
   const baseCurrencySelect = html.elements.getBaseCurrencySelect();
   const desiredCurrencySelect = html.elements.getDesiredCurrencySelect();
@@ -38,21 +40,10 @@ export const main = async () => {
   const subtitleContainer = html.elements.getSubtitleContainer();
   html.elements.populateSelect(baseCurrencySelect, currencies);
   html.elements.populateSelect(desiredCurrencySelect, currencies);
-    
-  const timeProvider = new TimeProviderServiceImpl();
-  const logger = new LoggerServiceImpl();
-  const storage = new StorageServiceImpl(logger);
+  
+  const container = new ServiceContainer;
 
-  const exchangeRateService = new ExchangeRateServiceImp({
-    fetch, 
-    timeProvider,
-    storage,
-    logger
-  });
-
-
-    
-  const data = await exchangeRateService.loadRates();
+  const data = await container.exchangeRateService.loadRates();
   console.log(data);
   const subtitle = UI_STRINGS.subtitle;
   const liveCurrencies = UI_STRINGS.liveCurrencies;
@@ -61,7 +52,7 @@ export const main = async () => {
   populateContainer(liveCurrenciesContainer, liveCurrencies); 
   populateContainer(subtitleContainer, subtitle);
   populateTitle(title);
-  populateLiveNavbar( { rates: data.rates, logger } );
+  populateLiveNavbar( { rates: data.rates, logger: container.logger } );
   populateLangSelector(UI_STRINGS.language, (lang) => {
     setLocale(lang);
     location.reload();
@@ -81,7 +72,7 @@ export const main = async () => {
     false,
     baseCurrencySelect?.value,
     desiredCurrencySelect?.value,
-    logger
+    container.logger
   );
 
   amountFromFirstCurrencyInput.addEventListener(
@@ -93,7 +84,7 @@ export const main = async () => {
         false,
         baseCurrencySelect?.value,
         desiredCurrencySelect?.value,
-        logger
+        container.logger
       ))
     }
   );
@@ -107,7 +98,7 @@ export const main = async () => {
         false,
         baseCurrencySelect?.value,
         desiredCurrencySelect?.value,
-        logger
+        container.logger
       ))
     }
   );
@@ -121,7 +112,7 @@ export const main = async () => {
         false,
         baseCurrencySelect?.value,
         desiredCurrencySelect?.value,
-        logger
+        container.logger
       ))
     }
   );
@@ -135,7 +126,7 @@ export const main = async () => {
         true,
         baseCurrencySelect?.value,
         desiredCurrencySelect?.value,
-        logger
+        container.logger
       ))
     }
   );
