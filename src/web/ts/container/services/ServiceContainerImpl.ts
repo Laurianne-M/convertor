@@ -1,9 +1,10 @@
-import { TimeProviderServiceImpl } from "../services/TimeProvider/TImeProviderServiceImp";
-import { LoggerServiceImpl } from "../services/Logger/LoggerServiceImpl";
-import { StorageServiceImpl } from "../services/Storage/StorageServiceImpl";
-import { ExchangeRateServiceImp } from "../services/ExchangeRate/ExchangeRateServiceImp";
+import type { ServiceContainer } from "./ServiceContainer";
+import { TimeProviderServiceImpl } from "../../services/TimeProvider/TImeProviderServiceImp";
+import { LoggerServiceImpl } from "../../services/Logger/LoggerServiceImpl";
+import { StorageServiceImpl } from "../../services/Storage/StorageServiceImpl";
+import { ExchangeRateServiceImp } from "../../services/ExchangeRate/ExchangeRateServiceImp";
 
-export class ServiceContainer {
+export class ServiceContainerImpl implements ServiceContainer {
   public readonly timeProvider: TimeProviderServiceImpl;
   public readonly logger: LoggerServiceImpl;
   public readonly storage: StorageServiceImpl;

@@ -3,16 +3,6 @@ import {
 } from "./element.js";
 
 import {
-  ExchangeRateServiceImp 
-} from "./services/ExchangeRate/ExchangeRateServiceImp.js";
-
-import {
-  TimeProviderServiceImpl
-} from "./services/TimeProvider/TImeProviderServiceImp.js";
-
-import { StorageServiceImpl } from "./services/Storage/StorageServiceImpl.js";
-
-import {
   populateLiveNavbar,
   updateLock,
   updateAmount,
@@ -29,9 +19,7 @@ import {
   UI_STRINGS
 } from './constants.js'
 
-import { LoggerServiceImpl } from "./services/Logger/LoggerServiceImpl.js";
-
-import { ServiceContainer } from "./containers/ServiceContainer.js";
+import { ServiceContainerImpl } from "./container/services/ServiceContainerImpl.js";
 
 export const main = async () => {
   const baseCurrencySelect = html.elements.getBaseCurrencySelect();
@@ -41,10 +29,9 @@ export const main = async () => {
   html.elements.populateSelect(baseCurrencySelect, currencies);
   html.elements.populateSelect(desiredCurrencySelect, currencies);
   
-  const container = new ServiceContainer;
+  const container = new ServiceContainerImpl;
 
   const data = await container.exchangeRateService.loadRates();
-  console.log(data);
   const subtitle = UI_STRINGS.subtitle;
   const liveCurrencies = UI_STRINGS.liveCurrencies;
   const title = UI_STRINGS.title;
