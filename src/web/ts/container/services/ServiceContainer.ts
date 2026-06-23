@@ -1,11 +1,11 @@
-import type { TimeProviderServiceImpl } from "../../services/TimeProvider/TImeProviderServiceImp";
-import type { LoggerServiceImpl } from "../../services/Logger/LoggerServiceImpl";
-import type { StorageServiceImpl } from "../../services/Storage/StorageServiceImpl";
-import type { ExchangeRateServiceImp } from "../../services/ExchangeRate/ExchangeRateServiceImp";
+import type { TimeProvider } from "../../services/TimeProvider/TimeProviderService";
+import type { LoggerService } from "../../services/Logger/LoggerService";
+import type { StorageService } from "../../services/Storage/StorageService";
+import type { ExchangeRateService } from "../../services/ExchangeRate/ExchangeRateService";
 
 export interface ServiceContainer {
-  timeProvider: TimeProviderServiceImpl;
-  logger: LoggerServiceImpl;
-  storage: StorageServiceImpl;
-  exchangeRateService: ExchangeRateServiceImp;
+  timeProvider: TimeProvider;
+  logger: LoggerService;
+  storage: StorageService;
+  exchangeRateService: ExchangeRateService;
 }
