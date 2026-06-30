@@ -4,6 +4,10 @@ import { ExchangeRateServiceFake } from "../../services/ExchangeRate/ExchangeRat
 import { StorageServiceFake } from "../../services/Storage/StorageServiceFake";
 import { TimeProviderServiceFake } from "../../services/TimeProvider/TimeProviderServiceFake";
 
+/**
+ * Fake implementation of ServiceContainer, used in tests.
+ */
+
 export class ServiceContainerFake implements ServiceContainer {
   public readonly timeProvider: TimeProviderServiceFake;
   public readonly logger: LoggerServiceFake;
