@@ -3,7 +3,7 @@ import { LoggerServiceFake } from "../../../services/Logger/LoggerServiceFake";
 import { StorageServiceFake } from "../../../services/Storage/StorageServiceFake";
 import { TimeProviderServiceFake } from "../../../services/TimeProvider/TimeProviderServiceFake";
 import { ServiceContainerFake } from "../ServiceContainerFake";
-import { it,describe, expect, beforeEach} from "vitest";
+import { it, describe, expect, beforeEach } from "vitest";
 
 describe('ServiceContainerFake', () => {
   let container: ServiceContainerFake;
@@ -27,9 +27,4 @@ describe('ServiceContainerFake', () => {
   it('should provide a working exchangeRates via loadRates', async () => {
     expect(container.exchangeRateService).toBeInstanceOf(ExchangeRateServiceFake);
   })
-
 });
-
-  
-
-  

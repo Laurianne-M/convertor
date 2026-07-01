@@ -6,8 +6,7 @@ import { TimeProviderServiceFake } from "../../services/TimeProvider/TimeProvide
 
 /**
  * Fake implementation of ServiceContainer, used in tests.
- */
-
+*/
 export class ServiceContainerFake implements ServiceContainer {
   public readonly timeProvider: TimeProviderServiceFake;
   public readonly logger: LoggerServiceFake;

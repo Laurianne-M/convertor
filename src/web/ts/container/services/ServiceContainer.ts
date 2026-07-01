@@ -9,17 +9,16 @@ import type { ExchangeRateService } from "../../services/ExchangeRate/ExchangeRa
  * service with its required dependencies, so users don't need to know
  * how services are built or wired together.
  */
-
 export interface ServiceContainer {
-/**Provides access to the current date/time, used for caching and date comparison*/
+  /** Provides access to the current date/time, used for caching and date comparison */
   timeProvider: TimeProvider;
 
-/**Logs debug, info, warning and errors message*/
+  /** Logs debug, info, warning and errors message */
   logger: LoggerService;
 
-/**Reads and stores data, such as cached exchange rates*/
+  /** Reads and stores data, such as cached exchange rates */
   storage: StorageService;
 
-/** Fetches and caches currency exchange rates*/
+  /** Fetches and caches currency exchange rates */
   exchangeRateService: ExchangeRateService;
 }
