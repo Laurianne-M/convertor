@@ -1,6 +1,6 @@
 import type { ServiceContainer } from "./ServiceContainer";
 import { LoggerServiceFake } from "../../services/Logger/LoggerServiceFake";
-import { ExchangeRateServiceFake, TEST_EXCHANGE_RATES } from "../../services/ExchangeRate/ExchangeRateServiceFake";
+import { ExchangeRateServiceFake, TEST_EXCHANGE_RATES_FAKE_OVERRIDES } from "../../services/ExchangeRate/ExchangeRateServiceFake";
 import { StorageServiceFake } from "../../services/Storage/StorageServiceFake";
 import { TimeProviderServiceFake } from "../../services/TimeProvider/TimeProviderServiceFake";
 
@@ -18,9 +18,7 @@ export class ServiceContainerFake implements ServiceContainer {
     this.logger = new LoggerServiceFake();
     this.storage = new StorageServiceFake();
     this.exchangeRateService = new ExchangeRateServiceFake(
-      {
-        rates: TEST_EXCHANGE_RATES
-      },
+      TEST_EXCHANGE_RATES_FAKE_OVERRIDES,
       this.timeProvider
     );
   }
