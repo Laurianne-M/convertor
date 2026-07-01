@@ -10,15 +10,15 @@ export class ServiceContainerImpl implements ServiceContainer {
   public readonly storage: StorageServiceImpl;
   public readonly exchangeRateService: ExchangeRateServiceImp;
 
-  constructor () {
+  constructor() {
     this.timeProvider = new TimeProviderServiceImpl;
     this.logger = new LoggerServiceImpl;
     this.storage = new StorageServiceImpl(this.logger);
     this.exchangeRateService = new ExchangeRateServiceImp({
-    fetch, 
-    timeProvider: this.timeProvider,
-    storage: this.storage,
-    logger: this.logger
-  });
+      fetch,
+      timeProvider: this.timeProvider,
+      storage: this.storage,
+      logger: this.logger
+    });
   }
 }
