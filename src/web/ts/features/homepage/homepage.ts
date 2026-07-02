@@ -1,7 +1,7 @@
-import { currencies, metalCode, RATES_LOADING, NAV_BAR_ERROR } from '../constants.js'
-import type { LoggerService } from '../services/Logger/LoggerService.js';
-import type { ConvertOperation, RatesResponse } from './logic.types.js';
-import { StringKey, t } from '../i18n/i18n.js';
+import { currencies, metalCode, RATES_LOADING, NAV_BAR_ERROR } from '../../constants.js'
+import type { LoggerService } from '../../services/Logger/LoggerService.js';
+import type { ConvertOperation, RatesResponse } from './homepage.types.js';
+import { StringKey, t } from '../../i18n/i18n.js';
 
 export function populateContainer(container: any, uiString: any): void {
   uiString.forEach(({ id, label }: {id: string; label: string}) => {

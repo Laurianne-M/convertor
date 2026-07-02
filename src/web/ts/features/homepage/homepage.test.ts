@@ -12,11 +12,11 @@ import {
   updateAmount,
   updateLock,
   resetUpdateLock
-} from "./logic";
+} from "./homepage";
 
-import { ExchangeRateServiceFake } from "../services/ExchangeRate/ExchangeRateServiceFake";
-import { LoggerServiceFake } from "../services/Logger/LoggerServiceFake";
-import { TimeProviderServiceFake } from "../services/TimeProvider/TimeProviderServiceFake";
+import { ExchangeRateServiceFake } from "../../services/ExchangeRate/ExchangeRateServiceFake";
+import { LoggerServiceFake } from "../../services/Logger/LoggerServiceFake";
+import { TimeProviderServiceFake } from "../../services/TimeProvider/TimeProviderServiceFake";
 
 const logger = new LoggerServiceFake();
 
