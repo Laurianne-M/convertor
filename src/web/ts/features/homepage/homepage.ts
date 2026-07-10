@@ -1,4 +1,4 @@
-import { currencies, metalCode, RATES_LOADING, NAV_BAR_ERROR } from '../../constants.js'
+import { AppConstants} from '../../constants.js'
 import type { LoggerService } from '../../services/Logger/LoggerService.js';
 import type { ConvertOperation, RatesResponse } from './homepage.types.js';
 import { StringKey, t } from '../../i18n/i18n.js';
@@ -39,14 +39,14 @@ export function populateLangSelector(
 }
 
 export function populateLiveNavbar({ rates, logger }: { rates: Record<string, number>, logger: LoggerService }) {
-  const usdRate = rates[currencies.USD.code];
+  const usdRate = rates[AppConstants.currencies.USD.code];
   if (!usdRate) throw new Error('USD rate is missing or zero');
 
-  Object.keys(metalCode).forEach(id => {
+  Object.keys(AppConstants.metalCode).forEach(id => {
     const select = document.getElementById(id);
     if (!select) return;
 
-    const symbol = metalCode[id];
+    const symbol = AppConstants.metalCode[id];
     if (!symbol) return;
     const metalRate = rates[symbol] ?? 0;
 
@@ -60,8 +60,8 @@ export function populateLiveNavbar({ rates, logger }: { rates: Record<string, nu
       select.textContent = `${metalName}: $${formattedPrice}`;
 
     } else {
-      logger.warn(NAV_BAR_ERROR);
-      window.alert(NAV_BAR_ERROR);
+      logger.warn(AppConstants.NAV_BAR_ERROR);
+      window.alert(AppConstants.NAV_BAR_ERROR);
     };
   });
 };
@@ -109,7 +109,7 @@ export async function updateAmount(
 ) {
   // Safety check: Make sure data and data.rates actually exist
   if (!data || !data.rates) {
-    logger.warn(RATES_LOADING);
+    logger.warn(AppConstants.RATES_LOADING);
     return;
   }
 

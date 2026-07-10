@@ -14,9 +14,7 @@ import {
 import { setLocale } from "./i18n/i18n.js";
 
 import {
-  currencies,
-  documentEvents,
-  UI_STRINGS
+  AppConstants,
 } from './constants.js'
 
 import { ServiceContainerImpl } from "./container/services/ServiceContainerImpl.js";
@@ -26,21 +24,21 @@ export const main = async () => {
   const desiredCurrencySelect = html.elements.getDesiredCurrencySelect();
   const liveCurrenciesContainer = html.elements.getLiveCurrenciesContainer();
   const subtitleContainer = html.elements.getSubtitleContainer();
-  html.elements.populateSelect(baseCurrencySelect, currencies);
-  html.elements.populateSelect(desiredCurrencySelect, currencies);
+  html.elements.populateSelect(baseCurrencySelect, AppConstants.currencies);
+  html.elements.populateSelect(desiredCurrencySelect, AppConstants.currencies);
   
   const container = new ServiceContainerImpl;
 
   const data = await container.exchangeRateService.loadRates();
-  const subtitle = UI_STRINGS.subtitle;
-  const liveCurrencies = UI_STRINGS.liveCurrencies;
-  const title = UI_STRINGS.title;
+  const subtitle = AppConstants.UI_STRINGS.subtitle;
+  const liveCurrencies = AppConstants.UI_STRINGS.liveCurrencies;
+  const title = AppConstants.UI_STRINGS.title;
 
   populateContainer(liveCurrenciesContainer, liveCurrencies); 
   populateContainer(subtitleContainer, subtitle);
   populateTitle(title);
   populateLiveNavbar( { rates: data.rates, logger: container.logger } );
-  populateLangSelector(UI_STRINGS.language, (lang) => {
+  populateLangSelector(AppConstants.UI_STRINGS.language, (lang) => {
     setLocale(lang);
     location.reload();
   })
@@ -63,7 +61,7 @@ export const main = async () => {
   );
 
   amountFromFirstCurrencyInput.addEventListener(
-    documentEvents.input, () => { 
+    AppConstants.documentEvents.input, () => { 
       updateLock(() => updateAmount(
         data,
         amountFromFirstCurrencyInput,
@@ -77,7 +75,7 @@ export const main = async () => {
   );
 
   baseCurrencySelect.addEventListener(
-    documentEvents.change, () => {
+    AppConstants.documentEvents.change, () => {
       updateLock(() => updateAmount(
         data,
         amountFromFirstCurrencyInput,
@@ -91,7 +89,7 @@ export const main = async () => {
   );
 
   desiredCurrencySelect.addEventListener(
-    documentEvents.change, () => {
+    AppConstants.documentEvents.change, () => {
       updateLock(() => updateAmount(
         data,
         amountFromFirstCurrencyInput,
@@ -105,7 +103,7 @@ export const main = async () => {
   );
 
   amountFromSecondCurrencyInput.addEventListener(
-    documentEvents.input, () =>  {
+    AppConstants.documentEvents.input, () =>  {
       updateLock(() => updateAmount(
         data,
         amountFromFirstCurrencyInput,
