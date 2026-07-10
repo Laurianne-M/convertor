@@ -9,7 +9,7 @@ import {
   populateContainer,
   populateTitle,
   populateLangSelector
-} from "./logic/logic.js";
+} from "./features/homepage/homepage.js";
 
 import { setLocale } from "./i18n/i18n.js";
 
