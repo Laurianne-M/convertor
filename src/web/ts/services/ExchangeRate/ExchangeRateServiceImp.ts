@@ -5,7 +5,7 @@ import type {
 } from "./ExchangeRateService";
 import { ExchangeRate } from "./ExchangeRateFallbackData";
 import type { TimeProviderServiceImpl } from "../TimeProvider/TImeProviderServiceImp";
-import { AppConstants} from "../../constants.js"
+import { AppConstants } from "../../constants.js"
 import type { StorageService } from "../Storage/StorageService";
 import type { LoggerService } from "../Logger/LoggerService";
 
@@ -53,11 +53,11 @@ export class ExchangeRateServiceImp implements ExchangeRateService {
        this.dependencies.logger.debug('fetching from API...');
       try {
         const params = {
-          access_key: AppConstants.API_KEY,
+          access_key: AppConstants.API.apiKey,
         };
 
         const queryString = new URLSearchParams(params).toString();
-        const urlWithParams = `${AppConstants.API_BASE_URL}?${queryString}`;
+        const urlWithParams = `${AppConstants.API.baseURL}?${queryString}`;
         const res = await this.dependencies.fetch.call(window, urlWithParams);
         const jsonData = await res.json();
 

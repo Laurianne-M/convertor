@@ -73,13 +73,16 @@ export class AppConstants {
       { id: 'en', label: t(StringKey.lang_en), flag: '🇺🇸', active: true },
       { id: 'fr', label: t(StringKey.lang_fr), flag: '🇫🇷', active: false },
       { id: 'es', label: t(StringKey.lang_es), flag: '🇪🇸', active: false }
-    ]
-  }
+    ],
+    navBarError: "an error occured while charging the navbar"
+  };
+
+  static readonly API = {
+    baseURL: 'https://api.exchangeratesapi.io/v1/latest',
+    apiKey: import.meta.env.VITE_EXCHANGE_RATES_API_KEY
+  };
 
   static readonly RATES_LOADING = "Still waiting for rates";
   static readonly DAY_IN_MILLISECONDS = 60 * 60 * 24 * 1000;
-  static readonly API_BASE_URL = 'https://api.exchangeratesapi.io/v1/latest';
-  static readonly API_KEY = import.meta.env.VITE_EXCHANGE_RATES_API_KEY;
-  static readonly NAV_BAR_ERROR = "an error occured while charging the navbar";
 }
 

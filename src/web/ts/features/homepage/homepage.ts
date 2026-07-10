@@ -60,8 +60,8 @@ export function populateLiveNavbar({ rates, logger }: { rates: Record<string, nu
       select.textContent = `${metalName}: $${formattedPrice}`;
 
     } else {
-      logger.warn(AppConstants.NAV_BAR_ERROR);
-      window.alert(AppConstants.NAV_BAR_ERROR);
+      logger.warn(AppConstants.UI_STRINGS.navBarError);
+      window.alert(AppConstants.UI_STRINGS.navBarError);
     };
   });
 };
