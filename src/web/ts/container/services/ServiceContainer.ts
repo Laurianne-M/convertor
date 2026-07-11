@@ -2,6 +2,7 @@ import type { TimeProvider } from "../../services/TimeProvider/TimeProviderServi
 import type { LoggerService } from "../../services/Logger/LoggerService";
 import type { StorageService } from "../../services/Storage/StorageService";
 import type { ExchangeRateService } from "../../services/ExchangeRate/ExchangeRateService";
+import type { DOMService } from "../../services/DOM/DOMService";
 
 /**
  * Centralizes the creation and wiring of all services used by the application.
@@ -21,4 +22,6 @@ export interface ServiceContainer {
 
   /** Fetches and caches currency exchange rates */
   exchangeRateService: ExchangeRateService;
+
+  dom: DOMService;
 }
