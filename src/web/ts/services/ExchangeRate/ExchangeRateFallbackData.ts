@@ -1,12 +1,12 @@
 import type { ExchangeRateAPIResponse } from "./ExchangeRateService";
 import type { TimeProvider } from "../TimeProvider/TimeProviderService";
-import { currencies } from "../../constants";
+import { AppConstants } from "../../constants";
 
 export namespace ExchangeRate {
   export const fallbackData = (timeProvider: TimeProvider): ExchangeRateAPIResponse => ({
     success: true,
     timestamp: timeProvider.currentDate().getTime(),
-    base: currencies.EUR.code,
+    base: AppConstants.currencies.EUR.code,
     date: timeProvider.currentDate().toISOString().split('T')[0]?? '',
     rates: {
       USD: 1.09,

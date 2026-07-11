@@ -1,4 +1,4 @@
-import { currencies } from "../../constants";
+import { AppConstants } from "../../constants";
 
 
 export type ExchangeRatePairs = {
@@ -13,7 +13,7 @@ export type ExchangeRatePairs = {
   XAG: number
 }
 
-export type CurrencyCode = keyof typeof currencies;
+export type CurrencyCode = keyof typeof AppConstants.currencies;
 
 
 export interface ExchangeRateAPIResponse extends ExchangeRates {
