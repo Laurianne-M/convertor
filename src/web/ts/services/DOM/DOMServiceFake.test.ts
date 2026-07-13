@@ -1,8 +1,45 @@
 import { describe, it, beforeEach, expect } from "vitest";
-import type { DOMServiceFake } from "./DOMServiceFake";
+import { DOMServiceFake } from "./DOMServiceFake";
+
+let dom: DOMServiceFake;
 
 describe('DOMServiceFake', () => {
-  it('should do this', () => {
+  beforeEach(() => {
+    dom = new DOMServiceFake();
+  });
+
+  it('should return a select element for getBaseCurrencySelect', () => {
+    expect(dom.getBaseCurrencySelect()).toBeInstanceOf(HTMLSelectElement)
+  })
+
+  it('should return a select element for getDesiredCurrencySelect', () => {
+    expect(dom.getDesiredCurrencySelect()).toBeInstanceOf(HTMLSelectElement)
+  })
+
+  it('should return an input element for getFirstInputAmount', () => {
+    expect(dom.getFirstInputAmount()).toBeInstanceOf(HTMLInputElement)
+  })
+
+  it('should return an input element for getSecondInputAmount', () => {
+    expect(dom.getSecondInputAmount()).toBeInstanceOf(HTMLInputElement)
+  })
+
+  it('should return a div element for getLiveCurrenciesContainer', () => {
+    expect(dom.getLiveCurrenciesContainer()).toBeInstanceOf(HTMLDivElement)
+  })
+
+  it('should return a div element for getTitleContainer', () => {
+    expect(dom.getTitleContainer()).toBeInstanceOf(HTMLDivElement)
+  })
+
+  it('should return a div elemenent for', () => {
+    expect(dom.getSubtitleContainer()).toBeInstanceOf(HTMLDivElement)
+  })
+
+  it('should not crashed when populateSelect is called', () => {
+    const select = document.createElement('select');
     
+    dom.populateSelect(select, { USD: { code: 'USD', name: 'US Dollar' } } )
+
   })
 })
