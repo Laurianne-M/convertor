@@ -14,11 +14,11 @@ export interface DOMService {
 
   getSecondInputAmount(): HTMLInputElement;
 
-  getLiveCurrenciesContainer(): HTMLInputElement;
+  getLiveCurrenciesContainer(): HTMLElement;
 
-  getTitleContainer(): HTMLInputElement;
+  getTitleContainer(): HTMLElement;
 
-  getSubtitleContainer(): HTMLInputElement;
+  getSubtitleContainer(): HTMLElement;
 
   populateSelect(select: HTMLSelectElement, options: Record<string, Currency>): void;
 

@@ -24,7 +24,7 @@ describe('ExchangeRateServiceFake', () => {
   let exchangeRatesFake: ExchangeRateServiceFake
 
   beforeEach(() => {
-    fakeTimeProvider = new TimeProviderServiceFake(new Date('2026-03-12T00:00:00Z'))
+    fakeTimeProvider = new TimeProviderServiceFake({currentDate: new Date('2026-03-12T00:00:00Z')})
     exchangeRatesFake = new ExchangeRateServiceFake(
       overrides,
       fakeTimeProvider

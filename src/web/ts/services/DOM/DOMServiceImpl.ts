@@ -35,16 +35,16 @@ export class DOMServiceImpl implements DOMService {
     return document.getElementById(id.input.secondAmount) as HTMLInputElement
   }
 
-  getLiveCurrenciesContainer(): HTMLInputElement {
-    return document.getElementById(id.container.currencies) as HTMLInputElement
+  getLiveCurrenciesContainer(): HTMLElement {
+    return document.getElementById(id.container.currencies) as HTMLElement
   }
 
-  getTitleContainer(): HTMLInputElement {
-    return document.getElementById(id.container.title) as HTMLInputElement
+  getTitleContainer(): HTMLElement {
+    return document.getElementById(id.container.title) as HTMLElement
   }
 
-  getSubtitleContainer(): HTMLInputElement {
-    return document.getElementById(id.container.subtitle) as HTMLInputElement
+  getSubtitleContainer(): HTMLElement {
+    return document.getElementById(id.container.subtitle) as HTMLElement
   }
 
   populateSelect(select: HTMLSelectElement, options: Record<string, Currency>): void {
