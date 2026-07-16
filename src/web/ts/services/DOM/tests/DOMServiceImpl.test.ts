@@ -1,11 +1,7 @@
-import { describe, it, beforeEach, expect } from "vitest";
-import { DOMServiceImpl } from "./DOMServiceImpl";
+import { describe, test, beforeEach, expect } from "vitest";
+import { DOMServiceImpl } from "../DOMServiceImpl";
 
-let dom: DOMServiceImpl;
-
-describe('DOMServiceImpl', () => {
-  beforeEach(() => {
-    document.body.innerHTML = `
+const DOM_TEMPLATE = `
       <select id="baseCurrency"></select>
       <select id="desiredCurrency"></select>
       <input id="amountFromFirstInput" />
@@ -14,38 +10,44 @@ describe('DOMServiceImpl', () => {
       <div id="titleContainer"></div>
       <div id="subtitleContainer"></div>
     `;
+
+describe('DOMServiceImpl', () => {
+  let dom: DOMServiceImpl;
+
+  beforeEach(() => {
+    document.body.innerHTML = DOM_TEMPLATE;
     dom = new DOMServiceImpl();
   });
 
-  it('should return the base currency select element', () => {
+  test('should return the base currency select element', () => {
     expect(dom.getBaseCurrencySelect()).toBeInstanceOf(HTMLSelectElement)
   })
 
-  it('should return the desired currency select element', () => {
+  test('should return the desired currency select element', () => {
     expect(dom.getDesiredCurrencySelect()).toBeInstanceOf(HTMLSelectElement)
   })
 
-  it('should return the amount from first input element', () => {
+  test('should return the amount from first input element', () => {
     expect(dom.getFirstInputAmount()).toBeInstanceOf(HTMLInputElement)
   })
 
-  it('should return the amount from second input element', () => {
+  test('should return the amount from second input element', () => {
     expect(dom.getSecondInputAmount()).toBeInstanceOf(HTMLInputElement)
   })
 
-  it('should return the live currencies container element', () => {
+  test('should return the live currencies container element', () => {
     expect(dom.getLiveCurrenciesContainer()).toBeInstanceOf(HTMLElement)
   })
 
-  it('should return the title container element', () => {
+  test('should return the title container element', () => {
     expect(dom.getTitleContainer()).toBeInstanceOf(HTMLElement)
   })
 
-  it('should return the subtitle container element', () => {
+  test('should return the subtitle container element', () => {
     expect(dom.getSubtitleContainer()).toBeInstanceOf(HTMLElement)
   })
 
-  it('should populate select elemenet with 2 currencies', () => {
+  test('should populate select elemenet with 2 currencies', () => {
     const select = dom.getBaseCurrencySelect() as HTMLSelectElement;
     dom.populateSelect(select!, {
       USD: { code: 'USD', name: 'USD Dollar' },
@@ -57,7 +59,7 @@ describe('DOMServiceImpl', () => {
     expect((select.options[1] as HTMLOptionElement).value).toBe('EUR')
   })
 
-  it('should trigger an event listener when called', () => {
+  test('should trigger an event listener when called', () => {
     const input = dom.getFirstInputAmount();
     let called = false;
     dom.addEventListener(input, 'input', () => { called = true })

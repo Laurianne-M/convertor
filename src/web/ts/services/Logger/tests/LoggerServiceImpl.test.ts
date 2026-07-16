@@ -1,4 +1,4 @@
-import { describe, it, vi, expect, beforeEach } from "vitest";
+import { describe, test, vi, expect, beforeEach } from "vitest";
 import { LoggerServiceImpl } from "../LoggerServiceImpl";
 
 
@@ -10,7 +10,7 @@ describe('LoggerServiceImpl', () => {
     logger = new LoggerServiceImpl();
   })
 
-  it.each([
+  test.each([
     ['debug', 'debug'],
     ['warn', 'warn'], 
     ['info', 'info'],
@@ -26,7 +26,7 @@ describe('LoggerServiceImpl', () => {
     spy.mockRestore(); 
   });
 
-   it.each([
+   test.each([
     ['debug', 'debug'],
     ['warn', 'warn'], 
     ['info', 'info'],

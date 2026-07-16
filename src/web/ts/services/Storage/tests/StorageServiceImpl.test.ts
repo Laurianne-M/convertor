@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { describe, test, expect, beforeEach } from "vitest";
 import { JSDOM } from 'jsdom';
 import { StorageServiceImpl } from "../StorageServiceImpl";
 import { ExchangeRate } from "../../ExchangeRate/ExchangeRateFallbackData";
@@ -18,7 +18,7 @@ describe('StorageServiceImpl', () => {
     storage.clear(); 
   })
 
-  it('should return the data if they exist', () => {
+  test('should return the data if they exist', () => {
     storage.set('data', mockExchangeRate);
      
     const result = storage.get('data');
@@ -27,12 +27,12 @@ describe('StorageServiceImpl', () => {
 
   })
 
-  it('should return null if data not exist', () => {
+  test('should return null if data not exist', () => {
     const result = storage.get('data'); 
     expect(result).toBe(null)
   })
 
-  it('should return new data if overwrite', () => {
+  test('should return new data if overwrite', () => {
     storage.set('data', mockExchangeRate);
 
     const ExchangeRateV2 = {

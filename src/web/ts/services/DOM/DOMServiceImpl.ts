@@ -1,7 +1,7 @@
 import type { DOMService } from "./DOMService";
 import type { Currency } from "../../features/homepage/homepage.types";
 
-const id = {
+const HTML_ELEMENT_IDS = {
   select: {
     baseCurrency: "baseCurrency",
     desiredCurrency: "desiredCurrency",
@@ -20,38 +20,38 @@ const id = {
 
 export class DOMServiceImpl implements DOMService {
   getBaseCurrencySelect(): HTMLSelectElement {
-    return document.getElementById(id.select.baseCurrency) as HTMLSelectElement
+    return document.getElementById(HTML_ELEMENT_IDS.select.baseCurrency) as HTMLSelectElement
   }
 
   getDesiredCurrencySelect(): HTMLSelectElement {
-    return document.getElementById(id.select.desiredCurrency) as HTMLSelectElement
+    return document.getElementById(HTML_ELEMENT_IDS.select.desiredCurrency) as HTMLSelectElement
   }
 
   getFirstInputAmount(): HTMLInputElement {
-    return document.getElementById(id.input.firstAmount) as HTMLInputElement
+    return document.getElementById(HTML_ELEMENT_IDS.input.firstAmount) as HTMLInputElement
   }
 
   getSecondInputAmount(): HTMLInputElement {
-    return document.getElementById(id.input.secondAmount) as HTMLInputElement
+    return document.getElementById(HTML_ELEMENT_IDS.input.secondAmount) as HTMLInputElement
   }
 
   getLiveCurrenciesContainer(): HTMLElement {
-    return document.getElementById(id.container.currencies) as HTMLElement
+    return document.getElementById(HTML_ELEMENT_IDS.container.currencies) as HTMLElement
   }
 
   getTitleContainer(): HTMLElement {
-    return document.getElementById(id.container.title) as HTMLElement
+    return document.getElementById(HTML_ELEMENT_IDS.container.title) as HTMLElement
   }
 
   getSubtitleContainer(): HTMLElement {
-    return document.getElementById(id.container.subtitle) as HTMLElement
+    return document.getElementById(HTML_ELEMENT_IDS.container.subtitle) as HTMLElement
   }
 
   populateSelect(select: HTMLSelectElement, options: Record<string, Currency>): void {
     if (!select) return;
     select.innerHTML = "";
     Object.values(options).forEach(option => {
-      const element = document.createElement(id.select.option) as HTMLOptionElement;
+      const element = document.createElement(HTML_ELEMENT_IDS.select.option) as HTMLOptionElement;
       if (!element) return;
       element.value = option.code;
       element.textContent = option.name;
