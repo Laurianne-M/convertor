@@ -16,7 +16,7 @@ describe('DOMServiceImpl', () => {
     `;
     dom = new DOMServiceImpl();
   });
-  
+
   it('should return the base currency select element', () => {
     expect(dom.getBaseCurrencySelect()).toBeInstanceOf(HTMLSelectElement)
   })
@@ -48,8 +48,8 @@ describe('DOMServiceImpl', () => {
   it('should populate select elemenet with 2 currencies', () => {
     const select = dom.getBaseCurrencySelect() as HTMLSelectElement;
     dom.populateSelect(select!, {
-      USD: { code: 'USD', name: 'USD Dollar'},
-      EUR: { code: 'EUR', name: 'Euro'}
+      USD: { code: 'USD', name: 'USD Dollar' },
+      EUR: { code: 'EUR', name: 'Euro' }
     })
 
     expect(select.options.length).toBe(2)

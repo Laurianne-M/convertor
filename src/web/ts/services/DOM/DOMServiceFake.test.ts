@@ -38,8 +38,13 @@ describe('DOMServiceFake', () => {
 
   it('should not crashed when populateSelect is called', () => {
     const select = document.createElement('select');
-    
-    dom.populateSelect(select, { USD: { code: 'USD', name: 'US Dollar' } } )
 
+    expect(() => dom.populateSelect(select, { USD: { code: 'USD', name: 'US Dollar' } })).not.toThrow();
+  })
+
+  it('should not crashed when addEventListener is called', () => {
+    const input = document.createElement('input');
+
+    expect(() => dom.addEventListener(input, 'input', () => { })).not.toThrow();
   })
 })

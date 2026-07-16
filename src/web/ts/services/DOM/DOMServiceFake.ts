@@ -1,4 +1,5 @@
 import type { DOMService } from "./DOMService";
+import type { Currency } from "../../features/homepage/homepage.types";
 
 export class DOMServiceFake implements DOMService {
   getBaseCurrencySelect = () => document.createElement('select');
@@ -8,6 +9,6 @@ export class DOMServiceFake implements DOMService {
   getLiveCurrenciesContainer = () => document.createElement('div');
   getTitleContainer = () => document.createElement('div');
   getSubtitleContainer = () => document.createElement('div');
-  populateSelect = () => {} ;
-  addEventListener = () => {};
+  populateSelect = (select: HTMLElement, options: Record<string, Currency>) => { };
+  addEventListener = (element: HTMLElement, event: string, callback: () => void) => { };
 }

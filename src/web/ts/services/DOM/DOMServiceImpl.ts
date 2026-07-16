@@ -2,16 +2,16 @@ import type { DOMService } from "./DOMService";
 import type { Currency } from "../../features/homepage/homepage.types";
 
 const id = {
-  select : {
+  select: {
     baseCurrency: "baseCurrency",
     desiredCurrency: "desiredCurrency",
     option: "option"
-  }, 
-  input : {
+  },
+  input: {
     firstAmount: "amountFromFirstInput",
-    secondAmount: "amountFromSecondInput", 
-  }, 
-  container : {
+    secondAmount: "amountFromSecondInput",
+  },
+  container: {
     currencies: "liveCurrenciesContainer",
     title: "titleContainer",
     subtitle: "subtitleContainer"
@@ -19,7 +19,7 @@ const id = {
 };
 
 export class DOMServiceImpl implements DOMService {
-  getBaseCurrencySelect(): HTMLSelectElement{
+  getBaseCurrencySelect(): HTMLSelectElement {
     return document.getElementById(id.select.baseCurrency) as HTMLSelectElement
   }
 
