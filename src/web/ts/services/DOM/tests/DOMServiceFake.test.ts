@@ -1,8 +1,6 @@
 import { describe, test, beforeEach, expect } from "vitest";
 import { DOMServiceFake } from "../DOMServiceFake";
 
-
-
 describe('DOMServiceFake', () => {
   let dom: DOMServiceFake;
 

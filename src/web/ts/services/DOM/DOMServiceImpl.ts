@@ -18,6 +18,9 @@ const HTML_ELEMENT_IDS = {
   }
 };
 
+/**
+ * Real implementation of DOMService that interacts with the browser
+ */
 export class DOMServiceImpl implements DOMService {
   getBaseCurrencySelect(): HTMLSelectElement {
     return document.getElementById(HTML_ELEMENT_IDS.select.baseCurrency) as HTMLSelectElement

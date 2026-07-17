@@ -1,3 +1,4 @@
+import type { HTMLSelectElement } from "happy-dom";
 import type { Currency } from "../../features/homepage/homepage.types";
 
 /**
@@ -5,25 +6,22 @@ import type { Currency } from "../../features/homepage/homepage.types";
  * Consolidating all DOM manipulation here facilitates a future migration to React.
  */
 export interface DOMService {
-  /** Returns the base currency select element. */
+
   getBaseCurrencySelect(): HTMLSelectElement;
 
-  /** Returns the desired currency select element. */
   getDesiredCurrencySelect(): HTMLSelectElement;
 
-  /** Returns the first amount input element. */
   getFirstInputAmount(): HTMLInputElement;
 
-  /** Returns the second amount input element. */
   getSecondInputAmount(): HTMLInputElement;
 
-  /** Returns the live currencies container element. */
+
   getLiveCurrenciesContainer(): HTMLElement;
 
-  /** Returns the title container element. */
+  
   getTitleContainer(): HTMLElement;
 
-  /** Returns the subtitle container element. */
+ 
   getSubtitleContainer(): HTMLElement;
 
   /** Populates a select element with the given currency options. */
