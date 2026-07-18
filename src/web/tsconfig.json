@@ -3,6 +3,7 @@
   "compilerOptions": {
 
     // Environment Settings
+    "lib": ["DOM", "ESNext"],
     "module": "ESNext",
     "target": "esnext",
     "moduleResolution": "node",

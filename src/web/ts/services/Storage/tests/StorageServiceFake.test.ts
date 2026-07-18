@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { describe, test, expect, beforeEach } from "vitest";
 import { StorageServiceFake } from "../StorageServiceFake";
 import { ExchangeRate } from "../../ExchangeRate/ExchangeRateFallbackData";
 import { TimeProviderServiceFake } from "../../TimeProvider/TimeProviderServiceFake";
@@ -14,7 +14,7 @@ beforeEach(() => {
 })
 
 describe('StorageServiceFake', () => {
-  it('should return the data if they exist', () => {
+  test('should return the data if they exist', () => {
     storageFake.set('data', mockData)
 
     const result = storageFake.get('data');
@@ -22,14 +22,14 @@ describe('StorageServiceFake', () => {
     expect(result).toEqual(mockData);
   })
 
-  it('should return null if data doesnt exist', () => {
+  test('should return null if data doesnt exist', () => {
     const result = storageFake.get('data');
 
     expect(result).toBeNull;
 
   })
 
-  it('should return new data if overwrite', () => {
+  test('should return new data if overwrite', () => {
     storageFake.set('data', mockData)
 
     const mockDataV2 = {

@@ -10,3 +10,8 @@ export type RatesResponse = {
   rates: Record<string, number>
   base: string
 }
+
+export type Currency = {
+  code: string
+  name: string
+}

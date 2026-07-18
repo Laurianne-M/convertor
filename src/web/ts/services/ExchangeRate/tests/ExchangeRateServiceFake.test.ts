@@ -1,4 +1,4 @@
-import { describe, it, beforeEach, expect } from "vitest";
+import { describe, test, beforeEach, expect } from "vitest";
 import { ExchangeRateServiceFake, type ExchangeRateServiceFakeOverrides } from "../ExchangeRateServiceFake";
 import { TimeProviderServiceFake } from "../../TimeProvider/TimeProviderServiceFake";
 
@@ -24,7 +24,7 @@ describe('ExchangeRateServiceFake', () => {
   let exchangeRatesFake: ExchangeRateServiceFake
 
   beforeEach(() => {
-    fakeTimeProvider = new TimeProviderServiceFake(new Date('2026-03-12T00:00:00Z'))
+    fakeTimeProvider = new TimeProviderServiceFake( { currentDate: new Date('2026-03-12T00:00:00Z') } )
     exchangeRatesFake = new ExchangeRateServiceFake(
       overrides,
       fakeTimeProvider
@@ -32,12 +32,12 @@ describe('ExchangeRateServiceFake', () => {
   })
 
   describe('ExchangeRateServiceFake', () => {
-    it('should return the rates when loadRates called', async () => {
+    test('should return the rates when loadRates called', async () => {
       const result = await exchangeRatesFake.loadRates()
       expect(result).toEqual(overrides.rates)
     })
 
-    it('throws an error when an error is specified in overrides', () => {
+    test('throws an error when an error is specified in overrides', () => {
       const expectedError = new Error("404 not found")
       exchangeRatesFake.overrides.error = expectedError
       expect(exchangeRatesFake.loadRates()).rejects.toThrow(expectedError)

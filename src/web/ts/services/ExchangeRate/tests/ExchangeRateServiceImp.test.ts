@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 /// <reference types="vitest/globals" />
-import { describe, vi, it, beforeEach, afterEach, expect } from "vitest";
+import { describe, vi, test, beforeEach, afterEach, expect } from "vitest";
 import { JSDOM } from 'jsdom';
 import { ExchangeRateServiceImp as ExchangeRateServiceImpl } from "../ExchangeRateServiceImp";
 import { ExchangeRate } from "../ExchangeRateFallbackData";
@@ -49,7 +49,7 @@ describe('exchangeRateService', () => {
     localStorage.clear();
   });
 
-  it("should cached data from localStorage without fetching again", async () => {
+  test("should cached data from localStorage without fetching again", async () => {
     await exchangeRateService.loadRates();
 
     await exchangeRateService.loadRates();
@@ -57,7 +57,7 @@ describe('exchangeRateService', () => {
     expect(fakeFetch.callCount).toBe(1);
   });
 
-  it("should fetch and caching new data if they are outdated", async () => {
+  test("should fetch and caching new data if they are outdated", async () => {
     fakeTimeProvider.overrides.isOlderThan = true
 
     const mockedData = {
@@ -75,7 +75,7 @@ describe('exchangeRateService', () => {
     expect(fakeFetch.callCount).toBe(1);
   });
 
-  it('should return the data if data exist and are not outdated', async () => {
+  test('should return the data if data exist and are not outdated', async () => {
 
     const mockedData = {
       jsonData: {
@@ -93,7 +93,7 @@ describe('exchangeRateService', () => {
     expect(result).toEqual(expect.objectContaining(localStorageData));
   });
 
-  it('should fetch new data if data do not exist or are outdaded', async () => {
+  test('should fetch new data if data do not exist or are outdaded', async () => {
   fakeFetch = new FakeFetch({
     success: true,
     timestamp: fakeTimeProvider.currentDate().getTime(),
@@ -117,7 +117,7 @@ describe('exchangeRateService', () => {
   }));
   });
 
-  it('returns fallback data on api quota limit', async () => {
+  test('returns fallback data on api quota limit', async () => {
     // Given: An ExchangeRateService that has reached its API quota
     exchangeRateService = new ExchangeRateServiceImpl({
       fetch: limitFetch.fetch,
@@ -136,7 +136,7 @@ describe('exchangeRateService', () => {
     expect(response.rates).toEqual(fallback.rates)
   });
 
-  it('should return mocked Data if fetch fail (network error)', async () => {
+  test('should return mocked Data if fetch fail (network error)', async () => {
     exchangeRateService = new ExchangeRateServiceImpl({
       fetch: errorFetch.fetch,
       timeProvider: fakeTimeProvider,

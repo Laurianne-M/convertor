@@ -1,4 +1,4 @@
-import { describe, it, vi, expect, beforeEach } from "vitest";
+import { describe, test, expect, beforeEach } from "vitest";
 import { LoggerServiceFake } from "../LoggerServiceFake";
 
 describe('LoggerService', () => {
@@ -8,7 +8,7 @@ describe('LoggerService', () => {
     logger = new LoggerServiceFake();
   })
 
-  it('should capture debug logs', () => {
+  test('should capture debug logs', () => {
     logger.debug('debug message'); 
 
     const debugLog = [{ level: 'debug', value: 'debug message'}];
@@ -16,7 +16,7 @@ describe('LoggerService', () => {
     expect(logger.logs).toEqual(debugLog);
   })
 
-  it('should capture info logs', () => {
+  test('should capture info logs', () => {
     logger.info('info message');
 
     const infoLog = [{ level: 'info', value: 'info message' }];
@@ -24,7 +24,7 @@ describe('LoggerService', () => {
     expect(logger.logs).toEqual(infoLog);
   })
 
-  it('should capture warn message', () => {
+  test('should capture warn message', () => {
     logger.warn('warn message');
 
     const warnLog = [{ level: 'warn', value: 'warn message' }];
@@ -32,7 +32,7 @@ describe('LoggerService', () => {
     expect(logger.logs).toEqual(warnLog);
   })
 
-  it('should capture error message', () => {
+  test('should capture error message', () => {
     logger.error('error message');
 
     const errorLog = [{ level: 'error', value: 'error message' }];
@@ -40,7 +40,7 @@ describe('LoggerService', () => {
     expect(logger.logs).toEqual(errorLog);
   })
 
-  it('should capture logs in order', () => {
+  test('should capture logs in order', () => {
     logger.debug('debug message');
     logger.info('info message');
     logger.warn('warn message');
@@ -57,7 +57,7 @@ describe('LoggerService', () => {
 
   })
 
-  it('should start with empty logs', () => {
+  test('should start with empty logs', () => {
     expect(logger.logs).toEqual([]);
   })
 

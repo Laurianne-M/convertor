@@ -3,12 +3,14 @@ import { TimeProviderServiceImpl } from "../../services/TimeProvider/TImeProvide
 import { LoggerServiceImpl } from "../../services/Logger/LoggerServiceImpl";
 import { StorageServiceImpl } from "../../services/Storage/StorageServiceImpl";
 import { ExchangeRateServiceImp } from "../../services/ExchangeRate/ExchangeRateServiceImp";
+import { DOMServiceImpl } from "../../services/DOM/DOMServiceImpl";
 
 export class ServiceContainerImpl implements ServiceContainer {
   public readonly timeProvider: TimeProviderServiceImpl;
   public readonly logger: LoggerServiceImpl;
   public readonly storage: StorageServiceImpl;
   public readonly exchangeRateService: ExchangeRateServiceImp;
+  public readonly dom: DOMServiceImpl;
 
   constructor() {
     this.timeProvider = new TimeProviderServiceImpl;
@@ -20,5 +22,6 @@ export class ServiceContainerImpl implements ServiceContainer {
       storage: this.storage,
       logger: this.logger
     });
+    this.dom = new DOMServiceImpl;
   }
 }
