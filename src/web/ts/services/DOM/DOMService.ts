@@ -11,43 +11,43 @@ export interface DOMService {
    * Returns the base currency select element.
    * @returns {HTMLSelectElement} The base currency select element.
    */
-  getBaseCurrencySelect(): HTMLSelectElement;
+  getBaseCurrencySelect(): HTMLSelectElement | null;
 
   /**
    * Returns the desired currency select element.
    * @returns {HTMLSelectElement} The desired currency select element.
    */
-  getDesiredCurrencySelect(): HTMLSelectElement;
+  getDesiredCurrencySelect(): HTMLSelectElement | null;
 
   /**
    * Returns the first amount input element.
    * @returns {HTMLInputElement} The first amount input element.
    */
-  getFirstInputAmount(): HTMLInputElement;
+  getFirstInputAmount(): HTMLInputElement | null;
 
   /**
    * Returns the second amount input element.
    * @returns {HTMLInputElement} The second amount input element.
    */
-  getSecondInputAmount(): HTMLInputElement;
+  getSecondInputAmount(): HTMLInputElement | null;
 
   /**
    * Returns the live currencies container element.
    * @returns {HTMLElement} The live currencies container element.
    */
-  getLiveCurrenciesContainer(): HTMLElement;
+  getLiveCurrenciesContainer(): HTMLElement | null;
 
   /**
    * Returns the title container element.
    * @returns {HTMLElement} The title container element.
    */
-  getTitleContainer(): HTMLElement;
+  getTitleContainer(): HTMLElement | null;
 
   /**
    * Returns the subtitle container element.
    * @returns {HTMLElement} The subtitle container element.
    */
-  getSubtitleContainer(): HTMLElement;
+  getSubtitleContainer(): HTMLElement | null;
 
   /**
    * Populates a select element with the given currency options.
