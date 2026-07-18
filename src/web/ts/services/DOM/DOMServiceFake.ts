@@ -3,7 +3,7 @@ import type { Currency } from "../../features/homepage/homepage.types";
 
 /**
  * Fake implementation of DOMService, used in tests.
-*/
+ */
 export class DOMServiceFake implements DOMService {
   private createSelect = () => document.createElement('select');
   private createInput = () => document.createElement('input');

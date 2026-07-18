@@ -4,6 +4,8 @@ import type { Currency } from "../../features/homepage/homepage.types";
  * Provides a unified interface for interacting with the DOM.
  * Consolidating all DOM manipulation here facilitates a future migration to React.
  */
+
+//TODO - Resolve https://github.com/Laurianne-M/convertor/issues/95
 export interface DOMService {
   /**
    * Returns the base currency select element.
