@@ -22,31 +22,31 @@ const HTML_ELEMENT_IDS = {
  * Real implementation of DOMService that interacts with the browser
  */
 export class DOMServiceImpl implements DOMService {
-  getBaseCurrencySelect(): HTMLSelectElement {
+  getBaseCurrencySelect(): HTMLSelectElement | null {
     return document.getElementById(HTML_ELEMENT_IDS.select.baseCurrency) as HTMLSelectElement
   }
 
-  getDesiredCurrencySelect(): HTMLSelectElement {
+  getDesiredCurrencySelect(): HTMLSelectElement | null {
     return document.getElementById(HTML_ELEMENT_IDS.select.desiredCurrency) as HTMLSelectElement
   }
 
-  getFirstInputAmount(): HTMLInputElement {
+  getFirstInputAmount(): HTMLInputElement | null {
     return document.getElementById(HTML_ELEMENT_IDS.input.firstAmount) as HTMLInputElement
   }
 
-  getSecondInputAmount(): HTMLInputElement {
+  getSecondInputAmount(): HTMLInputElement | null {
     return document.getElementById(HTML_ELEMENT_IDS.input.secondAmount) as HTMLInputElement
   }
 
-  getLiveCurrenciesContainer(): HTMLElement {
+  getLiveCurrenciesContainer(): HTMLElement | null {
     return document.getElementById(HTML_ELEMENT_IDS.container.currencies) as HTMLElement
   }
 
-  getTitleContainer(): HTMLElement {
+  getTitleContainer(): HTMLElement | null {
     return document.getElementById(HTML_ELEMENT_IDS.container.title) as HTMLElement
   }
 
-  getSubtitleContainer(): HTMLElement {
+  getSubtitleContainer(): HTMLElement | null {
     return document.getElementById(HTML_ELEMENT_IDS.container.subtitle) as HTMLElement
   }
 

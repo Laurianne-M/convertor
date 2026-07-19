@@ -60,7 +60,7 @@ describe('DOMServiceImpl', () => {
   })
 
   test('should trigger an event listener when called', () => {
-    const input = dom.getFirstInputAmount();
+    const input = dom.getFirstInputAmount()!;
     let called = false;
     dom.addEventListener(input, 'input', () => { called = true })
     input.dispatchEvent(new Event('input'))

@@ -14,14 +14,17 @@ import {
 } from './constants.js'
 
 import { ServiceContainerImpl } from "./container/services/ServiceContainerImpl.js";
+import type { ServiceContainer } from "./container/services/ServiceContainer.js";
 
-export const main = async () => {
-  const container = new ServiceContainerImpl;
-
-  const baseCurrencySelect = container.dom.getBaseCurrencySelect();
-  const desiredCurrencySelect = container.dom.getDesiredCurrencySelect();
-  const liveCurrenciesContainer = container.dom.getLiveCurrenciesContainer();
-  const subtitleContainer = container.dom.getSubtitleContainer();
+export const setupHomepage = async (
+  container: ServiceContainer,
+  baseCurrencySelect: HTMLSelectElement,
+  desiredCurrencySelect: HTMLSelectElement,
+  liveCurrenciesContainer: HTMLElement,
+  subtitleContainer: HTMLElement,
+  amountFromFirstCurrencyInput: HTMLInputElement,
+  amountFromSecondCurrencyInput: HTMLInputElement
+) => {
   container.dom.populateSelect(baseCurrencySelect, AppConstants.currencies);
   container.dom.populateSelect(desiredCurrencySelect, AppConstants.currencies);
   
@@ -39,13 +42,9 @@ export const main = async () => {
     location.reload();
   })
 
-  const amountFromFirstCurrencyInput = container.dom.getFirstInputAmount();
-  if (!amountFromFirstCurrencyInput) return;
-  const amountFromSecondCurrencyInput = container.dom.getSecondInputAmount();
-
-  amountFromFirstCurrencyInput.value = "1"; 
+  amountFromFirstCurrencyInput.value = "1";
   desiredCurrencySelect.value = 'EUR';
-
+  
   updateAmount(
     data,
     amountFromFirstCurrencyInput,
@@ -57,7 +56,7 @@ export const main = async () => {
   );
 
   container.dom.addEventListener(
-    container.dom.getFirstInputAmount(),
+    amountFromFirstCurrencyInput,
     AppConstants.documentEvents.input, () => { 
       updateLock(() => updateAmount(
         data,
@@ -72,7 +71,7 @@ export const main = async () => {
   );
 
   container.dom.addEventListener(
-    container.dom.getBaseCurrencySelect(),
+    baseCurrencySelect,
     AppConstants.documentEvents.change, () => {
       updateLock(() => updateAmount(
         data,
@@ -87,7 +86,7 @@ export const main = async () => {
   );
 
   container.dom.addEventListener(
-    container.dom.getDesiredCurrencySelect(),
+    desiredCurrencySelect,
     AppConstants.documentEvents.change, () => {
       updateLock(() => updateAmount(
         data,
@@ -102,7 +101,7 @@ export const main = async () => {
   );
 
   container.dom.addEventListener(
-    container.dom.getSecondInputAmount(),
+    amountFromSecondCurrencyInput,
     AppConstants.documentEvents.input, () =>  {
       updateLock(() => updateAmount(
         data,
@@ -115,4 +114,33 @@ export const main = async () => {
       ))
     }
   );
+}
+
+export const main = async () => {
+  const container = new ServiceContainerImpl;
+  const baseCurrencySelect = container.dom.getBaseCurrencySelect();
+  const desiredCurrencySelect = container.dom.getDesiredCurrencySelect();
+  const liveCurrenciesContainer = container.dom.getLiveCurrenciesContainer();
+  const subtitleContainer = container.dom.getSubtitleContainer();
+  const amountFromFirstCurrencyInput = container.dom.getFirstInputAmount();
+  const amountFromSecondCurrencyInput = container.dom.getSecondInputAmount();
+
+  if (
+    baseCurrencySelect &&
+    desiredCurrencySelect &&
+    liveCurrenciesContainer &&
+    subtitleContainer &&
+    amountFromFirstCurrencyInput &&
+    amountFromSecondCurrencyInput
+  ) {
+      setupHomepage(
+        container,
+        baseCurrencySelect,
+        desiredCurrencySelect,
+        liveCurrenciesContainer,
+        subtitleContainer,
+        amountFromFirstCurrencyInput,
+        amountFromSecondCurrencyInput
+      )
+  }
 }
