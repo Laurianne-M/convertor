@@ -35,7 +35,7 @@ export function populateLangSelector(
     select.appendChild(option);
   });
 
-  select.onclick = () => onLangChange(select.value);
+  select.onchange = () => onLangChange(select.value);
 }
 
 export function populateLiveNavbar({ rates, logger }: { rates: Record<string, number>, logger: LoggerService }) {
