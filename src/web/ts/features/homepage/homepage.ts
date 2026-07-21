@@ -1,7 +1,7 @@
 import { AppConstants} from '../../constants.js'
 import type { LoggerService } from '../../services/Logger/LoggerService.js';
 import type { ConvertOperation, RatesResponse } from './homepage.types.js';
-import { StringKey, t } from '../../i18n/i18n.js';
+import { StringKey, t, getLocale } from '../../i18n/i18n.js';
 
 export function populateContainer(container: any, uiString: any): void {
   uiString.forEach(({ id, label }: {id: string; label: string}) => {
@@ -26,6 +26,7 @@ export function populateLangSelector(
   onLangChange: (lang: string) => void
 ): void {
   const select = document.getElementById('langSelect') as HTMLSelectElement;
+  const currentLocale = getLocale();
 
   languages.forEach(({ id, label, flag, active} ) => {
     const option = document.createElement('option'); 
@@ -35,6 +36,7 @@ export function populateLangSelector(
     select.appendChild(option);
   });
 
+  select.value = currentLocale; // set the select to the current locale
   select.onchange = () => onLangChange(select.value);
 }
 

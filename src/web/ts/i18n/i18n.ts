@@ -18,6 +18,16 @@ export function setLocale(lang: string): void {
   localStorage.setItem('lang', lang);
 }
 
+export function getLocale(): string {
+  try {
+    return localStorage.getItem('lang') 
+      ?? navigator.language?.split('-')[0] 
+      ?? 'en';
+  } catch {
+    return 'en';
+  }
+}
+
 export function t(key: StringKey): string {
   let lang = 'en';
 
