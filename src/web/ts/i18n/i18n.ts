@@ -41,6 +41,16 @@ export function getLocale(): string {
   }
 }
 
+export function getLocale(): string {
+  try {
+    return localStorage.getItem('lang') 
+      ?? navigator.language?.split('-')[0] 
+      ?? 'en';
+  } catch {
+    return 'en';
+  }
+}
+
 export function t(key: StringKey): string {
   let lang = AppConstants.LOCALE.default;
 
