@@ -2,7 +2,6 @@ import stringsEn from '../../locales/strings.en.json';
 import stringFr from '../../locales/strings.fr.json';
 import stringEs from '../../locales/strings.es.json';
 
-
 type Strings = Record<string, string>;
 
 const strings: Record<string, Record<string, any>> = {
@@ -11,8 +10,6 @@ const strings: Record<string, Record<string, any>> = {
   es: stringEs as Strings
 }
 const fallbackStrings = stringsEn;
-
-
 
 export function setLocale(lang: string): void {
   localStorage.setItem('lang', lang);
