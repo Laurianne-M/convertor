@@ -15,7 +15,7 @@ export const loadPage = async ({ page }: { page: Page })  => {
           CAD: 1.60,
           BTC: 0.000015,
           XAU: 0.00042,
-          XAG: 1
+          XAG: 0.035
         }
       }),
     });
