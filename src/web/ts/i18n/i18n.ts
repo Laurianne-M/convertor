@@ -3,6 +3,7 @@ import stringsEn from '../../locales/strings.en.json';
 import stringFr from '../../locales/strings.fr.json';
 import stringEs from '../../locales/strings.es.json';
 
+
 type Strings = Record<string, string>;
 
 const strings: Record<string, Record<string, any>> = {
@@ -37,16 +38,6 @@ export function getLocale(): string {
 
   } catch {
     return AppConstants.LOCALE.default;
-  }
-}
-
-export function getLocale(): string {
-  try {
-    return localStorage.getItem('lang') 
-      ?? navigator.language?.split('-')[0] 
-      ?? 'en';
-  } catch {
-    return 'en';
   }
 }
 
