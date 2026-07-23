@@ -16,7 +16,6 @@ test('second input changes on changes to first Select', async ({ page }) => {
   const result = await page.inputValue('#amountFromSecondInput');
 
   expect(parseFloat(result)).toBeCloseTo(parseFloat('68.75'), 1);
-
 })
 
 test('first input changes on changes to second input + select', async ({ page }) => {
@@ -31,5 +30,4 @@ test('first input changes on changes to second input + select', async ({ page })
   const result = await page.inputValue('#amountFromFirstInput');
 
   expect(parseFloat(result)).toBeCloseTo(parseFloat('62.5'), 1);
-
 })
