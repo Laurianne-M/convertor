@@ -18,8 +18,8 @@ jobs:
     - name: Install dependencies
       run: make install
 
-    - name: Install Playwright browsers  
-      run: npx playwright install --with-deps chromium
+    - name: Install Playwright browsers and dependencies  
+      run:  sudo npx playwright install-deps webkit && npx playwright install webkit
       
     - name: E2E tests
       run: make e2e
