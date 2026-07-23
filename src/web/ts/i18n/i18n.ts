@@ -1,6 +1,8 @@
+import { AppConstants } from '../constants';
 import stringsEn from '../../locales/strings.en.json';
 import stringFr from '../../locales/strings.fr.json';
 import stringEs from '../../locales/strings.es.json';
+
 
 type Strings = Record<string, string>;
 
@@ -12,26 +14,26 @@ const strings: Record<string, Record<string, any>> = {
 const fallbackStrings = stringsEn;
 
 export function setLocale(lang: string): void {
-  localStorage.setItem('lang', lang);
+  localStorage.setItem(AppConstants.LOCALE.langKey, lang);
 }
 
 export function getLocale(): string {
   try {
-    return localStorage.getItem('lang') 
+    return localStorage.getItem(AppConstants.LOCALE.langKey) 
       ?? navigator.language?.split('-')[0] 
-      ?? 'en';
+      ?? AppConstants.LOCALE.default;
   } catch {
-    return 'en';
+    return AppConstants.LOCALE.default;
   }
 }
 
 export function t(key: StringKey): string {
-  let lang = 'en';
+  let lang = AppConstants.LOCALE.langKey
 
   try {
-    lang = localStorage.getItem('lang') 
+    lang = localStorage.getItem(AppConstants.LOCALE.langKey) 
       ?? navigator.language?.split('-')[0] 
-      ?? 'en';
+      ?? AppConstants.LOCALE.default;
   } catch {
     // test environment — default to 'en'
   }
