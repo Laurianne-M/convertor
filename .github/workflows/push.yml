@@ -19,7 +19,11 @@ jobs:
       run: make install
 
     - name: Install Playwright browsers and dependencies  
+<<<<<<< HEAD
       run:  npx playwright install-deps webkit && npx playwright install webkit
+=======
+      run:  sudo npx playwright install-deps webkit && npx playwright install webkit
+>>>>>>> 87e6549 (fix e2e test)
       
     - name: E2E tests
       run: make e2e
