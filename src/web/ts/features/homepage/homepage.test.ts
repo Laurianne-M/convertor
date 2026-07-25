@@ -14,11 +14,10 @@ import {
   resetUpdateLock
 } from "./homepage";
 
-import { ExchangeRateServiceFake } from "../../services/ExchangeRate/ExchangeRateServiceFake";
-import { LoggerServiceFake } from "../../services/Logger/LoggerServiceFake";
-import { TimeProviderServiceFake } from "../../services/TimeProvider/TimeProviderServiceFake";
+import { ServiceContainerFake } from "../../container/services/ServiceContainerFake";
 
-const logger = new LoggerServiceFake();
+const container = new ServiceContainerFake();
+const logger = container.logger;
 
 describe("logic", () => {
   describe("populateLiveNavbar", () => {
@@ -174,39 +173,13 @@ describe("logic", () => {
   });
 
   describe('UpdateAmount', () => {
-    const fakeTimeProvider = new TimeProviderServiceFake();
-
-
-
-    const fakeRates = {
-      rates: {
-        USD: 1.1,
-        EUR: 1.0,
-        GBP: 1.2,
-        JPY: 1.3,
-        CAD: 1.4,
-        AUD: 1.2,
-        BTC: 3.0,
-        XAU: 2.0,
-        XAG: 2.4
-      },
-      base: 'EUR'
-    } as const; 
-
-    let exchangeRateService: ExchangeRateServiceFake;
-    beforeEach(() => {
-      exchangeRateService = new ExchangeRateServiceFake(
-        { rates: fakeRates },
-        fakeTimeProvider
-      );
-    });
 
     it('should call window alert with the correct message if amount is negative', async () => {
       // Create a spy on the window.alert method
       const alertSpy = vi.spyOn(window, 'alert').mockImplementation(() => { });
       const firstInput = { value: -100 } as unknown as HTMLInputElement;
       const secondInput = { value: '' } as unknown as HTMLInputElement;
-      const data = await exchangeRateService.loadRates();
+      const data = await container.exchangeRateService.loadRates();
 
       await updateAmount(data, firstInput, secondInput, false, 'EUR', 'USD', logger);
 
@@ -220,7 +193,7 @@ describe("logic", () => {
     it('should update the second input with converted amount (not reverse)', async () => {
       const firstInput = { value: 100 } as unknown as HTMLInputElement;
       const secondInput = { value: '' } as unknown as HTMLInputElement;
-      const data = await exchangeRateService.loadRates();
+      const data = await container.exchangeRateService.loadRates();
 
       await updateAmount(data, firstInput, secondInput, false, 'EUR', 'USD', logger);
 
@@ -230,7 +203,7 @@ describe("logic", () => {
     it('should update the first input with converted amount (reverse)', async () => {
       const firstInput = { value: '' } as unknown as HTMLInputElement;
       const secondInput = { value: 110 } as unknown as HTMLInputElement;
-      const data = await exchangeRateService.loadRates();
+      const data = await container.exchangeRateService.loadRates();
 
       await updateAmount(data, firstInput, secondInput, true, 'EUR', 'USD', logger);
 
@@ -238,11 +211,11 @@ describe("logic", () => {
     });
 
     it('should do nothing if loadRates failed', async () => {
-      exchangeRateService.loadRates = vi.fn().mockResolvedValue(null);
+      container.exchangeRateService.loadRates = vi.fn().mockResolvedValue(null);
 
       const firstInput = { value: '' } as unknown as HTMLInputElement;
       const secondInput = { value: 100 } as unknown as HTMLInputElement;
-      const data = await exchangeRateService.loadRates();
+      const data = await container.exchangeRateService.loadRates();
 
       await updateAmount(data, firstInput, secondInput, true, 'EUR', 'USD', logger);
 
