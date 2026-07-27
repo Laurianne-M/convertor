@@ -19,9 +19,28 @@ export function setLocale(lang: string): void {
 
 export function getLocale(): string {
   try {
-    return localStorage.getItem(AppConstants.LOCALE.langKey) 
-      ?? navigator.language?.split('-')[0] 
-      ?? AppConstants.LOCALE.default;
+    const storedLanguage = localStorage.getItem(AppConstants.LOCALE.langKey);
+    if (storedLanguage) {
+      return storedLanguage
+    }
+
+    const navigatorLanguage = navigator.language;
+    if (!navigatorLanguage) {
+      return AppConstants.LOCALE.default;
+    }
+
+    const parts = navigatorLanguage.split('-');
+    if (parts.length === 0) {
+      return AppConstants.LOCALE.default;
+    }
+
+    const language = parts[0];
+    if (!language) {
+      return AppConstants.LOCALE.default;
+    }
+
+    return language;
+
   } catch {
     return AppConstants.LOCALE.default;
   }
