@@ -30,16 +30,11 @@ export function getLocale(): string {
     }
 
     const parts = navigatorLanguage.split('-');
-    if (parts.length === 0) {
-      return AppConstants.LOCALE.default;
+    if (parts.length >= 1) {
+      return parts[0]!;
     }
 
-    const language = parts[0];
-    if (!language) {
-      return AppConstants.LOCALE.default;
-    }
-
-    return language;
+    throw new Error('navigator.language have no parts')
 
   } catch {
     return AppConstants.LOCALE.default;
@@ -47,16 +42,13 @@ export function getLocale(): string {
 }
 
 export function t(key: StringKey): string {
-  let lang = AppConstants.LOCALE.langKey
+  let lang = AppConstants.LOCALE.default;
 
   try {
-    lang = localStorage.getItem(AppConstants.LOCALE.langKey) 
-      ?? navigator.language?.split('-')[0] 
-      ?? AppConstants.LOCALE.default;
-  } catch {
-    // test environment — default to 'en'
+    lang = getLocale();
+  } catch (error) {
+    console.error('Failed to get locale:', error);
   }
-
   const translation = strings[lang] ?? fallbackStrings;
   return translation[key] ?? fallbackStrings[key] ?? key;
 }

@@ -33,7 +33,7 @@ export default defineConfig({
         toHaveScreenshot: {
       animations: 'disabled',
       scale: 'css',
-      threshold: 0.2,
+      threshold: 0.05,
       maxDiffPixelRatio: 0.01
   }
 },
@@ -46,7 +46,7 @@ export default defineConfig({
     },
     {
       name: 'mobile-safari',
-      use: { ...devices['iPhone 13'] }, // Emulates viewport, user-agent, and touch settings
+      use: { ...devices['iPhone 15 Pro Max'] }, // Emulates viewport, user-agent, and touch settings
     },
   ],
 
