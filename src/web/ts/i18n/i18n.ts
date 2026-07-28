@@ -34,7 +34,11 @@ export function getLocale(): string {
       return parts[0]!;
     }
 
+<<<<<<< HEAD
     throw new Error('Malformed language detected on navigator, using default.')
+=======
+    throw new Error('navigator.language have no parts')
+>>>>>>> 091fa2c (update mobile screenshots for iPhone 15 Pro Max + t() safety issue)
 
   } catch {
     return AppConstants.LOCALE.default;
