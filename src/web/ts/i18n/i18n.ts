@@ -26,7 +26,7 @@ export function getLocale(): string {
 
     const navigatorLanguage = navigator.language;
     if (!navigatorLanguage) {
-      return AppConstants.LOCALE.default;
+      throw new Error('navigator.language is null or undefined.');
     }
 
     const parts = navigatorLanguage.split('-');
@@ -34,7 +34,7 @@ export function getLocale(): string {
       return parts[0]!;
     }
 
-    throw new Error('navigator.language have no parts')
+    throw new Error('Malformed language detected on navigator, using default.')
 
   } catch {
     return AppConstants.LOCALE.default;
