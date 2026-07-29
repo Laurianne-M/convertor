@@ -7,7 +7,7 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   timeout: 60000,
   testDir: './ts/tests/e2e',
-  snapshotPathTemplate: '{testDir}/screenshots/{projectName}/{arg}{ext}' ,
+  snapshotPathTemplate: '{testDir}/screenshots/{projectName}/{arg}{ext}',
   testMatch: '**/*.spec.ts',
   testIgnore: '**/*.test.js',
   /* Run tests in files in parallel */
@@ -34,7 +34,7 @@ export default defineConfig({
       animations: 'disabled',
       scale: 'css',
       threshold: 0.05,
-      maxDiffPixelRatio: 0.01,
+      maxDiffPixelRatio: 0.01
   }
 },
 
@@ -43,6 +43,10 @@ export default defineConfig({
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'mobile-safari',
+      use: { ...devices['iPhone 15 Pro Max'] }, // Emulates viewport, user-agent, and touch settings
     },
   ],
 

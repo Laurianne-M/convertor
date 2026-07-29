@@ -126,9 +126,6 @@ main {
   100% { background-position: 200% center; }
 }
 
-.bulle-2 {
-  display: none;
-}
 
 /* ── Conversion Card ── */
 .conversion-container {
@@ -276,9 +273,71 @@ footer {
   background: rgba(15, 12, 41, 0.3);
 }
 
-/* ── Responsive ── */
 @media (max-width: 480px) {
-  .container { padding: 1.8rem 1.3rem; border-radius: 18px; }
-  .base-currency, .desired-currency { padding: 0.7rem 0.9rem; }
-  input.amount, select.amount { font-size: 1rem; }
+  .container {
+    padding: 1.8rem 1.3rem;
+    border-radius: 18px;
+  }
+
+  .base-currency,
+  .desired-currency {
+    padding: 0.7rem 0.9rem;
+  }
+
+  select.amount {
+    max-width: 55%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  main {
+    min-height: calc(100vh - 120px);
+    padding: 8rem 1rem;
+    gap: 1rem;
+    justify-content: flex-start;
+  }
+
+  .live-currencies {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* Firefox */
+    -webkit-overflow-scrolling: touch;
+    /* iOS */
+  }
+
+  .live-currencies::-webkit-scrollbar {
+    display: none;
+    /* Chrome/Safari */
+  }
+
+  .currencies {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    width: max-content;
+  }
+
+  .currencies a {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+
+  }
+
+  .lang-selector {
+    width: 100%;
+  }
+
+  .lang-select {
+    width: 100%;
+  }
 }

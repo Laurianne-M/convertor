@@ -1,3 +1,4 @@
+import { AppConstants } from '../constants';
 import stringsEn from '../../locales/strings.en.json';
 import stringFr from '../../locales/strings.fr.json';
 import stringEs from '../../locales/strings.es.json';
@@ -12,23 +13,42 @@ const strings: Record<string, Record<string, any>> = {
 }
 const fallbackStrings = stringsEn;
 
-
-
 export function setLocale(lang: string): void {
-  localStorage.setItem('lang', lang);
+  localStorage.setItem(AppConstants.LOCALE.langKey, lang);
+}
+
+export function getLocale(): string {
+  try {
+    const storedLanguage = localStorage.getItem(AppConstants.LOCALE.langKey);
+    if (storedLanguage) {
+      return storedLanguage
+    }
+
+    const navigatorLanguage = navigator.language;
+    if (!navigatorLanguage) {
+      throw new Error('navigator.language is null or undefined.');
+    }
+
+    const parts = navigatorLanguage.split('-');
+    if (parts.length >= 1) {
+      return parts[0]!;
+    }
+
+    throw new Error('Malformed language detected on navigator, using default.')
+
+  } catch {
+    return AppConstants.LOCALE.default;
+  }
 }
 
 export function t(key: StringKey): string {
-  let lang = 'en';
+  let lang = AppConstants.LOCALE.default;
 
   try {
-    lang = localStorage.getItem('lang') 
-      ?? navigator.language?.split('-')[0] 
-      ?? 'en';
-  } catch {
-    // test environment — default to 'en'
+    lang = getLocale();
+  } catch (error) {
+    console.error('Failed to get locale:', error);
   }
-
   const translation = strings[lang] ?? fallbackStrings;
   return translation[key] ?? fallbackStrings[key] ?? key;
 }
