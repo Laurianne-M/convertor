@@ -29,7 +29,7 @@ export class ExchangeRateServiceFake implements ExchangeRateService {
   private readonly timeProvider
 
   constructor(
-    overrides: ExchangeRateServiceFakeOverrides = {},
+    overrides: ExchangeRateServiceFakeOverrides = TEST_EXCHANGE_RATES_FAKE_OVERRIDES,
     timeProvider: TimeProvider
   ) {
     this.overrides = overrides

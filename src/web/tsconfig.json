@@ -7,7 +7,6 @@
     "module": "ESNext",
     "target": "esnext",
     "moduleResolution": "node",
-    "ignoreDeprecations": "6.0",
     "allowJs": true,
     "noEmit": true,
 

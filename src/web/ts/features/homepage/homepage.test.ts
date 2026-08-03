@@ -15,6 +15,7 @@ import {
 } from "./homepage";
 
 import { ServiceContainerFake } from "../../container/services/ServiceContainerFake";
+import type { ExchangeRates } from "../../services/ExchangeRate/ExchangeRateService";
 
 const container = new ServiceContainerFake();
 const logger = container.logger;
@@ -82,7 +83,6 @@ describe("logic", () => {
       expect(btcElementContent).toBe('BTC: $72,666.67');
     });
   });
-
 
   describe('convert', () => {
     it('should return amount if the 2 currencies are the same', () => {
@@ -211,13 +211,18 @@ describe("logic", () => {
     });
 
     it('should do nothing if loadRates failed', async () => {
-      container.exchangeRateService.loadRates = vi.fn().mockResolvedValue(null);
+      container.exchangeRateService.overrides.error = new Error('loadRates failed');
 
       const firstInput = { value: '' } as unknown as HTMLInputElement;
       const secondInput = { value: 100 } as unknown as HTMLInputElement;
-      const data = await container.exchangeRateService.loadRates();
+      let data: ExchangeRates | null = null;
+      try {
+        data = await container.exchangeRateService.loadRates();
+      } catch {
+        // expected — loadRates is set to fail for this test
+      }
 
-      await updateAmount(data, firstInput, secondInput, true, 'EUR', 'USD', logger);
+      await updateAmount(data as unknown as ExchangeRates, firstInput, secondInput, true, 'EUR', 'USD', logger);
 
       expect(firstInput.value).toBe('');
     });
@@ -254,7 +259,6 @@ describe("logic", () => {
 
       await updateLock(updateAmount);
       await updateLock(updateAmount);
-
 
       expect(updateAmount).toHaveBeenCalledTimes(2);
     });
