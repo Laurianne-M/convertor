@@ -101,7 +101,7 @@ export const convert = (operation: ConvertOperation) => {
 };
 
   export async function updateAmount(
-    data: RatesResponse,
+    data: RatesResponse | null,
     amountFromFirstCurrencyInput: HTMLInputElement,
     amountFromSecondCurrencyInput: HTMLInputElement,
     reverse = false,
