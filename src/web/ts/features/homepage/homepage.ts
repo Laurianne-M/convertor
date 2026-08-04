@@ -100,48 +100,48 @@ export const convert = (operation: ConvertOperation) => {
     : amountInBase * (rates[toSelectDesiredCurrency] ?? 1);
 };
 
-export async function updateAmount(
-  data: RatesResponse,
-  amountFromFirstCurrencyInput: HTMLInputElement,
-  amountFromSecondCurrencyInput: HTMLInputElement,
-  reverse = false,
-  fromCurrency: string,
-  toCurrency: string,
-  logger: LoggerService
-) {
-  // Safety check: Make sure data and data.rates actually exist
-  if (!data || !data.rates) {
-    logger.warn(AppConstants.RATES_LOADING);
-    return;
-  }
+  export async function updateAmount(
+    data: RatesResponse | null,
+    amountFromFirstCurrencyInput: HTMLInputElement,
+    amountFromSecondCurrencyInput: HTMLInputElement,
+    reverse = false,
+    fromCurrency: string,
+    toCurrency: string,
+    logger: LoggerService
+  ) {
+    // Safety check: Make sure data and data.rates actually exist
+    if (!data || !data.rates) {
+      logger.warn(AppConstants.RATES_LOADING);
+      return;
+    }
 
-  const firstInputValue = parseFloat(amountFromFirstCurrencyInput.value)
-  const secondInputValue = parseFloat(amountFromSecondCurrencyInput.value)
+    const firstInputValue = parseFloat(amountFromFirstCurrencyInput.value)
+    const secondInputValue = parseFloat(amountFromSecondCurrencyInput.value)
 
-  if (firstInputValue < 0) {
-    window.alert(t(StringKey.window_alert_negative_number));
-    return;
-  }
+    if (firstInputValue < 0) {
+      window.alert(t(StringKey.window_alert_negative_number));
+      return;
+    }
 
-  // Determine values based on whether we are updating from the first or second input
-  const amount = (reverse ? secondInputValue : firstInputValue) || 0;
-  const fromSelectBaseCurrency = reverse ? toCurrency : fromCurrency
-  const toSelectDesiredCurrency = reverse ? fromCurrency : toCurrency
+    // Determine values based on whether we are updating from the first or second input
+    const amount = (reverse ? secondInputValue : firstInputValue) || 0;
+    const fromSelectBaseCurrency = reverse ? toCurrency : fromCurrency
+    const toSelectDesiredCurrency = reverse ? fromCurrency : toCurrency
 
-  const result = convert({
-    amount: amount,
-    fromSelectBaseCurrency: fromSelectBaseCurrency,
-    toSelectDesiredCurrency: toSelectDesiredCurrency,
-    rates: data.rates,
-    base: data.base
-  });
+    const result = convert({
+      amount: amount,
+      fromSelectBaseCurrency: fromSelectBaseCurrency,
+      toSelectDesiredCurrency: toSelectDesiredCurrency,
+      rates: data.rates,
+      base: data.base
+    });
 
-  const inputToUpdate = reverse
-    ? amountFromFirstCurrencyInput
-    : amountFromSecondCurrencyInput
+    const inputToUpdate = reverse
+      ? amountFromFirstCurrencyInput
+      : amountFromSecondCurrencyInput
 
-  inputToUpdate.value = result.toFixed(2)
-};
+    inputToUpdate.value = result.toFixed(2)
+  };
 
 let isUpdating = false;
 
