@@ -4,4 +4,8 @@ export default defineConfig({
     allowedHosts: ['.internal.jabaridash.com'],
     host: true, 
   },
+  build: {
+    outDir: 'build',
+    emptyOutDir: true,
+  },
 });
