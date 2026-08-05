@@ -1,6 +1,7 @@
 {
   "scripts": {
     "start": "vite --port 5174 --host",
+    "build": "vite build",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui",

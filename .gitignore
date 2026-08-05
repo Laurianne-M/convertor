@@ -1,10 +1,17 @@
+# Dependencies
 node_modules
+
+# Testing
 coverage
 test-results
+
+#misc
 .env
 .env.local
 .env.*.local
 
+# Production
+build/
 
 # Playwright
 test-results/
