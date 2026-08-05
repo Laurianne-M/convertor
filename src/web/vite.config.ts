@@ -5,7 +5,7 @@ export default defineConfig({
     host: true, 
   },
   build: {
-    outDir: '../build/app',
+    outDir: 'build',
     emptyOutDir: true,
   },
 });

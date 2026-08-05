@@ -11,7 +11,7 @@ test-results
 .env.*.local
 
 # Production
-build/
+src/web/build/
 
 # Playwright
 test-results/
