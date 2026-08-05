@@ -3,7 +3,7 @@
     "start": "vite --port 5174 --host",
     "build": "vite build",
     "serve": "serve build --listen 5174",
-    "prod": " vite build && serve build --listen 5174",
+    "prod": "npm run build && npm run serve",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui",
