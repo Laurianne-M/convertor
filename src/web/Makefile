@@ -1,3 +1,7 @@
+.PHONY: build
+build:
+	npm run build
+
 test:
 	scripts/test.sh
 

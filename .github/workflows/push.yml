@@ -6,7 +6,7 @@ on:
     branches: [ main ]
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: src/web
@@ -26,3 +26,28 @@ jobs:
 
     - name: Unit tests
       run: make test
+
+  production-deployment:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: src/web
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [test]
+    steps:
+      - name: Clone repository for production build
+        uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Node dependencies
+        run: make install
+      - name: Build
+        run: make build
+      - name: Deploy to Firebase Live
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CONVERTOR_2B5DD }}
+          projectId: convertor-2b5dd
+          channelId: live
