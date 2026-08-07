@@ -1,4 +1,6 @@
 import { defineConfig } from 'vite';
+
+// Production build configuration for Firebase Hosting
 export default defineConfig({
   server: {
     allowedHosts: ['.internal.jabaridash.com'],
