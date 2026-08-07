@@ -4,7 +4,6 @@
     "build": "vite build",
     "serve": "serve build --listen 5174",
     "prod": "npm run build && npm run serve",
-    "deploy": "npm run build && firebase deploy",
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui",
