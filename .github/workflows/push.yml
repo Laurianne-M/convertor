@@ -29,9 +29,6 @@ jobs:
 
   production-deployment:
     runs-on: ubuntu-24.04
-    defaults:
-      run:
-        working-directory: src/web
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [test]
     steps:
@@ -41,9 +38,9 @@ jobs:
         with:
           node-version: 20
       - name: Install Node dependencies
-        run: make install
+        run: make -C src/web install
       - name: Build
-        run: make build
+        run: make -C src/web build
       - name: Deploy to Firebase Live
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
