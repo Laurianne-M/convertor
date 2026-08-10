@@ -24,3 +24,6 @@ playwright/.auth/
 firebase-debug.log*
 firebase-debug.*.log*
 .dataconnect
+
+# API
+dist
