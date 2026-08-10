@@ -1,23 +1,31 @@
 {
-  "name": "api",
-  "version": "1.0.0",
-  "type": "module",
-  "main": "index.js",
+  "name": "functions",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node dist/index.js",
+    "lint": "eslint --ext .js,.ts .",
     "build": "tsc",
-    "dev": "ts-node src/index.ts"
+    "build:watch": "tsc --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
   },
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "engines": {
+    "node": "24"
+  },
+  "main": "lib/index.js",
   "dependencies": {
-    "express": "^5.2.1"
+    "firebase-admin": "^13.6.0",
+    "firebase-functions": "^7.0.0"
   },
   "devDependencies": {
-    "@types/express": "^5.0.6",
-    "@types/node": "^26.2.0",
-    "typescript": "^7.0.2"
-  }
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "eslint": "^8.9.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.25.4",
+    "firebase-functions-test": "^3.4.1",
+    "typescript": "^6.0.0"
+  },
+  "private": true
 }
