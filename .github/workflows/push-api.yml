@@ -1,4 +1,4 @@
-name: On push
+name: API Backend CI
 on:
   push:
     branches: [ main ]
