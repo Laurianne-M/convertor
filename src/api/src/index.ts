@@ -1,7 +1,7 @@
 import {onRequest} from "firebase-functions/https";
 import express, {type Express, type Response, type Request} from "express";
 
-const app: Express = express();
+export const app: Express = express();
 
 app.get("/health", (req: Request, res: Response) => {
   res.status(200).json(
