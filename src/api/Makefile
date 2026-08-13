@@ -1,17 +1,14 @@
-test:
-	scripts/test.sh
-
-build:
-	scripts/build.sh
-
-deploy:
-	scripts/deploy.sh
-
 serve:
-	scripts/serve.sh
+	./scripts.sh serve
 
 start:
-	scripts/start.sh
+	./scripts.sh start
+
+build:
+	./scripts.sh build
 
 install:
-	scripts/install.sh
+	./scripts.sh install
+
+test:
+	./scripts.sh test
