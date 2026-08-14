@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest"; 
-import { app } from "./index";
+import { app } from "./index.js";
 import request from "supertest";
 
 describe("/health", () => {

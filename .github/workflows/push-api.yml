@@ -1,0 +1,23 @@
+name: API Backend CI
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/api/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'src/api/**'
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+    - name: Install dependencies
+      run: make -C src/api install
+
+    - name: Unit tests
+      run: make -C src/api test
