@@ -9,6 +9,7 @@ on:
     branches: [ main ]
     paths:
       - 'src/web/**'
+      - '.github/workflows/*.yml'
 jobs:
   test:
     runs-on: ubuntu-24.04
