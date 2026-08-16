@@ -1,0 +1,19 @@
+import {Router, type Response, type Request} from "express";
+
+// eslint-disable-next-line new-cap
+const router = Router();
+
+router.get("/latest", async (req: Request, res: Response) => {
+  try {
+    const API_KEY = process.env.VITE_EXCHANGE_RATES_API_KEY;
+    const BASE_URL = `https://api.exchangeratesapi.io/v1/latest?access_key=${API_KEY}`;
+
+    const response = await fetch(BASE_URL);
+    const data = await response.json();
+
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({message: "Failed to fetch rates", status: 500});
+  }
+});
+export default router;
