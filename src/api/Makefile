@@ -14,4 +14,4 @@ test:
 	./scripts.sh test
 
 deploy:
-	./scripts.sh deploy
+	FIREBASE_TOKEN=$(FIREBASE_TOKEN) ./scripts.sh deploy
