@@ -25,4 +25,8 @@ function test() {
   npm run test
 }
 
+function deploy() {
+  npm run deploy
+}
+
 "$@"

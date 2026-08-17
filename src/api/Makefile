@@ -12,3 +12,6 @@ install:
 
 test:
 	./scripts.sh test
+
+deploy:
+	./scripts.sh deploy
