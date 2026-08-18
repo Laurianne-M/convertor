@@ -12,7 +12,12 @@ export function createV1Router(fetchFn: typeof fetch = fetch) {
       const response = await fetchFn(BASE_URL);
       const data = await response.json();
 
-      res.status(200).json(data);
+      if (!response.ok || data.success === false) {
+        const statusCode = response.status !== 200 ? response.status : 500;
+        return res.status(statusCode).json(data);
+      }
+
+      return res.status(200).json(data);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch rates", status: 500 });
     }
