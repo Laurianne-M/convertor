@@ -1,5 +1,5 @@
 import {describe, test, expect, beforeEach} from "vitest";
-import {TestData} from "./ExchangeRates/TestData.js";
+import {TestData} from "./TestData.js";
 import request from "supertest";
 import express, {type Express} from "express";
 import {createV1Router} from "./router.js";
