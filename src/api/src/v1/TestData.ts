@@ -1,11 +1,12 @@
-import type { ExchangeRateAPIResponse } from "./types.js";
+import type { ExchangeRateAPIResponse } from "./types/responses.js";
+import type { TestResponses } from "./types/TestResponses.js";
+import * as RouterConstants from "./router.constants.js";
 
-const responses = {
-  success: {
+const success: ExchangeRateAPIResponse = {
     "success": true,
-    "timestamp": 1787160005,
-    "base": "EUR",
-    "date": "2026-08-19",
+    "timestamp": RouterConstants.DEFAULT_TIMESTAMP,
+    "base": RouterConstants.DEFAULT_BASE_CURRENCY,
+    "date": RouterConstants.DEFAULT_DATE,
     "rates": {
       "AED": 4.283811,
       "AFN": 75.810389,
@@ -180,51 +181,50 @@ const responses = {
       "ZMW": 21.841026,
       "ZWL": 375.552509
     }
-  } satisfies ExchangeRateAPIResponse,
+}
 
-  internalError: {
+  const internalError: ExchangeRateAPIResponse = {
     success: false,
     error: {
       code: 500,
       type: "internal_server_error",
       info: "An internal error occurred while processing your request."
     },
-  } satisfies ExchangeRateAPIResponse,
+  }
 
-  unauthorized: {
+  const unauthorized: ExchangeRateAPIResponse = {
     success: false,
     error: {
-      code: 101,
+      code: 401,
       type: "invalid_access_key",
       info: "You have not supplied a valid API Access Key."
     },
-  } satisfies ExchangeRateAPIResponse,
+  }
 
-  missingParameter: {
+  const missingParameter: ExchangeRateAPIResponse = {
     success: false,
     error: {
-      code: 201,
+      code: 400,
       type: "missing_access_key",
       info: "You have not supplied an API Access Key."
     },
-  } satisfies ExchangeRateAPIResponse
-};
+  }
 
-const fetchers = {
-  success: (async () =>
-    Response.json(responses.success, { status: 200 })) satisfies typeof fetch,
+  const responses: TestResponses = {
+    success,
+    internalError,
+    unauthorized,
+    missingParameter,
+  }
 
-  internalError: (async () =>
-    Response.json(responses.internalError, { status: 500 })) satisfies typeof fetch,
-
-  unauthorized: (async () =>
-    Response.json(responses.unauthorized, { status: 401 })) satisfies typeof fetch,
-
-  missingParameter: (async () =>
-    Response.json(responses.missingParameter, { status: 400 })) satisfies typeof fetch,
-};
+  export function makeFetch(
+  response: ExchangeRateAPIResponse,
+  status: number,
+): typeof fetch {
+  return async () => Response.json(response, { status });
+}
 
 export const TestData = {
   responses,
-  fetchers
+  makeFetch
 };

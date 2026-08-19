@@ -1,0 +1,3 @@
+export const DEFAULT_BASE_CURRENCY = "EUR";
+export const DEFAULT_TIMESTAMP = 1787160005;
+export const DEFAULT_DATE = "2026-08-19";

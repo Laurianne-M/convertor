@@ -20,10 +20,6 @@ export interface ExchangeRateSuccessResponse extends ExchangeRates {
 
 export interface ExchangeRateErrorResponse {
   success: false;
-  timestamp?: number;
-  date?: string;
-  base?: string;
-  rates?: Record<string, number>;
   error: ExchangeRateErrorDetail;
 }
 

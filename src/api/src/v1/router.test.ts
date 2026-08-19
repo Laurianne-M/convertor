@@ -12,7 +12,7 @@ describe("/v1/latest", () => {
   });
 
   test("should return 200 with rates data when fetch succeed", async () => {
-    app.use("/v1", createV1Router(TestData.fetchers.success));
+    app.use("/v1", createV1Router(TestData.makeFetch(TestData.responses.success, 200)));
 
     const response = await request(app).get("/v1/latest");
 
@@ -21,7 +21,7 @@ describe("/v1/latest", () => {
   });
 
   test("should return 500 when fetch fails with server error", async () => {
-    app.use("/v1", createV1Router(TestData.fetchers.internalError));
+    app.use("/v1", createV1Router(TestData.makeFetch(TestData.responses.internalError, 500)));
 
     const response = await request(app).get("/v1/latest");
 
@@ -30,7 +30,7 @@ describe("/v1/latest", () => {
   });
 
   test("should return 401 when API key is invalid", async () => {
-    app.use("/v1", createV1Router(TestData.fetchers.unauthorized));
+    app.use("/v1", createV1Router(TestData.makeFetch(TestData.responses.unauthorized, 401)));
 
     const response = await request(app).get("/v1/latest");
 
@@ -39,7 +39,7 @@ describe("/v1/latest", () => {
   });
 
   test("should return 400 when parameter is missing", async () => {
-    app.use("/v1", createV1Router(TestData.fetchers.missingParameter));
+    app.use("/v1", createV1Router(TestData.makeFetch(TestData.responses.missingParameter, 400)));
 
     const response = await request(app).get("/v1/latest");
 
