@@ -1,11 +1,13 @@
+import { ExchangeRateErrorCode, ExchangeRateErrorType } from "../router.constants.js";
+
 export interface ExchangeRates {
   base: string;
   rates: Record<string, number>;
 }
 
 export interface ExchangeRateErrorDetail {
-  code: number;
-  type: string;
+  code: ExchangeRateErrorCode | number;
+  type: ExchangeRateErrorType | string;
   info?: string;
 }
 

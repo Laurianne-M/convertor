@@ -4,9 +4,9 @@ import * as RouterConstants from "./router.constants.js";
 
 const success: ExchangeRateAPIResponse = {
     "success": true,
-    "timestamp": RouterConstants.DEFAULT_TIMESTAMP,
-    "base": RouterConstants.DEFAULT_BASE_CURRENCY,
-    "date": RouterConstants.DEFAULT_DATE,
+    "timestamp": RouterConstants.DEFAULT_VALUES.TIMESTAMP,
+    "base": RouterConstants.DEFAULT_VALUES.BASE_CURRENCY,
+    "date": RouterConstants.DEFAULT_VALUES.DATE,
     "rates": {
       "AED": 4.283811,
       "AFN": 75.810389,
@@ -186,27 +186,27 @@ const success: ExchangeRateAPIResponse = {
   const internalError: ExchangeRateAPIResponse = {
     success: false,
     error: {
-      code: 500,
-      type: "internal_server_error",
-      info: "An internal error occurred while processing your request."
+      code: RouterConstants.ExchangeRateErrorCode.INTERNAL_SERVER_ERROR,
+      type: RouterConstants.ExchangeRateErrorType.INTERNAL_SERVER_ERROR,
+      info: RouterConstants.DEFAULT_INFO_MESSAGES.INTERNAL_SERVER_ERROR,
     },
   }
 
   const unauthorized: ExchangeRateAPIResponse = {
     success: false,
     error: {
-      code: 401,
-      type: "invalid_access_key",
-      info: "You have not supplied a valid API Access Key."
+      code: RouterConstants.ExchangeRateErrorCode.INVALID_ACCESS_KEY,
+      type: RouterConstants.ExchangeRateErrorType.INVALID_ACCESS_KEY,
+      info: RouterConstants.DEFAULT_INFO_MESSAGES.UNAUTHORIZED,
     },
   }
 
   const missingParameter: ExchangeRateAPIResponse = {
     success: false,
     error: {
-      code: 400,
-      type: "missing_access_key",
-      info: "You have not supplied an API Access Key."
+      code: RouterConstants.ExchangeRateErrorCode.MISSING_ACCESS_KEY,
+      type: RouterConstants.ExchangeRateErrorType.MISSING_ACCESS_KEY,
+      info: RouterConstants.DEFAULT_INFO_MESSAGES.MISSING_PARAMETER,
     },
   }
 
