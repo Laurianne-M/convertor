@@ -18,7 +18,8 @@ export enum ExchangeRateErrorType {
   INTERNAL_SERVER_ERROR = "internal_server_error",
 }
 
-export enum ExchangeRateErrorCode {
+export enum ExchangeRateCode {
+  SUCCESS = 200,
   INVALID_ACCESS_KEY = 401,
   MISSING_ACCESS_KEY = 400,
   INTERNAL_SERVER_ERROR = 500,
@@ -27,7 +28,7 @@ export enum ExchangeRateErrorCode {
 export const INTERNAL_ERROR_RESPONSE: ExchangeRateAPIResponse = {
   success: false,
   error: {
-    code: ExchangeRateErrorCode.INTERNAL_SERVER_ERROR,
+    code: ExchangeRateCode.INTERNAL_SERVER_ERROR,
     type: ExchangeRateErrorType.INTERNAL_SERVER_ERROR,
     info: DEFAULT_INFO_MESSAGES.INTERNAL_SERVER_ERROR,
   },
@@ -36,7 +37,7 @@ export const INTERNAL_ERROR_RESPONSE: ExchangeRateAPIResponse = {
 export const UNAUTHORIZED_RESPONSE: ExchangeRateAPIResponse = {
   success: false,
   error: {
-    code: ExchangeRateErrorCode.INVALID_ACCESS_KEY,
+    code: ExchangeRateCode.INVALID_ACCESS_KEY,
     type: ExchangeRateErrorType.INVALID_ACCESS_KEY,
     info: DEFAULT_INFO_MESSAGES.UNAUTHORIZED,
   },
@@ -45,7 +46,7 @@ export const UNAUTHORIZED_RESPONSE: ExchangeRateAPIResponse = {
 export const MISSING_PARAMETER_RESPONSE: ExchangeRateAPIResponse = {
   success: false,
   error: {
-    code: ExchangeRateErrorCode.MISSING_ACCESS_KEY,
+    code: ExchangeRateCode.MISSING_ACCESS_KEY,
     type: ExchangeRateErrorType.MISSING_ACCESS_KEY,
     info: DEFAULT_INFO_MESSAGES.MISSING_PARAMETER,
   },

@@ -1,4 +1,5 @@
 import {Router, type Response, type Request} from "express";
+import {ExchangeRateCode} from "./router.constants.js";
 
 export function createV1Router(fetchFn: typeof fetch = fetch) {
   // eslint-disable-next-line new-cap
@@ -13,13 +14,13 @@ export function createV1Router(fetchFn: typeof fetch = fetch) {
       const data = await response.json();
 
       if (!response.ok || data.success === false) {
-        const statusCode = response.status !== 200 ? response.status : 500;
+        const statusCode = response.status !== ExchangeRateCode.SUCCESS ? response.status : ExchangeRateCode.INTERNAL_SERVER_ERROR;
         return res.status(statusCode).json(data);
       }
 
-      return res.status(200).json(data);
+      return res.status(ExchangeRateCode.SUCCESS).json(data);
     } catch (error) {
-      res.status(500).json({ message: "Failed to fetch rates", status: 500 });
+      res.status(ExchangeRateCode.INTERNAL_SERVER_ERROR).json({ message: "Failed to fetch rates", status: 500 });
     }
   });
 

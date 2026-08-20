@@ -1,4 +1,4 @@
-import { ExchangeRateErrorCode, ExchangeRateErrorType } from "../router.constants.js";
+import { ExchangeRateCode, ExchangeRateErrorType } from "../router.constants.js";
 
 export interface ExchangeRates {
   base: string;
@@ -6,7 +6,7 @@ export interface ExchangeRates {
 }
 
 export interface ExchangeRateErrorDetail {
-  code: ExchangeRateErrorCode | number;
+  code: ExchangeRateCode | number;
   type: ExchangeRateErrorType | string;
   info?: string;
 }

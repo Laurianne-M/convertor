@@ -186,7 +186,7 @@ const success: ExchangeRateAPIResponse = {
   const internalError: ExchangeRateAPIResponse = {
     success: false,
     error: {
-      code: RouterConstants.ExchangeRateErrorCode.INTERNAL_SERVER_ERROR,
+      code: RouterConstants.ExchangeRateCode.INTERNAL_SERVER_ERROR,
       type: RouterConstants.ExchangeRateErrorType.INTERNAL_SERVER_ERROR,
       info: RouterConstants.DEFAULT_INFO_MESSAGES.INTERNAL_SERVER_ERROR,
     },
@@ -195,7 +195,7 @@ const success: ExchangeRateAPIResponse = {
   const unauthorized: ExchangeRateAPIResponse = {
     success: false,
     error: {
-      code: RouterConstants.ExchangeRateErrorCode.INVALID_ACCESS_KEY,
+      code: RouterConstants.ExchangeRateCode.INVALID_ACCESS_KEY,
       type: RouterConstants.ExchangeRateErrorType.INVALID_ACCESS_KEY,
       info: RouterConstants.DEFAULT_INFO_MESSAGES.UNAUTHORIZED,
     },
@@ -204,7 +204,7 @@ const success: ExchangeRateAPIResponse = {
   const missingParameter: ExchangeRateAPIResponse = {
     success: false,
     error: {
-      code: RouterConstants.ExchangeRateErrorCode.MISSING_ACCESS_KEY,
+      code: RouterConstants.ExchangeRateCode.MISSING_ACCESS_KEY,
       type: RouterConstants.ExchangeRateErrorType.MISSING_ACCESS_KEY,
       info: RouterConstants.DEFAULT_INFO_MESSAGES.MISSING_PARAMETER,
     },
