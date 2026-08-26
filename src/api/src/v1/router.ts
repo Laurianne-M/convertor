@@ -5,10 +5,17 @@ import {
   DEFAULT_INFO_MESSAGES
 } from "./router.constants.js";
 
+/**
+ * Creates an Express Router configured to proxy v1 exchange rate API endpoints.
+ * */
 export function createV1Router(fetchFn: typeof fetch = fetch) {
   // eslint-disable-next-line new-cap
   const router = Router();
 
+  /**
+   * GET /v1/latest
+   * Fetches the latest exchange rates from the upstream API provider and forwards the exact status code and body.
+   */
   router.get("/latest", async (req: Request, res: Response) => {
     try {
       const API_KEY = process.env.VITE_EXCHANGE_RATES_API_KEY;
