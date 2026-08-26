@@ -2,7 +2,7 @@ import {Router, type Response, type Request} from "express";
 import {
   ExchangeRateCode,
   ExchangeRateErrorType,
-  DEFAULT_INFO_MESSAGES
+  DefaultInfoMessages
 } from "./router.constants.js";
 
 /**
@@ -31,7 +31,7 @@ export function createV1Router(fetchFn: typeof fetch = fetch) {
         error: {
           code: ExchangeRateCode.INTERNAL_SERVER_ERROR,
           type: ExchangeRateErrorType.INTERNAL_SERVER_ERROR,
-          info: DEFAULT_INFO_MESSAGES.INTERNAL_SERVER_ERROR,
+          info: DefaultInfoMessages.INTERNAL_SERVER_ERROR,
         },
       });
     }

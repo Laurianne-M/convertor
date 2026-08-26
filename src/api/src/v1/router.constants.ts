@@ -1,12 +1,12 @@
 import { ExchangeRateAPIResponse } from "./types/responses.js";
 
-export const DEFAULT_VALUES = {
+export const DefaultValues = {
   BASE_CURRENCY: "EUR",
   TIMESTAMP: 1787160005,
   DATE: "2026-08-19",
 } as const
 
-export const DEFAULT_INFO_MESSAGES = {
+export const DefaultInfoMessages = {
   INTERNAL_SERVER_ERROR: "An internal error occurred while processing your request.",
   UNAUTHORIZED: "You have not supplied a valid API Access Key.",
   MISSING_PARAMETER: "You have not supplied an API Access Key.",
@@ -43,21 +43,21 @@ export enum ExchangeRateCode {
   INTERNAL_SERVER_ERROR = 500,
 }
 
-export const INTERNAL_ERROR_RESPONSE: ExchangeRateAPIResponse = {
+export const InternalErrorResponse: ExchangeRateAPIResponse = {
   success: false,
   error: {
     code: ExchangeRateCode.INTERNAL_SERVER_ERROR,
     type: ExchangeRateErrorType.INTERNAL_SERVER_ERROR,
-    info: DEFAULT_INFO_MESSAGES.INTERNAL_SERVER_ERROR,
+    info: DefaultInfoMessages.INTERNAL_SERVER_ERROR,
   },
 };
 
-export const UNAUTHORIZED_RESPONSE: ExchangeRateAPIResponse = {
+export const UnauthorizedResponse: ExchangeRateAPIResponse = {
   success: false,
   error: {
     code: ExchangeRateCode.INVALID_ACCESS_KEY,
     type: ExchangeRateErrorType.INVALID_ACCESS_KEY,
-    info: DEFAULT_INFO_MESSAGES.UNAUTHORIZED,
+    info: DefaultInfoMessages.UNAUTHORIZED,
   },
 };
 
@@ -66,6 +66,6 @@ export const MISSING_PARAMETER_RESPONSE: ExchangeRateAPIResponse = {
   error: {
     code: ExchangeRateCode.MISSING_ACCESS_KEY,
     type: ExchangeRateErrorType.MISSING_ACCESS_KEY,
-    info: DEFAULT_INFO_MESSAGES.MISSING_PARAMETER,
+    info: DefaultInfoMessages.MISSING_PARAMETER,
   },
 };
