@@ -1,16 +1,16 @@
-import { ExchangeRateCode, ExchangeRateErrorType } from "../router.constants.js";
+import {ExchangeRateCode, ExchangeRateErrorType} from "../router.constants.js";
 
 /**
  * Represents exchange rate data relative to a single base currency.
  */
 export interface ExchangeRates {
   /**
-   * The base currency code against which all exchange rates are calculated (e.g. "EUR").
+   * Base currency code against which all exchange rates are calculated.
    */
   base: string;
 
   /**
-   * A dictionary mapping currency codes (e.g., "USD", "GBP") to their exchange rate relative to the base currency.
+   * Currency codes mapping with their exchange rate relative to base currency.
    */
   rates: Record<string, number>;
 }
@@ -41,7 +41,7 @@ export interface ExchangeRateSuccessResponse extends ExchangeRates {
   /** Indicates that the API request succeeded. */
   success: true;
 
-  /** Timestamp (in seconds) indicating when the exchange rates were generated. */
+  /** Timestamp indicating when the exchange rates were generated. */
   timestamp: number;
 
   /** The date for which exchange rates were queried in YYYY-MM-DD format. */
