@@ -12,16 +12,34 @@ export const DEFAULT_INFO_MESSAGES = {
   MISSING_PARAMETER: "You have not supplied an API Access Key.",
 } as const;
 
+/**
+ * Machine-readable string identifiers for specific error categories.
+ */
 export enum ExchangeRateErrorType {
+  /** Invalid API access key provided. */
   INVALID_ACCESS_KEY = "invalid_access_key",
+
+  /** Access key query parameter was missing. */
   MISSING_ACCESS_KEY = "missing_access_key",
+
+  /** Internal server error. */
   INTERNAL_SERVER_ERROR = "internal_server_error",
 }
 
+/**
+ * Error codes returned by the upstream Exchange Rate API and internal service.
+ */
 export enum ExchangeRateCode {
+  /** Request succeeded. */
   SUCCESS = 200,
+
+  /** The user supplied an invalid access key. */
   INVALID_ACCESS_KEY = 401,
+
+  /** No access key was provided in the request. */
   MISSING_ACCESS_KEY = 400,
+
+  /** Internal server error or network connection error. */
   INTERNAL_SERVER_ERROR = 500,
 }
 
