@@ -4,9 +4,9 @@ import * as RouterConstants from "./router.constants.js";
 
 const success: ExchangeRateAPIResponse = {
     "success": true,
-    "timestamp": RouterConstants.DEFAULT_VALUES.TIMESTAMP,
-    "base": RouterConstants.DEFAULT_VALUES.BASE_CURRENCY,
-    "date": RouterConstants.DEFAULT_VALUES.DATE,
+    "timestamp": RouterConstants.DefaultValues.TIMESTAMP,
+    "base": RouterConstants.DefaultValues.BASE_CURRENCY,
+    "date": RouterConstants.DefaultValues.DATE,
     "rates": {
       "AED": 4.283811,
       "AFN": 75.810389,
@@ -188,7 +188,7 @@ const success: ExchangeRateAPIResponse = {
     error: {
       code: RouterConstants.ExchangeRateCode.INTERNAL_SERVER_ERROR,
       type: RouterConstants.ExchangeRateErrorType.INTERNAL_SERVER_ERROR,
-      info: RouterConstants.DEFAULT_INFO_MESSAGES.INTERNAL_SERVER_ERROR,
+      info: RouterConstants.DefaultInfoMessages.INTERNAL_SERVER_ERROR,
     },
   }
 
@@ -197,7 +197,7 @@ const success: ExchangeRateAPIResponse = {
     error: {
       code: RouterConstants.ExchangeRateCode.INVALID_ACCESS_KEY,
       type: RouterConstants.ExchangeRateErrorType.INVALID_ACCESS_KEY,
-      info: RouterConstants.DEFAULT_INFO_MESSAGES.UNAUTHORIZED,
+      info: RouterConstants.DefaultInfoMessages.UNAUTHORIZED,
     },
   }
 
@@ -206,7 +206,7 @@ const success: ExchangeRateAPIResponse = {
     error: {
       code: RouterConstants.ExchangeRateCode.MISSING_ACCESS_KEY,
       type: RouterConstants.ExchangeRateErrorType.MISSING_ACCESS_KEY,
-      info: RouterConstants.DEFAULT_INFO_MESSAGES.MISSING_PARAMETER,
+      info: RouterConstants.DefaultInfoMessages.MISSING_PARAMETER,
     },
   }
 
