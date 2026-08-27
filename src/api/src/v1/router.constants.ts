@@ -1,13 +1,13 @@
-import { ExchangeRateAPIResponse } from "./types/responses.js";
+import {ExchangeRateAPIResponse} from "./types/responses.js";
 
 export const DefaultValues = {
   BASE_CURRENCY: "EUR",
   TIMESTAMP: 1787160005,
   DATE: "2026-08-19",
-} as const
+} as const;
 
 export const DefaultInfoMessages = {
-  INTERNAL_SERVER_ERROR: "An internal error occurred while processing your request.",
+  INTERNAL_SERVER_ERROR: "An internal error occurred",
   UNAUTHORIZED: "You have not supplied a valid API Access Key.",
   MISSING_PARAMETER: "You have not supplied an API Access Key.",
 } as const;
