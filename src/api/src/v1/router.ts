@@ -1,9 +1,4 @@
-import {Router, type Response, type Request} from "express";
-import {
-  ExchangeRateCode,
-  ExchangeRateErrorType,
-  DefaultInfoMessages,
-} from "./router.constants.js";
+import {Router, type Response, type Request, NextFunction} from "express";
 
 /**
  * Creates an Express Router configured to proxy v1 exchange rate API endpoints.
@@ -20,7 +15,11 @@ export function createV1Router(fetchFn: typeof fetch = fetch) {
    * Fetches the latest exchange rates from the upstream API provider
    * Forwards the exact status code and body.
    */
-  router.get("/latest", async (req: Request, res: Response) => {
+  router.get("/latest", async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const API_KEY = process.env.VITE_EXCHANGE_RATES_API_KEY;
       const BASE_URL = `https://api.exchangeratesapi.io/v1/latest?access_key=${API_KEY}`;
@@ -30,14 +29,7 @@ export function createV1Router(fetchFn: typeof fetch = fetch) {
 
       return res.status(response.status).json(data);
     } catch (error) {
-      return res.status(500).json({
-        success: false,
-        error: {
-          code: ExchangeRateCode.INTERNAL_SERVER_ERROR,
-          type: ExchangeRateErrorType.INTERNAL_SERVER_ERROR,
-          info: DefaultInfoMessages.INTERNAL_SERVER_ERROR,
-        },
-      });
+      return next(error);
     }
   });
 
