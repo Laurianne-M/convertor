@@ -12,7 +12,7 @@ serve:
 prod: build
 	npx serve build --listen 5174
 
-test:
+test-unit:
 	npx vitest
 
 test-run:
