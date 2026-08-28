@@ -1,16 +1,4 @@
 {
-  "scripts": {
-    "start": "vite --port 5174 --host",
-    "build": "vite build",
-    "serve": "serve build --listen 5174",
-    "prod": "npm run build && npm run serve",
-    "test": "vitest",
-    "test:run": "vitest run",
-    "test:ui": "vitest --ui",
-    "test:coverage": "vitest run --coverage",
-    "test:e2e": "playwright test",
-    "report:e2e": "npx playwright show-report playwright-report --host 0.0.0.0 --port 9323"
-  },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
     "@types/jsdom": "^28.0.1",
