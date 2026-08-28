@@ -1,17 +1,33 @@
-serve:
-	./scripts.sh serve
+.PHONY: build
 
-start:
-	./scripts.sh start
+lint:
+	npx eslint --ext .js,.ts .
 
 build:
-	./scripts.sh build
+	npx tsc
+
+build-watch:
+	npx tsc --watch
+
+serve: build
+	npx firebase emulators:start --only functions
+
+start: build
+	npx firebase functions:shell
 
 install:
-	./scripts.sh install
+	npm ci
+	npm install -g firebase-tools
 
 test:
-	./scripts.sh test
+	npx vitest
 
 deploy:
-	FIREBASE_TOKEN=$(FIREBASE_TOKEN) ./scripts.sh deploy
+	@if [ -z "$(FIREBASE_TOKEN)" ]; then \
+		echo "Error: FIREBASE_TOKEN is not set."; \
+		exit 1; \
+	fi
+	FIREBASE_TOKEN=$(FIREBASE_TOKEN) npx firebase deploy --only functions
+
+logs:
+	npx firebase functions:log
