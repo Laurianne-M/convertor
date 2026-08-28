@@ -21,3 +21,19 @@ jobs:
 
     - name: Unit tests
       run: make -C src/api test
+  deploy:
+    runs-on: ubuntu-24.04
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [test]
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+    - name: Install dependencies
+      run: make -C src/api install
+    - name: Deploy Firebase Functions
+      run: make -C src/api deploy
+      env: 
+        VITE_EXCHANGE_RATES_API_KEY: ${{ secrets.VITE_EXCHANGE_RATES_API_KEY }};
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }};
