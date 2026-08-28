@@ -1,4 +1,5 @@
-import {Router, type Response, type Request, NextFunction} from "express";
+import {Router, type Response, type Request} from "express";
+import {catchAll} from "../middleware/errorHandler.js";
 
 /**
  * Creates an Express Router configured to proxy v1 exchange rate API endpoints.
@@ -18,21 +19,17 @@ export function createV1Router(fetchFn: typeof fetch = fetch) {
   router.get("/latest", async (
     req: Request,
     res: Response,
-    next: NextFunction
   ) => {
-    try {
-      const API_KEY = process.env.VITE_EXCHANGE_RATES_API_KEY;
-      const BASE_URL = `https://api.exchangeratesapi.io/v1/latest?access_key=${API_KEY}`;
+    const API_KEY = process.env.VITE_EXCHANGE_RATES_API_KEY;
+    const BASE_URL = `https://api.exchangeratesapi.io/v1/latest?access_key=${API_KEY}`;
 
-      const response = await fetchFn(BASE_URL);
-      const data = await response.json();
+    const response = await fetchFn(BASE_URL);
+    const data = await response.json();
 
-      return res.status(response.status).json(data);
-    } catch (error) {
-      return next(error);
-    }
+    return res.status(response.status).json(data);
   });
 
+  router.use(catchAll);
   return router;
 }
 

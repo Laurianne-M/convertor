@@ -3,7 +3,6 @@ import {TestData} from "./TestData.js";
 import request from "supertest";
 import express, {type Express} from "express";
 import {createV1Router} from "./router.js";
-import {catchAll} from "../middleware/errorHandler.js";
 
 describe("/v1/latest", () => {
   let app: Express;
@@ -60,7 +59,6 @@ describe("/v1/latest", () => {
       throw new Error("Network Error");
     };
     app.use("/v1", createV1Router(failingFetch as typeof fetch));
-    app.use(catchAll);
 
     const response = await request(app).get("/v1/latest");
 
