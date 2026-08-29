@@ -13,8 +13,8 @@ import {
   AppConstants,
 } from './constants.js'
 
-import { ServiceContainerImpl } from "./container/services/ServiceContainerImpl.js";
-import type { ServiceContainer } from "./container/services/ServiceContainer.js";
+import { ServiceContainerImpl } from "./services/ServiceContainer/ServiceContainerImpl.js";
+import type { ServiceContainer } from "./services/ServiceContainer/ServiceContainer.js";
 
 export const setupHomepage = async (
   container: ServiceContainer,

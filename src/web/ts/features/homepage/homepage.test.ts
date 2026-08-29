@@ -14,7 +14,7 @@ import {
   resetUpdateLock
 } from "./homepage";
 
-import { ServiceContainerFake } from "../../container/services/ServiceContainerFake";
+import { ServiceContainerFake } from "../../services/ServiceContainer/ServiceContainerFake";
 import type { ExchangeRates } from "../../services/ExchangeRate/ExchangeRateService";
 
 
