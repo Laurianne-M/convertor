@@ -2,26 +2,21 @@ import {describe, test, expect, beforeEach} from "vitest";
 import {TestData} from "../../models/testing/TestData.js";
 import request from "supertest";
 import routes from "../routes.js";
-import ExchangeRatesServiceImpl from "../../services/ExchangeRates/ExchangeRatesServiceImpl.js";
+import {ExchangeRatesServiceFake} from "../../services/ExchangeRates/ExchangeRatesServiceFake.js";
 
 describe("/v1/latest", () => {
-  let environmentService: { getExchangeRatesURL: () => string };
+  let fakeRatesService: ExchangeRatesServiceFake;
 
   beforeEach(() => {
-    environmentService = {
-      getExchangeRatesURL: () => {
-        return "https://api.exchangeratesapi.io/v1/latest?access_key=test"
-      }
-    };
+    // Instantiate a fresh fake service for every test
+    fakeRatesService = new ExchangeRatesServiceFake();
+
+    // Inject the fake service into express router/app locals
+    routes.locals.exchangeRatesService = fakeRatesService;
   });
 
   test("should return 200 with rates data when fetch succeed", async () => {
-    const FetchFn = TestData.makeFetch(TestData.responses.success, 200);
-    routes.locals.exchangeRatesService = new ExchangeRatesServiceImpl({
-      fetch: FetchFn,
-      environmentService
-    });
-
+    // Uses default TestData.responses.success and 200 status automatically
     const response = await request(routes).get("/v1/latest");
 
     expect(response.status).toBe(200);
@@ -29,11 +24,8 @@ describe("/v1/latest", () => {
   });
 
   test("should return 500 when fetch fails with server error", async () => {
-    const FetchFn = TestData.makeFetch(TestData.responses.internalError, 500);
-    routes.locals.exchangeRatesService = new ExchangeRatesServiceImpl({
-      fetch: FetchFn,
-      environmentService
-    });
+    fakeRatesService.data = TestData.responses.internalError;
+    fakeRatesService.status = 500;
 
     const response = await request(routes).get("/v1/latest");
 
@@ -42,11 +34,8 @@ describe("/v1/latest", () => {
   });
 
   test("should return 401 when API key is invalid", async () => {
-    const FetchFn = TestData.makeFetch(TestData.responses.unauthorized, 401);
-    routes.locals.exchangeRatesService = new ExchangeRatesServiceImpl({
-      fetch: FetchFn,
-      environmentService
-    });
+    fakeRatesService.data = TestData.responses.unauthorized;
+    fakeRatesService.status = 401;
 
     const response = await request(routes).get("/v1/latest");
 
@@ -55,14 +44,8 @@ describe("/v1/latest", () => {
   });
 
   test("should return 400 when parameter is missing", async () => {
-    const FetchFn = TestData.makeFetch(
-      TestData.responses.missingParameter,
-      400
-    );
-    routes.locals.exchangeRatesService = new ExchangeRatesServiceImpl({
-      fetch: FetchFn,
-      environmentService
-    });
+    fakeRatesService.data = TestData.responses.missingParameter;
+    fakeRatesService.status = 400;
 
     const response = await request(routes).get("/v1/latest");
 
@@ -71,13 +54,7 @@ describe("/v1/latest", () => {
   });
 
   test("should delegate unhandled errors to catchAll middleware", async () => {
-    const failingFetch = async (): Promise<Response> => {
-      throw new Error("Network Error");
-    };
-    routes.locals.exchangeRatesService = new ExchangeRatesServiceImpl({
-      fetch: failingFetch as typeof fetch,
-      environmentService
-    });
+    fakeRatesService.error = new Error("Network Error");
 
     const response = await request(routes).get("/v1/latest");
 
