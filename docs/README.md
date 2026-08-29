@@ -41,5 +41,7 @@ Node +20 installed beforehand.
 ```bash
 git clone https://github.com/Laurianne-M/convertor.git
 code convertor
+
+# From within the terminal in VSCode
 make -C src/ install
 ```
