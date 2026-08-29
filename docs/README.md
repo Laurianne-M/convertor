@@ -41,6 +41,5 @@ Node +20 installed beforehand.
 ```bash
 git clone https://github.com/Laurianne-M/convertor.git
 code convertor
-cd src/web
-make install
+make -C src/ install
 ```
