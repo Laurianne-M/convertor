@@ -53,4 +53,16 @@ describe("/v1/latest", () => {
     expect(response.status).toBe(400);
     expect(response.body).toEqual(TestData.responses.missingParameter);
   });
+
+  test("should delegate unhandled errors to catchAll middleware", async () => {
+    const failingFetch = async (): Promise<Response> => {
+      throw new Error("Network Error");
+    };
+    app.use("/v1", createV1Router(failingFetch as typeof fetch));
+
+    const response = await request(app).get("/v1/latest");
+
+    expect(response.status).toBe(500);
+    expect(response.body).toEqual(TestData.responses.internalError);
+  });
 });
