@@ -1,37 +1,46 @@
 import ExchangeRatesService from "./ExchangeRatesService.js";
+import EnvironmentService from "../Environment/EnvironmentService.js";
 
+/**
+ * Dependencies for the ExchangeRatesServiceImpl.
+ */
+export interface ExchangeRatesServiceImplDependencies {
+
+  /**
+   * The fetch function to use for making HTTP requests.
+   */
+  fetch: typeof fetch,
+
+  /**
+   * The environment service to use for getting the exchange rates URL.
+   */
+  environmentService: EnvironmentService,
+}
+
+/**
+ * Implements the ExchangeRatesService interface.
+ */
 export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
-  private fetchFn: typeof fetch;
 
-  constructor(fetchFn: typeof fetch) {
-    this.fetchFn = fetchFn;
+  /**
+   * The dependencies required to initialize the service.
+   */
+  private dependencies: ExchangeRatesServiceImplDependencies;
+
+  /**
+   * Constructs an instance of ExchangeRatesServiceImpl.
+   * @param dependencies - The dependencies required to initialize the service.
+   */
+  constructor(dependencies: ExchangeRatesServiceImplDependencies) {
+    this.dependencies = dependencies;
   }
 
   async getExchangeRates(): Promise<{ data: any; response: Response }> {
-    const API_KEY = process.env.VITE_EXCHANGE_RATES_API_KEY;
-    const BASE_URL =
-      `https://api.exchangeratesapi.io/v1/latest?access_key=${API_KEY}`;
-
-    const response = await this.fetchFn(BASE_URL);
+    const response = await this.dependencies.fetch(
+      this.dependencies.environmentService.getExchangeRatesURL()
+    );
     const data = await response.json();
 
     return { data, response };
   }
 }
-
-/**
- * Fetches the latest exchange rates from the upstream API provider.
- * @param {Function} [fetchFn] - Optional fetch implementation,
- * defaults to global `fetch`. Used for dependency injection in tests.
- * @return {Promise<{ data: any, response: Response }>} - A promise resolving to
- * an object containing the response data and the original Response object.
- */
-export const getExchangeRates = async (fetchFn: typeof fetch = fetch) => {
-  const API_KEY = process.env.VITE_EXCHANGE_RATES_API_KEY;
-  const BASE_URL = `https://api.exchangeratesapi.io/v1/latest?access_key=${API_KEY}`;
-
-  const response = await fetchFn(BASE_URL);
-  const data = await response.json();
-
-  return { data, response };
-};
