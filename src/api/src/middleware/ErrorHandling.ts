@@ -9,15 +9,14 @@ import { HTTPStatusCode } from "../models/HTTP.js";
  * @param {Error} error - Unhandled exception passed down via next(error).
  * @param {Request} _req - Express Request object.
  * @param {Response} res - Express Response object.
- * @param {NextFunction} _next - Express callback.
+ * @param {NextFunction} _ - Express callback (unused).
  * @return {Response} Express JSON error response.
  */
 export function catchAll(
   error: Error,
   _req: Request,
   res: Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _next: NextFunction
+  _: NextFunction
 ): Response {
   console.error(error);
 

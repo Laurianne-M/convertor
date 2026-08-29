@@ -2,7 +2,6 @@
 /**
  * Error codes returned by the upstream Exchange Rate API and internal service.
  */
-
 export enum HTTPStatusCode {
   /** Request succeeded. */
   SUCCESS = 200,

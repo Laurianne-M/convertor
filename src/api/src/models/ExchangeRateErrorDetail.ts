@@ -4,7 +4,6 @@ import { HTTPStatusCode } from "./HTTP.js";
 /**
  * Detailed information about an API error response.
  */
-
 export interface ExchangeRateErrorDetail {
 
   /**

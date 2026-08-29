@@ -1,7 +1,6 @@
 /**
  * Represents exchange rate data relative to a single base currency.
  */
-
 export interface ExchangeRates {
   /**
    * Base currency code against which all exchange rates are calculated.

@@ -4,7 +4,15 @@ import ExchangeRatesService from "../services/ExchangeRates/ExchangeRatesService
 declare global {
   namespace Express {
     interface Locals {
+
+      /**
+       * The exchange rates service.
+       */
       exchangeRatesService: ExchangeRatesService;
+
+      /**
+       * The environment service.
+       */
       environmentService: EnvironmentService;
     }
   }

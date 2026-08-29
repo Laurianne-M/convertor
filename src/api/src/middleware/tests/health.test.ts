@@ -1,6 +1,6 @@
 import { describe, test, expect, vi } from 'vitest';
 import { type Request, type Response } from 'express';
-import health from '../health.js';
+import health from '../Health.js';
 import { HTTPStatusCode } from '../../models/HTTP.js';
 
 describe('/health', () => {
