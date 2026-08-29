@@ -6,8 +6,3 @@ install-web:
 
 install-api:
 	$(MAKE) -C api/ install
-
-
-
-
-
