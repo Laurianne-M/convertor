@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "typeRoots": [
+      "./node_module/@types",
+      "./src/types"
+    ],
     "module": "NodeNext",
     "esModuleInterop": true,
     "moduleResolution": "nodenext",

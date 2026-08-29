@@ -1,13 +1,26 @@
 /* eslint-disable require-jsdoc */
-import type {ExchangeRateAPIResponse} from "./types/responses.js";
-import type {TestResponses} from "./types/TestResponses.js";
-import * as RouterConstants from "./router.constants.js";
+import type { ExchangeRateAPIResponse } from "../ExchangeRateAPIResponse.js";
+import type {TestResponses} from "./TestResponses.js";
+import * as ExchangeRateErrorType from "../ExchangeRateErrorType.js";
+import * as HTTP from "../HTTP.js";
+
+export const DefaultValues = {
+  BASE_CURRENCY: "EUR",
+  TIMESTAMP: 1787160005,
+  DATE: "2026-08-19",
+} as const;
+
+export const DefaultInfoMessages = {
+  INTERNAL_SERVER_ERROR: "An internal error occurred",
+  UNAUTHORIZED: "You have not supplied a valid API Access Key.",
+  MISSING_PARAMETER: "You have not supplied an API Access Key.",
+} as const;
 
 const success: ExchangeRateAPIResponse = {
   "success": true,
-  "timestamp": RouterConstants.DefaultValues.TIMESTAMP,
-  "base": RouterConstants.DefaultValues.BASE_CURRENCY,
-  "date": RouterConstants.DefaultValues.DATE,
+  "timestamp": DefaultValues.TIMESTAMP,
+  "base": DefaultValues.BASE_CURRENCY,
+  "date": DefaultValues.DATE,
   "rates": {
     "AED": 4.283811,
     "AFN": 75.810389,
@@ -187,27 +200,27 @@ const success: ExchangeRateAPIResponse = {
 const internalError: ExchangeRateAPIResponse = {
   success: false,
   error: {
-    code: RouterConstants.ExchangeRateCode.INTERNAL_SERVER_ERROR,
-    type: RouterConstants.ExchangeRateErrorType.INTERNAL_SERVER_ERROR,
-    info: RouterConstants.DefaultInfoMessages.INTERNAL_SERVER_ERROR,
+    code: HTTP.HTTPStatusCode.INTERNAL_SERVER_ERROR,
+    type: ExchangeRateErrorType.ExchangeRateErrorType.INTERNAL_SERVER_ERROR,
+    info: DefaultInfoMessages.INTERNAL_SERVER_ERROR,
   },
 };
 
 const unauthorized: ExchangeRateAPIResponse = {
   success: false,
   error: {
-    code: RouterConstants.ExchangeRateCode.INVALID_ACCESS_KEY,
-    type: RouterConstants.ExchangeRateErrorType.INVALID_ACCESS_KEY,
-    info: RouterConstants.DefaultInfoMessages.UNAUTHORIZED,
+    code: HTTP.HTTPStatusCode.INVALID_ACCESS_KEY,
+    type: ExchangeRateErrorType.ExchangeRateErrorType.INVALID_ACCESS_KEY,
+    info: DefaultInfoMessages.UNAUTHORIZED,
   },
 };
 
 const missingParameter: ExchangeRateAPIResponse = {
   success: false,
   error: {
-    code: RouterConstants.ExchangeRateCode.MISSING_ACCESS_KEY,
-    type: RouterConstants.ExchangeRateErrorType.MISSING_ACCESS_KEY,
-    info: RouterConstants.DefaultInfoMessages.MISSING_PARAMETER,
+    code: HTTP.HTTPStatusCode.MISSING_ACCESS_KEY,
+    type: ExchangeRateErrorType.ExchangeRateErrorType.MISSING_ACCESS_KEY,
+    info: DefaultInfoMessages.MISSING_PARAMETER,
   },
 };
 
@@ -229,3 +242,5 @@ export const TestData = {
   responses,
   makeFetch,
 };
+
+

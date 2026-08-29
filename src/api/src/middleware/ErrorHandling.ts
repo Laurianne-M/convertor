@@ -1,9 +1,7 @@
 import type {Request, Response, NextFunction} from "express";
-import {
-  ExchangeRateCode,
-  ExchangeRateErrorType,
-  DefaultInfoMessages,
-} from "../v1/router.constants.js";
+import { DefaultInfoMessages } from "../models/testing/TestData.js";
+import { ExchangeRateErrorType } from "../models/ExchangeRateErrorType.js";
+import { HTTPStatusCode } from "../models/HTTP.js";
 
 /**
  * Global catch-all error handling middleware.
@@ -11,22 +9,21 @@ import {
  * @param {Error} error - Unhandled exception passed down via next(error).
  * @param {Request} _req - Express Request object.
  * @param {Response} res - Express Response object.
- * @param {NextFunction} _next - Express callback.
+ * @param {NextFunction} _ - Express callback (unused).
  * @return {Response} Express JSON error response.
  */
 export function catchAll(
   error: Error,
   _req: Request,
   res: Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _next: NextFunction
+  _: NextFunction
 ): Response {
   console.error(error);
 
-  return res.status(500).json({
+  return res.status(HTTPStatusCode.INTERNAL_SERVER_ERROR).json({
     success: false,
     error: {
-      code: ExchangeRateCode.INTERNAL_SERVER_ERROR,
+      code: HTTPStatusCode.INTERNAL_SERVER_ERROR,
       type: ExchangeRateErrorType.INTERNAL_SERVER_ERROR,
       info: DefaultInfoMessages.INTERNAL_SERVER_ERROR,
     },
