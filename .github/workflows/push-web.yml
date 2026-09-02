@@ -1,12 +1,27 @@
 name: Web Frontend CI
+
 on:
+  pull_request:
+    branches: [ main ]
   push:
     branches: [ main ]
-    paths:
-      - 'src/web/**'
-      - '.github/workflows/*.yml'
+
 jobs:
+  changes:
+    runs-on: ubuntu-24.04
+    outputs:
+      web: ${{ steps.filter.outputs.web }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            web:
+              - 'src/web/**'
   test:
+    needs: changes
+    if: ${{ needs.changes.outputs.web == 'true' }}
     runs-on: ubuntu-24.04
     defaults:
       run:
@@ -28,9 +43,25 @@ jobs:
     - name: Unit tests
       run: make test-unit
 
+  # Required status check job for Web branch protection
+  web-check:
+    runs-on: ubuntu-24.04
+    needs: [changes, test]
+    if: always()
+    steps:
+      - name: Evaluate Status
+        run: |
+          STATUSES="${{ join(needs.*.result, ' ') }}"
+          if echo "$STATUSES" | grep -E "failure|cancelled"; then
+            echo "Web checks failed."
+            exit 1
+          fi
+          echo "Web checks passed or were safely skipped."
+
   production-deployment:
     runs-on: ubuntu-24.04
     needs: [test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.changes.outputs.web == 'true'
     steps:
       - name: Clone repository for production build
         uses: actions/checkout@v4

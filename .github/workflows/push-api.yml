@@ -1,11 +1,27 @@
 name: API Backend CI
+
 on:
+  pull_request:
+    branches: [ main ]
   push:
     branches: [ main ]
-    paths:
-      - 'src/api/**'
+
 jobs:
+  changes:
+    runs-on: ubuntu-24.04
+    outputs:
+      api: ${{ steps.filter.outputs.api }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            api:
+              - 'src/api/**'
   test:
+    needs: changes
+    if: ${{ needs.changes.outputs.api == 'true' }}
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
@@ -17,9 +33,26 @@ jobs:
 
     - name: Unit tests
       run: make -C src/api test
+
+  # Required status check job for API branch protection
+  api-check:
+    runs-on: ubuntu-24.04
+    needs: [changes, test]
+    if: always()
+    steps:
+      - name: Evaluate Status
+        run: |
+          STATUSES="${{ join(needs.*.result, ' ') }}"
+          if echo "$STATUSES" | grep -E "failure|cancelled"; then
+            echo "API checks failed."
+            exit 1
+          fi
+          echo "API checks passed or were safely skipped."
+
   deploy:
     runs-on: ubuntu-24.04
     needs: [test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.changes.outputs.api == 'true'
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
