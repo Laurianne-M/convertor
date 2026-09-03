@@ -4,6 +4,10 @@ user to do basic currency convertions with current rates.
 
 ![screenshot of the application](images/screenshot-of-website.png)
 
+## Repository Structure
+* `src/web`: The frontend user interface application.
+* `src/api`: The backend API services for rates and conversion logic.
+
 # Installation
 This is a Node-based project, and therefore the following is required:
 * Node version +20
@@ -41,6 +45,13 @@ Node +20 installed beforehand.
 ```bash
 git clone https://github.com/Laurianne-M/convertor.git
 code convertor
+
+### Web Frontend (`src/web`)
+```bash
 cd src/web
 make install
-```
+
+### API Backend (`src/api`)
+```bash
+cd src/api
+make install
