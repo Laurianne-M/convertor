@@ -42,7 +42,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Evaluate Status
-        run: .github/scripts/evaluate-status.sh "${{ join(needs.*.result, ' ') }}"
+        run: .github/scripts/evaluate-workflow-status.sh "${{ join(needs.*.result, ' ') }}"
 
   deploy:
     runs-on: ubuntu-24.04
