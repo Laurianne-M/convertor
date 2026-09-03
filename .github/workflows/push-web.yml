@@ -49,14 +49,9 @@ jobs:
     needs: [changes, test]
     if: always()
     steps:
+      - uses: actions/checkout@v4
       - name: Evaluate Status
-        run: |
-          STATUSES="${{ join(needs.*.result, ' ') }}"
-          if echo "$STATUSES" | grep -E "failure|cancelled"; then
-            echo "Web checks failed."
-            exit 1
-          fi
-          echo "Web checks passed or were safely skipped."
+        run:  .github/scripts/evaluate-status.sh "${{ join(needs.*.result, ' ') }}"
 
   production-deployment:
     runs-on: ubuntu-24.04

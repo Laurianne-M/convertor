@@ -40,14 +40,9 @@ jobs:
     needs: [changes, test]
     if: always()
     steps:
+      - uses: actions/checkout@v4
       - name: Evaluate Status
-        run: |
-          STATUSES="${{ join(needs.*.result, ' ') }}"
-          if echo "$STATUSES" | grep -E "failure|cancelled"; then
-            echo "API checks failed."
-            exit 1
-          fi
-          echo "API checks passed or were safely skipped."
+        run: .github/scripts/evaluate-status.sh "${{ join(needs.*.result, ' ') }}"
 
   deploy:
     runs-on: ubuntu-24.04
