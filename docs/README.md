@@ -52,5 +52,4 @@ make -C src/web install
 
 ### API Backend (`src/api`)
 ```bash
-cd src/api
-make install
+make -C src/api install
