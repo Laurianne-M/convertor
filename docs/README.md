@@ -48,8 +48,7 @@ code convertor
 
 ### Web Frontend (`src/web`)
 ```bash
-cd src/web
-make install
+make -C src/web install
 
 ### API Backend (`src/api`)
 ```bash
