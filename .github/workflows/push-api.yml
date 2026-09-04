@@ -1,15 +1,27 @@
 name: API Backend CI
+
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'src/api/**'
   pull_request:
     branches: [ main ]
-    paths:
-      - 'src/api/**'
+
 jobs:
+  changes:
+    runs-on: ubuntu-24.04
+    outputs:
+      api: ${{ steps.filter.outputs.api }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            api:
+              - 'src/api/**'
   test:
+    needs: changes
+    if: ${{ needs.changes.outputs.api == 'true' }}
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
@@ -21,10 +33,21 @@ jobs:
 
     - name: Unit tests
       run: make -C src/api test
+
+  # Required status check job for API branch protection
+  api-ci:
+    runs-on: ubuntu-24.04
+    needs: [test]
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+      - name: Evaluate Status
+        run: .github/scripts/evaluate-workflow-status.sh "${{ join(needs.*.result, ' ') }}"
+
   deploy:
     runs-on: ubuntu-24.04
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    needs: [test]
+    needs: [api-ci]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.changes.outputs.api == 'true'
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -35,5 +58,5 @@ jobs:
     - name: Deploy Firebase Functions
       run: make -C src/api deploy
       env: 
-        VITE_EXCHANGE_RATES_API_KEY: ${{ secrets.VITE_EXCHANGE_RATES_API_KEY }};
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }};
+        VITE_EXCHANGE_RATES_API_KEY: ${{ secrets.VITE_EXCHANGE_RATES_API_KEY }}
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
