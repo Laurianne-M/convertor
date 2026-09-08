@@ -53,3 +53,49 @@ make -C src/web install
 ### API Backend (`src/api`)
 ```bash
 make -C src/api install
+```
+---
+
+## Environment Setup
+
+This project uses environment-based configuration to manage secrets securely across the frontend web client and backend services.
+
+### 1. Configuration Overview
+
+| Layer | File Path | Required Variable Prefix | Runtime Syntax |
+| :--- | :--- | :--- | :--- |
+| **Web Frontend (Vite)** | `/.env` (Workspace Root) | `VITE_` | `import.meta.env.VITE_...` |
+| **API Backend (Express)** | `/src/api/.env` | None | `process.env....` |
+
+> **Security Note:** `.env` files contain sensitive API credentials and **must never be committed to Git**. Ensure both `.env` and `src/api/.env` are listed in your `.gitignore`.
+
+### 2. Client-Side Configuration (/.env)
+
+Create a .env file in the project root directory: 
+
+```bash
+# Workspace Root /.env
+VITE_EXCHANGE_RATES_API_KEY=your_actual_api_key
+```
+
+Because the frontend project resides in `src/web/`, Vite relies on `envDir` inside `src/web/vite.config.ts` to locate the workspace root `.env` file:
+
+```bash
+// src/web/vite.config.ts
+import { defineConfig } from 'vite';
+import path from 'path';
+
+export default defineConfig({
+  envDir: path.resolve(__dirname, '../../'),
+  ...
+});
+```
+
+Accessing in Frontend TypeScript Code:
+
+```bash
+# /src/api/.env
+const apiKey = import.meta.env.VITE_EXCHANGE_RATES_API_KEY;
+```
+
+3. Server-Side Configuration (/src/api/.env)
