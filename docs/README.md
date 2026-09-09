@@ -49,25 +49,31 @@ make -C src/ install
 ```
 ## Environment Setup
 
-This project uses environment-based configuration to manage secrets securely across the frontend web client and backend services.
+This project uses a single, centralized environment file at the workspace root to manage configuration and secrets across both the frontend web client and backend Express services.
 
 ### 1. Configuration Overview
 
-| Layer | File Path | Required Variable Prefix | Runtime Syntax |
+| Layer | File Path | Variable Prefix/Name | Runtime Syntax |
 | :--- | :--- | :--- | :--- |
-| **Web Frontend (Vite)** | `/.env` (Workspace Root) | `VITE_` | `import.meta.env.VITE_...` |
-| **API Backend (Express)** | `/src/api/.env` | None | `process.env....` |
+| **Web Frontend (Vite)** | `/.env` (Workspace Root) | `VITE_EXCHANGE_RATES_API_KEY` | `import.meta.env.VITE_...` |
+| **API Backend (Express)** | `/.env` (Workspace Root) | `EXCHANGE_RATES_API_KEY` | `process.env.EXCHANGE_RATES_API_KEY` |
 
-> **Security Note:** `.env` files contain sensitive API credentials and **must never be committed to Git**. Ensure both `.env` and `src/api/.env` are listed in your `.gitignore`.
+> **Security Note:** `.env` files contain sensitive API credentials and **must never be committed to Git**. Ensure `.env` is listed in your root `.gitignore`.
 
-### 2. Client-Side Configuration (/.env)
+### 2. Workspace Root Configuration (/.env)
 
-Create a .env file in the project root directory: 
+Create a single .env file in the project root directory (/convertor/.env):
 
 ```bash
 # Workspace Root /.env
+
+# Frontend Key (Vite)
 VITE_EXCHANGE_RATES_API_KEY=your_actual_api_key
+
+# Backend Key (Express / Firebase Functions)
+EXCHANGE_RATES_API_KEY=your_actual_api_key
 ```
+### 3. Client-Side Configuration (Vite)
 
 Because the frontend project resides in `src/web/`, Vite relies on `envDir` inside `src/web/vite.config.ts` to locate the workspace root `.env` file:
 
@@ -85,8 +91,31 @@ export default defineConfig({
 Accessing in Frontend TypeScript Code:
 
 ```bash
-# /src/api/.env
-const apiKey = import.meta.env.VITE_EXCHANGE_RATES_API_KEY;
+# /src/web/ts/constants.ts
+apiKey: import.meta.env.VITE_EXCHANGE_RATES_API_KEY
 ```
 
-3. Server-Side Configuration (/src/api/.env)
+### 4. Server-Side Configuration (Express / Firebase Functions)
+
+The Express API initializes `dotenv` at its entry point, pointing back four levels to load the workspace root `.env` file:
+
+```bash
+// src/api/routes.ts
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Resolve path to root /.env from build directory
+const envPath = path.resolve(__dirname, '../../../../.env');
+dotenv.config({ path: envPath });
+```
+
+Accessing in Backend TypeScript Code:
+
+```bash
+# /src/api/src/services/EnvironmentServiceImpl
+let API_KEY = process.env.EXCHANGE_RATES_API_KEY;
+```
