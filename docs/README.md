@@ -45,11 +45,5 @@ Node +20 installed beforehand.
 ```bash
 git clone https://github.com/Laurianne-M/convertor.git
 code convertor
-
-### Web Frontend (`src/web`)
-```bash
-make -C src/web install
-
-### API Backend (`src/api`)
-```bash
-make -C src/api install
+make -C src/ install
+```
