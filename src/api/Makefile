@@ -23,8 +23,8 @@ test:
 	npx vitest
 
 predeploy:
-	npm --prefix "$RESOURCE_DIR" run lint
-    npm --prefix "$RESOURCE_DIR" run build
+	npm --prefix "$(RESOURCE_DIR)" run lint
+    npm --prefix "$(RESOURCE_DIR)" run build
 
 deploy:
 	@if [ -z "$(FIREBASE_TOKEN)" ]; then \
