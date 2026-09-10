@@ -47,3 +47,59 @@ git clone https://github.com/Laurianne-M/convertor.git
 code convertor
 make -C src/ install
 ```
+## Environment Setup
+
+This project uses a single, centralized environment file at the workspace root to manage configuration and secrets across both the frontend web client and backend Express services.
+
+### 1. Configuration Overview
+
+| Layer | File Path | Variable Prefix/Name | Runtime Syntax |
+| :--- | :--- | :--- | :--- |
+| **Web Frontend (Vite)** | `/.env` (Workspace Root) | `VITE_EXCHANGE_RATES_API_KEY` | `import.meta.env.VITE_...` |
+| **API Backend (Express)** | `/.env` (Workspace Root) | `EXCHANGE_RATES_API_KEY` | `process.env.EXCHANGE_RATES_API_KEY` |
+
+> **Security Note:** `.env` files contain sensitive API credentials and **must never be committed to Git**. Ensure `.env` is listed in your root `.gitignore`.
+
+### 2. Workspace Root Configuration (/.env)
+
+Create a single .env file in the project root directory (/convertor/.env):
+
+```bash
+# Workspace Root /.env
+
+# Frontend Key (Vite)
+VITE_EXCHANGE_RATES_API_KEY=your_actual_api_key
+
+# Backend Key (Express / Firebase Functions)
+EXCHANGE_RATES_API_KEY=your_actual_api_key
+```
+### 3. Client-Side Configuration (Vite)
+
+Because the frontend project resides in `src/web/`, Vite relies on `envDir` inside `src/web/vite.config.ts` to locate the workspace root `.env` file:
+
+```bash
+// src/web/vite.config.ts
+import { defineConfig } from 'vite';
+import path from 'path';
+
+export default defineConfig({
+  envDir: path.resolve(__dirname, '../../'),
+  ...
+});
+```
+
+Accessing in Frontend TypeScript Code:
+
+```bash
+# /src/web/ts/constants.ts
+apiKey: import.meta.env.VITE_EXCHANGE_RATES_API_KEY
+```
+
+### 4. Server-Side Configuration (Express / Firebase Functions)
+
+Accessing in Backend TypeScript Code:
+
+```bash
+# /src/api/src/services/EnvironmentServiceImpl
+let API_KEY = process.env.EXCHANGE_RATES_API_KEY;
+```
