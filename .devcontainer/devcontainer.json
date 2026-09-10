@@ -11,11 +11,12 @@
       ]
     }
   },
-  "forwardPorts": [3000, 5174],
+  "forwardPorts": [3000, 5174, 5001],
   "runArgs": [
     "-p", "80:80",
     "-p", "3000:3000",
-    "-p", "5174:5174"
+    "-p", "5174:5174",
+    "-p", "5001:5001"
   ],
   "remoteUser": "node",
   "postCreateCommand": "make -C src/ install",
