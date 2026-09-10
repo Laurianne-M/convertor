@@ -97,22 +97,6 @@ apiKey: import.meta.env.VITE_EXCHANGE_RATES_API_KEY
 
 ### 4. Server-Side Configuration (Express / Firebase Functions)
 
-The Express API initializes `dotenv` at its entry point, pointing back four levels to load the workspace root `.env` file:
-
-```bash
-// src/api/routes.ts
-import dotenv from 'dotenv';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Resolve path to root /.env from build directory
-const envPath = path.resolve(__dirname, '../../../../.env');
-dotenv.config({ path: envPath });
-```
-
 Accessing in Backend TypeScript Code:
 
 ```bash
