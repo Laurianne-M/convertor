@@ -19,7 +19,7 @@
         "firebase-debug.*.log",
         "*.local"
       ],
-      "predeploy": [make predeploy]
+      "predeploy": ["make predeploy"]
     }
   ]
 }
