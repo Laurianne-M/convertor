@@ -22,6 +22,8 @@ install:
 test:
 	npx vitest
 
+predeploy: lint build
+
 deploy:
 	@if [ -z "$(FIREBASE_TOKEN)" ]; then \
 		echo "Error: FIREBASE_TOKEN is not set."; \
