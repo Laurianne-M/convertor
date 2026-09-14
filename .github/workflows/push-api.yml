@@ -19,6 +19,20 @@ jobs:
           filters: |
             api:
               - 'src/api/**'
+  lint:
+    needs: changes
+    if: ${{ needs.changes.outputs.api == 'true' }}
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+    - name: Install dependencies
+      run: make -C src/api install
+    - name: Run linter
+      run: make -C src/api lint
+
   test:
     needs: changes
     if: ${{ needs.changes.outputs.api == 'true' }}
@@ -37,7 +51,7 @@ jobs:
   # Required status check job for API branch protection
   api-ci:
     runs-on: ubuntu-24.04
-    needs: [test]
+    needs: [lint, test]
     if: always()
     steps:
       - uses: actions/checkout@v4
