@@ -1,5 +1,5 @@
-import { ExchangeRateErrorType } from "./ExchangeRateErrorType.js";
-import { HTTPStatusCode } from "./HTTP.js";
+import {ExchangeRateErrorType} from "./ExchangeRateErrorType.js";
+import {HTTPStatusCode} from "./HTTP.js";
 
 /**
  * Detailed information about an API error response.

@@ -2,7 +2,8 @@ import {describe, test, expect, beforeEach} from "vitest";
 import {TestData} from "../../models/testing/TestData.js";
 import request from "supertest";
 import routes from "../routes.js";
-import {ExchangeRatesServiceFake} from "../../services/ExchangeRates/ExchangeRatesServiceFake.js";
+import {ExchangeRatesServiceFake}
+  from "../../services/ExchangeRates/ExchangeRatesServiceFake.js";
 
 describe("/v1/latest", () => {
   let fakeRatesService: ExchangeRatesServiceFake;

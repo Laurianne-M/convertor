@@ -1,14 +1,14 @@
 import {type Response, type Request} from "express";
-import { HTTPStatusCode } from "../models/HTTP.js";
+import {HTTPStatusCode} from "../models/HTTP.js";
 
 /**
  * Middleware for checking the health of the application.
  * Returns a 200 status code and an "Ok" message.
- * 
- * @param req - The Express request object.
- * @param res - The Express response object.
+ *
+ * @param {Request} req - The Express request object.
+ * @param {Response} res - The Express response object.
  */
-const health = (_: Request, res: Response) => {
+const health = (req: Request, res: Response) => {
   res.status(HTTPStatusCode.SUCCESS).json(
     {
       "message": "Ok",

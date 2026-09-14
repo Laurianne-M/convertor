@@ -1,5 +1,5 @@
 /* eslint-disable require-jsdoc */
-import type { ExchangeRateAPIResponse } from "../ExchangeRateAPIResponse.js";
+import type {ExchangeRateAPIResponse} from "../ExchangeRateAPIResponse.js";
 import type {TestResponses} from "./TestResponses.js";
 import * as ExchangeRateErrorType from "../ExchangeRateErrorType.js";
 import * as HTTP from "../HTTP.js";

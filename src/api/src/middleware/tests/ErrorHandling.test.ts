@@ -1,28 +1,28 @@
-import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
-import { type Request, type Response, type NextFunction } from 'express';
-import { catchAll } from '../ErrorHandling.js';
-import { DefaultInfoMessages } from "../../models/testing/TestData.js";
-import { ExchangeRateErrorType } from "../../models/ExchangeRateErrorType.js";
-import { HTTPStatusCode } from "../../models/HTTP.js";
+import {describe, test, expect, vi, beforeEach, afterEach} from "vitest";
+import {type Request, type Response, type NextFunction} from "express";
+import {catchAll} from "../ErrorHandling.js";
+import {DefaultInfoMessages} from "../../models/testing/TestData.js";
+import {ExchangeRateErrorType} from "../../models/ExchangeRateErrorType.js";
+import {HTTPStatusCode} from "../../models/HTTP.js";
 
-describe('catchAll Error Handler', () => {
+describe("catchAll Error Handler", () => {
   beforeEach(() => {
-    vi.spyOn(console, 'error').mockImplementation(() => {});
+    vi.spyOn(console, "error").mockImplementation(vi.fn());
   });
 
   afterEach(() => {
     vi.restoreAllMocks();
   });
 
-  test('should log the error and return a 500 status with error details', () => {
-    const mockError = new Error('Test unhandled exception');
+  test("should log the error and return 500 status with error details", () => {
+    const mockError = new Error("Test unhandled exception");
     const mockRequest = {} as Request;
-    
+
     const mockResponse = {
       status: vi.fn().mockReturnThis(),
       json: vi.fn(),
     } as unknown as Response;
-    
+
     const mockNext = vi.fn() as NextFunction;
 
     catchAll(mockError, mockRequest, mockResponse, mockNext);

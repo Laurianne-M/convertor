@@ -1,5 +1,7 @@
 import ExchangeRatesService from "./ExchangeRatesService.js";
 import EnvironmentService from "../Environment/EnvironmentService.js";
+import {ExchangeRateAPIResponse}
+  from "../../models/ExchangeRateAPIResponse.js";
 
 /**
  * Dependencies for the ExchangeRatesServiceImpl.
@@ -21,7 +23,6 @@ export interface ExchangeRatesServiceImplDependencies {
  * Implements the ExchangeRatesService interface.
  */
 export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
-
   /**
    * The dependencies required to initialize the service.
    */
@@ -29,18 +30,27 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
 
   /**
    * Constructs an instance of ExchangeRatesServiceImpl.
-   * @param dependencies - The dependencies required to initialize the service.
+   * @param {ExchangeRatesServiceImplDependencies} dependencies
+   * The dependencies required to initialize the service.
    */
   constructor(dependencies: ExchangeRatesServiceImplDependencies) {
     this.dependencies = dependencies;
   }
 
-  async getExchangeRates(): Promise<{ data: any; response: Response }> {
+  /**
+   * Fetches exchange rates from the configured environment service endpoint.
+   * @return {Promise<{data: any, response: Response}>} The exchange rates data
+   * and raw fetch response.
+   */
+  async getExchangeRates(): Promise<{
+    data: ExchangeRateAPIResponse;
+    response: Response;
+  }> {
     const response = await this.dependencies.fetch(
       this.dependencies.environmentService.getExchangeRatesURL()
     );
     const data = await response.json();
 
-    return { data, response };
+    return {data, response};
   }
 }

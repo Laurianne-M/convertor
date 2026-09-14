@@ -1,4 +1,4 @@
-import { ExchangeRates } from "./ExchangeRates.js";
+import {ExchangeRates} from "./ExchangeRates.js";
 
 /** Response object returned when an exchange rate request succeeds. */
 export interface ExchangeRateSuccessResponse extends ExchangeRates {
