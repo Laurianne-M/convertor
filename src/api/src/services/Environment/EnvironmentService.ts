@@ -1,7 +1,7 @@
 /**
  * The environment service interface.
  */
-export default interface EnvironmentService {
+interface EnvironmentService {
 
   /**
    * Returns the URL for the exchange rates service.
@@ -9,3 +9,5 @@ export default interface EnvironmentService {
    */
   getExchangeRatesURL(): string;
 }
+
+export default EnvironmentService;

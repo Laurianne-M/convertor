@@ -1,4 +1,4 @@
-import type { ExchangeRateAPIResponse } from "../ExchangeRateAPIResponse.js";
+import type {ExchangeRateAPIResponse} from "../ExchangeRateAPIResponse.js";
 
 /**
  * Mock API responses used for testing different exchange rate scenario paths.
