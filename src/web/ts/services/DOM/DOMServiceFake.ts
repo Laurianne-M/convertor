@@ -16,6 +16,6 @@ export class DOMServiceFake implements DOMService {
   getLiveCurrenciesContainer = () => this.createDiv();
   getTitleContainer = () => this.createDiv();
   getSubtitleContainer = () => this.createDiv();
-  populateSelect = (select: HTMLElement, options: Record<string, Currency>) => { };
-  addEventListener = (element: HTMLElement, event: string, callback: () => void) => { };
+  populateSelect = (_select: HTMLElement, _options: Record<string, Currency>) => { };
+  addEventListener = (_element: HTMLElement, _event: string, _callback: () => void) => { };
 }

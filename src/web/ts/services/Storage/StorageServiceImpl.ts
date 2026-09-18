@@ -16,7 +16,7 @@ export class StorageServiceImpl implements StorageService {
       const item = localStorage.getItem(key);
       if (item === null) return null;
       return JSON.parse(item) as T;
-    } catch(error) {
+    } catch {
       this.logger.error(`Failed to get the key in localStorage: ${key}`);
       return null
     }
@@ -25,7 +25,7 @@ export class StorageServiceImpl implements StorageService {
   set<T>(key: string, value: T): void {
     try {
       localStorage.setItem(key, JSON.stringify(value));
-    } catch (error) {
+    } catch {
       this.logger.error(`Failed to save to localStorage: ${key}`);
     }
   }

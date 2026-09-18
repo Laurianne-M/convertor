@@ -263,8 +263,8 @@ describe("logic", () => {
     const updateAmount = vi.fn();
     try {
       await updateLock(() => { throw new Error('an issue occur'); });
-    } catch (error) {
-
+    } catch {
+      // Intentionally caught
     }
     await updateLock(updateAmount);
     expect(updateAmount).toHaveBeenCalledTimes(1);

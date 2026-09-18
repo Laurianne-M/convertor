@@ -2,19 +2,19 @@ import type { LoggerService } from "./LoggerService";
 
 
 export class LoggerServiceImpl implements LoggerService {
-  debug(value: any): void {
+  debug(value: unknown): void {
     console.debug(value);
   }
 
-    info(value: any): void {
+    info(value: unknown): void {
     console.info(value);
   }
 
-  warn(value: any): void {
+  warn(value: unknown): void {
     console.warn(value);
   }
 
-  error(value: any): void {
+  error(value: unknown): void {
     console.error(value); 
   }
 

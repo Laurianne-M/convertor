@@ -6,7 +6,7 @@ import stringEs from '../../locales/strings.es.json';
 
 type Strings = Record<string, string>;
 
-const strings: Record<string, Record<string, any>> = {
+const strings: Record<string, Record<string, string>> = {
   en: stringsEn as Strings,
   fr: stringFr as Strings,
   es: stringEs as Strings

@@ -2,7 +2,7 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import { JSDOM } from 'jsdom';
 import { StorageServiceImpl } from "../StorageServiceImpl";
-import { ExchangeRate } from "../../ExchangeRate/ExchangeRateFallbackData";
+import { fallbackData } from "../../ExchangeRate/ExchangeRateFallbackData";
 import { TimeProviderServiceFake } from "../../TimeProvider/TimeProviderServiceFake";
 import { LoggerServiceFake } from "../../Logger/LoggerServiceFake";
 
@@ -11,7 +11,7 @@ global.localStorage = dom.window.localStorage;
 const logger = new LoggerServiceFake();
 const storage = new StorageServiceImpl(logger);
 const fakeTimeProvider = new TimeProviderServiceFake();
-const mockExchangeRate = ExchangeRate.fallbackData(fakeTimeProvider);
+const mockExchangeRate = fallbackData(fakeTimeProvider);
 
 describe('StorageServiceImpl', () => {
   beforeEach( () => {

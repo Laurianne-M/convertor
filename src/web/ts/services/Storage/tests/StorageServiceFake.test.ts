@@ -1,19 +1,21 @@
 import { describe, test, expect, beforeEach } from "vitest";
 import { StorageServiceFake } from "../StorageServiceFake";
-import { ExchangeRate } from "../../ExchangeRate/ExchangeRateFallbackData";
+import { fallbackData } from "../../ExchangeRate/ExchangeRateFallbackData";
 import { TimeProviderServiceFake } from "../../TimeProvider/TimeProviderServiceFake";
 
-let storageFake: StorageServiceFake;
-let fakeTimeProvider = new TimeProviderServiceFake();
-const mockData = ExchangeRate.fallbackData(fakeTimeProvider);
 
-
-beforeEach(() => {
-  storageFake = new StorageServiceFake();
-  storageFake.clear();
-})
 
 describe('StorageServiceFake', () => {
+  let storageFake: StorageServiceFake;
+  const fakeTimeProvider = new TimeProviderServiceFake();
+  const mockData = fallbackData(fakeTimeProvider);
+
+
+  beforeEach(() => {
+    storageFake = new StorageServiceFake();
+    storageFake.clear();
+  })
+
   test('should return the data if they exist', () => {
     storageFake.set('data', mockData)
 
@@ -23,9 +25,9 @@ describe('StorageServiceFake', () => {
   })
 
   test('should return null if data doesnt exist', () => {
-    const result = storageFake.get('data');
+    const result = storageFake.get('data') ?? null;
 
-    expect(result).toBeNull;
+    expect(result).toBeNull();
 
   })
 

@@ -1,6 +1,7 @@
 import { describe, test, vi, expect, beforeEach } from "vitest";
 import { LoggerServiceImpl } from "../LoggerServiceImpl";
 
+type LogMethod = "debug" | "warn" | "info" | "error";
 
 describe('LoggerServiceImpl', () => {
   let logger: LoggerServiceImpl;
@@ -15,11 +16,11 @@ describe('LoggerServiceImpl', () => {
     ['warn', 'warn'], 
     ['info', 'info'],
     ['error', 'error']
-  ])('logger.%s() should call console.%s()', (method, consoleMethod) => {
-    const spy = vi.spyOn(console, consoleMethod as any).mockImplementation(() => {});
+  ] as const)('logger.%s() should call console.%s()', (method: LogMethod, consoleMethod: LogMethod) => {
+    const spy = vi.spyOn(console, consoleMethod).mockImplementation(() => {});
     const message = `Testing ${method}`; 
 
-    (logger as any)[method](message); 
+    logger[method](message); 
 
     expect(spy).toHaveBeenCalledWith(message); 
 
@@ -31,11 +32,11 @@ describe('LoggerServiceImpl', () => {
     ['warn', 'warn'], 
     ['info', 'info'],
     ['error', 'error']
-  ])('logger.%s() should call console.%s() even with object', (method, consoleMethod) => {
-    const spy = vi.spyOn(console, consoleMethod as any).mockImplementation(() => {});
+  ] as const)('logger.%s() should call console.%s() even with object', (method: LogMethod, consoleMethod: LogMethod) => {
+    const spy = vi.spyOn(console, consoleMethod).mockImplementation(() => {});
     const data = { id: 1, message: `Testing ${method}`}; 
 
-    (logger as any)[method](data); 
+    logger[method](data); 
 
     expect(spy).toHaveBeenCalledWith(data); 
 

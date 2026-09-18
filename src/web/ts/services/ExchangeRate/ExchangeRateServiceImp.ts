@@ -3,7 +3,7 @@ import type {
   ExchangeRates,
   ExchangeRateAPIResponse 
 } from "./ExchangeRateService";
-import { ExchangeRate } from "./ExchangeRateFallbackData";
+import { fallbackData } from "./ExchangeRateFallbackData";
 import type { TimeProviderServiceImpl } from "../TimeProvider/TImeProviderServiceImp";
 import { AppConstants } from "../../constants.js"
 import type { StorageService } from "../Storage/StorageService";
@@ -41,7 +41,7 @@ export class ExchangeRateServiceImp implements ExchangeRateService {
   }
 
   private getMockRates = (): ExchangeRateAPIResponse => {
-    return ExchangeRate.fallbackData(this.dependencies.timeProvider)
+    return fallbackData(this.dependencies.timeProvider)
   };
 
   public loadRates = async (): Promise<ExchangeRates> => {
@@ -91,7 +91,7 @@ export class ExchangeRateServiceImp implements ExchangeRateService {
           base: jsonData.base,
         };
       } catch (error) {
-        this.dependencies.logger.warn("API unavailable — using mock data");
+        this.dependencies.logger.warn(`API unavailable — using mock data: ${error}`);
 
         return this.getMockRates();
       };
