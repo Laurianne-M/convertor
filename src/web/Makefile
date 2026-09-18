@@ -1,5 +1,8 @@
 .PHONY: build
 
+lint:
+	npx eslint .
+
 build:
 	npx vite build
 

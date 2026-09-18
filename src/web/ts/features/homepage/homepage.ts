@@ -1,9 +1,11 @@
 import { AppConstants} from '../../constants.js'
 import type { LoggerService } from '../../services/Logger/LoggerService.js';
-import type { ConvertOperation, RatesResponse } from './homepage.types.js';
+import type { ConvertOperation, RatesResponse, UIStringItem } from './homepage.types.js';
 import { StringKey, t, getLocale } from '../../i18n/i18n.js';
 
-export function populateContainer(container: any, uiString: any): void {
+
+
+export function populateContainer(container: HTMLElement, uiString: UIStringItem[]): void {
   uiString.forEach(({ id, label }: {id: string; label: string}) => {
     const a = document.createElement('a');
     a.id = id;

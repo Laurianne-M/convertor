@@ -19,6 +19,23 @@ jobs:
           filters: |
             web:
               - 'src/web/**'
+  lint:
+    needs: changes
+    if: ${{ needs.changes.outputs.web == 'true' }}
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: src/web
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+    - name: Install dependencies
+      run: make install
+    - name: Run linter
+      run: make lint
+
   test:
     needs: changes
     if: ${{ needs.changes.outputs.web == 'true' }}
@@ -46,7 +63,7 @@ jobs:
   # Required status check job for Web branch protection
   web-ci:
     runs-on: ubuntu-24.04
-    needs: [test]
+    needs: [lint, test]
     if: always()
     steps:
       - uses: actions/checkout@v4

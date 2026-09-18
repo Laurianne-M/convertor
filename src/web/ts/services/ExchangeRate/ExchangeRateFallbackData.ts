@@ -2,7 +2,6 @@ import type { ExchangeRateAPIResponse } from "./ExchangeRateService";
 import type { TimeProvider } from "../TimeProvider/TimeProviderService";
 import { AppConstants } from "../../constants";
 
-export namespace ExchangeRate {
   export const fallbackData = (timeProvider: TimeProvider): ExchangeRateAPIResponse => ({
     success: true,
     timestamp: timeProvider.currentDate().getTime(),
@@ -20,4 +19,3 @@ export namespace ExchangeRate {
       XAG: 0.038
     }
   })
-}

@@ -1,9 +1,9 @@
 // @vitest-environment jsdom
 /// <reference types="vitest/globals" />
-import { describe, vi, test, beforeEach, afterEach, expect } from "vitest";
+import { describe, test, beforeEach, expect } from "vitest";
 import { JSDOM } from 'jsdom';
 import { ExchangeRateServiceImp as ExchangeRateServiceImpl } from "../ExchangeRateServiceImp";
-import { ExchangeRate } from "../ExchangeRateFallbackData";
+import { fallbackData } from "../ExchangeRateFallbackData";
 import { StorageServiceFake } from "../../Storage/StorageServiceFake";
 import { LoggerServiceFake } from "../../Logger/LoggerServiceFake";
 import { FakeFetch, FakeErrorFetch } from "../FakeFetch";
@@ -129,7 +129,7 @@ describe('exchangeRateService', () => {
     // When: The user loads the exchange rates
     const response = await exchangeRateService.loadRates()
 
-    const fallback = ExchangeRate.fallbackData(fakeTimeProvider);
+    const fallback = fallbackData(fakeTimeProvider);
 
     // Then: The fallback data is used
     expect(response.base).toEqual(fallback.base)
@@ -146,7 +146,7 @@ describe('exchangeRateService', () => {
 
     const response = await exchangeRateService.loadRates();
 
-    const fallback = ExchangeRate.fallbackData(fakeTimeProvider);
+    const fallback = fallbackData(fakeTimeProvider);
 
     expect(response.base).toEqual(fallback.base);
     expect(response.rates).toEqual(fallback.rates);

@@ -25,11 +25,11 @@ export class TimeProviderServiceFake implements TimeProvider {
     return this.overrides.currentDate || epoque;
   }
 
-  isOlderThan = (date: Date, ms: number): boolean => {
+  isOlderThan = (_date: Date, _ms: number): boolean => {
      return this.overrides.isOlderThan || false;
   }
 
-  parseDate = (dateString: string): Date => {
+  parseDate = (_dateString: string): Date => {
     return this.overrides.parsedDate || epoque
   }
 }

@@ -1,5 +1,5 @@
 import type { TimeProvider } from "../TimeProvider/TimeProviderService";
-import { ExchangeRate } from "./ExchangeRateFallbackData";
+import { fallbackData } from "./ExchangeRateFallbackData";
 import type { ExchangeRateService, ExchangeRates } from "./ExchangeRateService";
 
 export const TEST_EXCHANGE_RATES_FAKE_OVERRIDES: ExchangeRateServiceFakeOverrides = {
@@ -40,9 +40,9 @@ export class ExchangeRateServiceFake implements ExchangeRateService {
     if (this.overrides.error) {
       return Promise.reject(this.overrides.error)
     } else {
-      let rates = this.overrides.rates
+      const rates = this.overrides.rates
         ? this.overrides.rates
-        : ExchangeRate.fallbackData(this.timeProvider)
+        : fallbackData(this.timeProvider)
       
       return Promise.resolve(rates)
     }

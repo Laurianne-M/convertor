@@ -15,3 +15,8 @@ export type Currency = {
   code: string
   name: string
 }
+
+export interface UIStringItem {
+  id: string;
+  label: string;
+}
