@@ -53,10 +53,11 @@ This project uses a single, centralized environment file at the workspace root t
 
 ### 1. Configuration Overview
 
-| Layer | File Path | Variable Prefix/Name | Runtime Syntax |
+| Layer | File Path | Variable Prefix/Name | Runtime Syntax | Description |
 | :--- | :--- | :--- | :--- |
-| **Web Frontend (Vite)** | `/.env` (Workspace Root) | `VITE_EXCHANGE_RATES_API_KEY` | `import.meta.env.VITE_...` |
-| **API Backend (Express)** | `/.env` (Workspace Root) | `EXCHANGE_RATES_API_KEY` | `process.env.EXCHANGE_RATES_API_KEY` |
+| **Web Frontend (Vite)** | `/.env` (Workspace Root) | `VITE_API_BASE_URL` | `import.meta.env.VITE_API_BASE_URL` | Base URL pointing to the internal API proxy server |
+| **Web Frontend (Vite)** | `/.env` (Workspace Root) | `VITE_EXCHANGE_RATES_API_KEY` | `import.meta.env.VITE_...` | | Frontend API credential |
+| **API Backend (Express)** | `/.env` (Workspace Root) | `EXCHANGE_RATES_API_KEY` | `process.env.EXCHANGE_RATES_API_KEY` | Upstream ExchangeRatesAPI service key |
 
 > **Security Note:** `.env` files contain sensitive API credentials and **must never be committed to Git**. Ensure `.env` is listed in your root `.gitignore`.
 
@@ -66,6 +67,9 @@ Create a single .env file in the project root directory (/convertor/.env):
 
 ```bash
 # Workspace Root /.env
+
+# Frontend API Proxy Base URL (Vite)
+VITE_API_BASE_URL=[http://127.0.0.1:5001/convertor-2b5dd/us-central1/api](http://127.0.0.1:5001/convertor-2b5dd/us-central1/api)
 
 # Frontend Key (Vite)
 VITE_EXCHANGE_RATES_API_KEY=your_actual_api_key
@@ -91,8 +95,11 @@ export default defineConfig({
 Accessing in Frontend TypeScript Code:
 
 ```bash
-# /src/web/ts/constants.ts
-apiKey: import.meta.env.VITE_EXCHANGE_RATES_API_KEY
+# /src/web/ts/env.ts
+export const config = {
+  apiBaseUrl: import.meta.env.VITE_API_BASE_URL || "",
+  apiKey: import.meta.env.VITE_EXCHANGE_RATES_API_KEY || "",
+};
 ```
 
 ### 4. Server-Side Configuration (Express / Firebase Functions)
