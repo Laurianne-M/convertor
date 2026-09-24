@@ -1,154 +1,167 @@
 // @vitest-environment jsdom
 /// <reference types="vitest/globals" />
 import { describe, test, beforeEach, expect } from "vitest";
-import { JSDOM } from 'jsdom';
 import { ExchangeRateServiceImp as ExchangeRateServiceImpl } from "../ExchangeRateServiceImp";
 import { fallbackData } from "../ExchangeRateFallbackData";
 import { StorageServiceFake } from "../../Storage/StorageServiceFake";
 import { LoggerServiceFake } from "../../Logger/LoggerServiceFake";
 import { FakeFetch, FakeErrorFetch } from "../FakeFetch";
 import { TimeProviderServiceFake } from "../../TimeProvider/TimeProviderServiceFake";
+import { config } from "../../../config/env";
 
-const dom = new JSDOM('', { url: 'http://localhost' });
-global.localStorage = dom.window.localStorage;
-
-const fakeTimeProvider = new TimeProviderServiceFake({
-  currentDate: new Date('2026-03-24')
-})
-let fakeFetch: FakeFetch;
-
-const limitFetch = new FakeFetch({
-  error: true,
-  message: 'monthly limit reached'
-})
-
-const errorFetch = new FakeErrorFetch();
-
-
-const localStorage = new StorageServiceFake();
-const fakeLogger = new LoggerServiceFake();
-
-describe('exchangeRateService', () => {
-  let exchangeRateService: ExchangeRateServiceImpl;
+describe("ExchangeRateServiceImp", () => {
+  let fakeTimeProvider: TimeProviderServiceFake;
+  let storageFake: StorageServiceFake;
+  let loggerFake: LoggerServiceFake;
 
   beforeEach(() => {
-    fakeFetch = new FakeFetch({
+    fakeTimeProvider = new TimeProviderServiceFake({
+      currentDate: new Date("2026-03-24T12:00:00.000Z"),
+    });
+    storageFake = new StorageServiceFake();
+    loggerFake = new LoggerServiceFake();
+    storageFake.clear();
+  });
+
+  test("should return data from storage if present and fresh without calling fetch", async () => {
+    const freshData = {
+      jsonData: {
+        success: true,
+        base: "EUR",
+        rates: { CAD: 1.9, USD: 1.6 },
+        timestamp: 1774353600,
+        date: "2026-03-24",
+      },
+      receivedAt: "2026-03-24T10:00:00.000Z",
+    };
+
+    await storageFake.set("data", freshData);
+
+    const fakeFetch = new FakeFetch({
       success: true,
-      timestamp: fakeTimeProvider.currentDate().getTime(),
-      date: fakeTimeProvider.currentDate().toISOString().split('T')[0] ?? '',
-      base: 'EUR',
-      rates: { USD: 1.6, CAD: 1.9 }
+      base: "EUR",
+      rates: { CAD: 1.9, USD: 1.6 },
     });
 
-    exchangeRateService = new ExchangeRateServiceImpl({
+    const service = new ExchangeRateServiceImpl({
       fetch: fakeFetch.fetch,
       timeProvider: fakeTimeProvider,
-      storage: localStorage,
-      logger: fakeLogger,
+      storage: storageFake,
+      logger: loggerFake,
     });
-    localStorage.clear();
+
+    const result = await service.loadRates();
+
+    expect(fakeFetch.callCount).toBe(0);
+    expect(result).toEqual({
+      rates: { CAD: 1.9, USD: 1.6 },
+      base: "EUR",
+    });
   });
 
-  test("should cached data from localStorage without fetching again", async () => {
-    await exchangeRateService.loadRates();
-
-    await exchangeRateService.loadRates();
-
-    expect(fakeFetch.callCount).toBe(1);
-  });
-
-  test("should fetch and caching new data if they are outdated", async () => {
-    fakeTimeProvider.overrides.isOlderThan = true
-
-    const mockedData = {
-      jsonData: {
-        rates: { CAD: 1.4, USD: 1.5 },
-        base: "EUR"
-      },
-      receivedAt: new Date('2026-03-20')
+  test("should fetch fresh exchange rates from API proxy when storage is empty", async () => {
+    const apiResponse = {
+      success: true,
+      base: "EUR",
+      rates: { CAD: 1.48, USD: 1.09 },
     };
 
-    localStorage.set("data", mockedData);
+    const fakeFetch = new FakeFetch(apiResponse);
 
-    await exchangeRateService.loadRates();
-
-    expect(fakeFetch.callCount).toBe(1);
-  });
-
-  test('should return the data if data exist and are not outdated', async () => {
-
-    const mockedData = {
-      jsonData: {
-        rates: { CAD: 1.9, USD: 1.6 },
-        base: "EUR" 
-      },
-        receivedAt: new Date('2026-03-24')
-    };
-
-    localStorage.set("data", mockedData);
-
-    const result = await exchangeRateService.loadRates();
-    const localStorageData = { rates: { CAD: 1.9, USD: 1.6 }, base: "EUR" };
-
-    expect(result).toEqual(expect.objectContaining(localStorageData));
-  });
-
-  test('should fetch new data if data do not exist or are outdaded', async () => {
-  fakeFetch = new FakeFetch({
-    success: true,
-    timestamp: fakeTimeProvider.currentDate().getTime(),
-    date: fakeTimeProvider.currentDate().toISOString().split('T')[0] ?? '',
-    base: 'EUR',
-    rates: { CAD: 1.4, USD: 1.5 }
-  });
-
-  exchangeRateService = new ExchangeRateServiceImpl({
-    fetch: fakeFetch.fetch,
-    timeProvider: fakeTimeProvider,
-    storage: localStorage,
-    logger: fakeLogger,
-  });
-
-  const result = await exchangeRateService.loadRates();
-
-  expect(result).toEqual(expect.objectContaining({ 
-    rates: { CAD: 1.4, USD: 1.5 }, 
-    base: "EUR" 
-  }));
-  });
-
-  test('returns fallback data on api quota limit', async () => {
-    // Given: An ExchangeRateService that has reached its API quota
-    exchangeRateService = new ExchangeRateServiceImpl({
-      fetch: limitFetch.fetch,
+    const service = new ExchangeRateServiceImpl({
+      fetch: fakeFetch.fetch,
       timeProvider: fakeTimeProvider,
-      storage: localStorage,
-      logger: fakeLogger
-    })
+      storage: storageFake,
+      logger: loggerFake,
+    });
 
-    // When: The user loads the exchange rates
-    const response = await exchangeRateService.loadRates()
+    const result = await service.loadRates();
 
+    expect(fakeFetch.callCount).toBe(1);
+    expect(fakeFetch.lastUrl).toBe(`${config.apiBaseUrl}/v1/latest`);
+    expect(result).toEqual({
+      rates: { CAD: 1.48, USD: 1.09 },
+      base: "EUR",
+    });
+
+    const stored = await storageFake.get<{ jsonData: typeof apiResponse }>("data");
+    expect(stored?.jsonData.rates).toEqual({ CAD: 1.48, USD: 1.09 });
+  });
+
+  test("should re-fetch from API proxy when cached data is outdated", async () => {
+    fakeTimeProvider.overrides = {
+      ...fakeTimeProvider.overrides,
+      isOlderThan: true,
+    };
+
+    const outdatedData = {
+      jsonData: {
+        success: true,
+        base: "EUR",
+        rates: { CAD: 1.1, USD: 1.2 },
+      },
+      receivedAt: "2026-03-20T12:00:00.000Z",
+    };
+
+    await storageFake.set("data", outdatedData);
+
+    const fakeFetch = new FakeFetch({
+      success: true,
+      base: "EUR",
+      rates: { CAD: 1.48, USD: 1.09 },
+    });
+
+    const service = new ExchangeRateServiceImpl({
+      fetch: fakeFetch.fetch,
+      timeProvider: fakeTimeProvider,
+      storage: storageFake,
+      logger: loggerFake,
+    });
+
+    const result = await service.loadRates();
+
+    expect(fakeFetch.callCount).toBe(1);
+    expect(result).toEqual({
+      rates: { CAD: 1.48, USD: 1.09 },
+      base: "EUR",
+    });
+  });
+
+  test("should return fallback rates when API endpoint returns 500 or error", async () => {
+    const fakeFetch = new FakeFetch({
+      success: false,
+      error: "Server error",
+    });
+
+    const service = new ExchangeRateServiceImpl({
+      fetch: fakeFetch.fetch,
+      timeProvider: fakeTimeProvider,
+      storage: storageFake,
+      logger: loggerFake,
+    });
+
+    const result = await service.loadRates();
     const fallback = fallbackData(fakeTimeProvider);
 
-    // Then: The fallback data is used
-    expect(response.base).toEqual(fallback.base)
-    expect(response.rates).toEqual(fallback.rates)
+    expect(result.base).toBe(fallback.base);
+    expect(result.rates).toEqual(fallback.rates);
   });
 
-  test('should return mocked Data if fetch fail (network error)', async () => {
-    exchangeRateService = new ExchangeRateServiceImpl({
+  test("should return fallback rates when fetch throws a network exception", async () => {
+    const errorFetch = new FakeErrorFetch();
+
+    const service = new ExchangeRateServiceImpl({
       fetch: errorFetch.fetch,
       timeProvider: fakeTimeProvider,
-      storage: localStorage,
-      logger: fakeLogger
+      storage: storageFake,
+      logger: loggerFake,
     });
 
-    const response = await exchangeRateService.loadRates();
-
+    const result = await service.loadRates();
     const fallback = fallbackData(fakeTimeProvider);
 
-    expect(response.base).toEqual(fallback.base);
-    expect(response.rates).toEqual(fallback.rates);
+    expect(result.base).toBe(fallback.base);
+    expect(result.rates).toEqual(fallback.rates);
+
   });
 });
