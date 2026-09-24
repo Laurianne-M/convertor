@@ -110,3 +110,21 @@ Accessing in Backend TypeScript Code:
 # /src/api/src/services/EnvironmentServiceImpl
 let API_KEY = process.env.EXCHANGE_RATES_API_KEY;
 ```
+
+### 5 Running Locally
+
+To run the application locally, both the API backend (`src/api`) and the web frontend (`src/web`) services must be running simultaneously in separate terminal windows.
+
+### 1. Start the API Backend (`src/api`)
+The frontend fetches exchange rate data through the internal API proxy server (`/v1/latest`). Launch the API service first:
+
+```bash
+make serve
+```
+
+### 2. Start the Web Frontend (`src/web`)
+In a separate terminal window, start the web client development server:
+
+```bash
+make start
+```
