@@ -6,6 +6,8 @@ coverage
 
 #misc
 .env
+.env.prod 
+.env.dev
 .env.local
 .env.*.local
 

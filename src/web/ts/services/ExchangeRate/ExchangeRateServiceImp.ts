@@ -61,7 +61,9 @@ export class ExchangeRateServiceImp implements ExchangeRateService {
           access_key: apiKey,
         });
 
-        const urlWithParams = `${baseUrl}?${params.toString()}`;
+        const cleanBaseUrl = baseUrl.replace(/\/$/, '');
+        const endpointUrl = `${cleanBaseUrl}/v1/latest`;
+        const urlWithParams = `${endpointUrl}?${params.toString()}`
         const res = await this.dependencies.fetch.call(window, urlWithParams);
         const jsonData = await res.json();
 
