@@ -1,5 +1,9 @@
 import type { EnvironmentService } from "./EnvironmentService";
 
+/**
+ * Implementation of the EnvironmentService interface.
+ * Validates and provides access to environment variables and fully formatted API URLs.
+ */ 
 export class EnvironmentServiceImpl implements EnvironmentService {
   private readonly exchangeRatesURL: string; 
   private readonly exchangeRatesApiKey: string; 
