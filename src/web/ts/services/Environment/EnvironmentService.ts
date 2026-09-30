@@ -14,11 +14,4 @@ export interface EnvironmentService {
    * @returns The exchange rates API key.
    */
   getExchangeRatesApiKey(): string;
-
-  /**
-   * Returns the fully constructed URL for fetching latest exchange rates,
-   * including endpoint path and any required auth query parameters.
-   * @returns The complete URL for latest exchange rates.
-   */
-  getLatestExchangeRatesURL(): string;
 }

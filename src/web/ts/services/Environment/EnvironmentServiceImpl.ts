@@ -31,16 +31,12 @@ export class EnvironmentServiceImpl implements EnvironmentService {
   }
 
   getExchangeRatesURL(): string {
-    return this.exchangeRatesURL;
+    const cleanBaseUrl = this.exchangeRatesURL.replace(/\/$/, '');
+    const params = new URLSearchParams({ access_key: this.exchangeRatesApiKey });
+    return `${cleanBaseUrl}/v1/latest?${params.toString()}`;
   }
 
   getExchangeRatesApiKey(): string {
     return this.exchangeRatesApiKey; 
-  }
-
-  getLatestExchangeRatesURL(): string {
-    const cleanBaseUrl = this.exchangeRatesURL.replace(/\/$/, '');
-    const params = new URLSearchParams({ access_key: this.exchangeRatesApiKey });
-    return `${cleanBaseUrl}/v1/latest?${params.toString()}`;
   }
 }
