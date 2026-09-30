@@ -20,6 +20,12 @@ export class EnvironmentServiceImpl implements EnvironmentService {
       throw new Error("[Environment Service] Missing required environment variable: VITE_EXCHANGE_RATES_API_KEY");
     }
 
+    try {
+      new URL(exchangeRatesURL);
+    } catch {
+      throw new Error(`[Environment Service] Invalid URL format for VITE_API_URL: "${exchangeRatesURL}"`);
+    }
+
     this.exchangeRatesURL = exchangeRatesURL;
     this.exchangeRatesApiKey = exchangeRatesApiKey;
   }
