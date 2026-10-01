@@ -35,8 +35,4 @@ export class EnvironmentServiceImpl implements EnvironmentService {
     const params = new URLSearchParams({ access_key: this.exchangeRatesApiKey });
     return `${cleanBaseUrl}/v1/latest?${params.toString()}`;
   }
-
-  getExchangeRatesApiKey(): string {
-    return this.exchangeRatesApiKey; 
-  }
 }

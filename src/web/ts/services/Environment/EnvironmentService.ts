@@ -8,10 +8,4 @@ export interface EnvironmentService {
    * @returns The base exchange rates API URL.
    */
   getExchangeRatesURL(): string;
-
-  /**
-   * Returns the API key for exchange rates.
-   * @returns The exchange rates API key.
-   */
-  getExchangeRatesApiKey(): string;
 }
