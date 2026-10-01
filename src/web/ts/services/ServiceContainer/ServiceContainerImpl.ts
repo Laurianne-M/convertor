@@ -18,7 +18,7 @@ export class ServiceContainerImpl implements ServiceContainer {
     this.timeProvider = new TimeProviderServiceImpl;
     this.logger = new LoggerServiceImpl;
     this.storage = new StorageServiceImpl(this.logger);
-    this.environment = new EnvironmentServiceImpl();
+    this.environment = new EnvironmentServiceImpl({ logger: this.logger });
     this.exchangeRateService = new ExchangeRateServiceImp({
       fetch,
       timeProvider: this.timeProvider,

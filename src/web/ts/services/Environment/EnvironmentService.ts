@@ -1,3 +1,12 @@
+import type { LoggerService } from "../Logger/LoggerService";
+
+/**
+ * Dependencies required by EnvironmentServiceImpl.
+ */
+export interface EnvironmentServiceDependencies {
+  logger: LoggerService;
+}
+
 /**
  * The environment service interface.
  */
