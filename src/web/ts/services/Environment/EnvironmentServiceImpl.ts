@@ -6,7 +6,7 @@ import type { EnvironmentService, EnvironmentServiceDependencies } from "./Envir
  */ 
 export class EnvironmentServiceImpl implements EnvironmentService {
   private readonly exchangeRatesURL: string; 
-  private readonly exchangeRatesApiKey: string;
+  private readonly exchangeRatesAPIKey: string;
   private readonly dependencies: EnvironmentServiceDependencies;
 
   constructor(dependencies: EnvironmentServiceDependencies) {
@@ -16,34 +16,49 @@ export class EnvironmentServiceImpl implements EnvironmentService {
     logger.debug('[EnvironmentService] Verifying environment variables...');
     logger.debug(`[EnvironmentService] Active Vite Mode: ${import.meta.env.MODE}`);
 
+    this.exchangeRatesURL = this.readAPIURL();
+    this.exchangeRatesAPIKey = this.readAPIKey();
+
+    logger.debug('[EnvironmentService] Environment initialization successful.');
+  }
+
+  private readAPIURL(): string {
+    const { logger } = this.dependencies;
+
     logger.debug('[EnvironmentService] Checking for VITE_API_URL...');
     const exchangeRatesURL = import.meta.env.VITE_API_URL;
+
     if (!exchangeRatesURL) {
       throw new Error("[Environment Service] Missing required environment variable: VITE_API_URL");
     }
 
-    logger.debug('[EnvironmentService] Checking for VITE_EXCHANGE_RATES_API_KEY...');
-    const exchangeRatesApiKey = import.meta.env.VITE_EXCHANGE_RATES_API_KEY;
-    if (!exchangeRatesApiKey) {
-      throw new Error("[Environment Service] Missing required environment variable: VITE_EXCHANGE_RATES_API_KEY");
-    }
-
     logger.debug('[EnvironmentService] Validating VITE_API_URL format...');
+
     try {
       new URL(exchangeRatesURL);
     } catch {
       throw new Error(`[Environment Service] Invalid URL format for VITE_API_URL: "${exchangeRatesURL}"`);
     }
 
-    this.exchangeRatesURL = exchangeRatesURL;
-    this.exchangeRatesApiKey = exchangeRatesApiKey;
+    return exchangeRatesURL;
+  }
 
-    logger.debug('[EnvironmentService] Environment initialization successful.');
+  private readAPIKey(): string {
+    const { logger } = this.dependencies;
+
+    logger.debug('[EnvironmentService] Checking for VITE_EXCHANGE_RATES_API_KEY...');
+    const exchangeRatesAPIKey = import.meta.env.VITE_EXCHANGE_RATES_API_KEY;
+
+    if (!exchangeRatesAPIKey) {
+      throw new Error("[Environment Service] Missing required environment variable: VITE_EXCHANGE_RATES_API_KEY");
+    }
+
+    return exchangeRatesAPIKey;
   }
 
   getExchangeRatesURL(): string {
     const cleanBaseUrl = this.exchangeRatesURL.replace(/\/$/, '');
-    const params = new URLSearchParams({ access_key: this.exchangeRatesApiKey });
+    const params = new URLSearchParams({ access_key: this.exchangeRatesAPIKey });
     return `${cleanBaseUrl}/v1/latest?${params.toString()}`;
   }
 }
