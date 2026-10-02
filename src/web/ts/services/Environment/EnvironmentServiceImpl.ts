@@ -36,8 +36,8 @@ export class EnvironmentServiceImpl implements EnvironmentService {
 
     try {
       new URL(exchangeRatesBaseURL);
-    } catch {
-      throw new Error(`[Environment Service] Invalid URL format for VITE_API_URL: "${exchangeRatesBaseURL}"`);
+    } catch (error) {
+      logger.error(error);
     }
 
     return exchangeRatesBaseURL;
