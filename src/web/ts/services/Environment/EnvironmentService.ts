@@ -5,7 +5,7 @@ import type { LoggerService } from "../Logger/LoggerService";
  */
 export interface EnvironmentServiceDependencies {
   /**
-   * Logger service instance used for internal debug logging.
+   * Logger service instance used for logging messages to the console
    */
   logger: LoggerService;
 }
