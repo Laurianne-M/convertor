@@ -4,10 +4,10 @@ lint:
 	npx eslint .
 
 build:
-	npx vite build
+	npx vite build --mode prod
 
 start:
-	npx vite --port 5174 --host
+	npx vite --port 5174 --host --mode dev
 
 serve:
 	npx serve build --listen 5174

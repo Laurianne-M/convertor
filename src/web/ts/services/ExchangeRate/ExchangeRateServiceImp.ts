@@ -8,12 +8,14 @@ import type { TimeProviderServiceImpl } from "../TimeProvider/TImeProviderServic
 import { AppConstants } from "../../constants.js"
 import type { StorageService } from "../Storage/StorageService";
 import type { LoggerService } from "../Logger/LoggerService";
+import type { EnvironmentService } from "../Environment/EnvironmentService";
 
 interface ExchangeRateServiceImplDependencies {
   timeProvider: TimeProviderServiceImpl
   storage: StorageService
   fetch: (url: string) => Promise<Response>
   logger: LoggerService;
+  environmentService: EnvironmentService;
 }
 
 export class ExchangeRateServiceImp implements ExchangeRateService {
@@ -52,12 +54,7 @@ export class ExchangeRateServiceImp implements ExchangeRateService {
     if (!data || this.areDataOutdated(data && data.receivedAt)) {
        this.dependencies.logger.debug('fetching from API...');
       try {
-        const params = {
-          access_key: AppConstants.API.apiKey,
-        };
-
-        const queryString = new URLSearchParams(params).toString();
-        const urlWithParams = `${AppConstants.API.baseURL}?${queryString}`;
+        const urlWithParams = this.dependencies.environmentService.getExchangeRatesURL();
         const res = await this.dependencies.fetch.call(window, urlWithParams);
         const jsonData = await res.json();
 
