@@ -9,4 +9,19 @@ describe("EnvironmentServiceFake", () => {
 
     expect(ActualURL).toBe(expectedURL);
   });
+
+  test("allows overriding the exchange rates URL", () => {
+    const customURL = "https://custom-api.example.com/v1/latest";
+    
+    const fakeServiceWithConstructor = new EnvironmentServiceFake(customURL);
+    const actualConstructorURL = fakeServiceWithConstructor.getExchangeRatesURL();
+
+    expect(actualConstructorURL).toBe(customURL);
+
+    const fakeServiceWithProperty = new EnvironmentServiceFake();
+    fakeServiceWithProperty.exchangeRatesURL = customURL;
+    const actualPropertyURL = fakeServiceWithProperty.getExchangeRatesURL();
+    
+    expect(actualPropertyURL).toBe(customURL);
+  });
 });

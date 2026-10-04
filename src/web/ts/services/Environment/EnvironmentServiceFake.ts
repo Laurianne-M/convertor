@@ -7,7 +7,15 @@ import type { EnvironmentService } from "./EnvironmentService";
  * variables (`VITE_API_URL` or `VITE_EXCHANGE_RATES_API_KEY`) to be set.
  */
 export class EnvironmentServiceFake implements EnvironmentService {
+  public exchangeRatesURL: string;
+
+  constructor (
+    exchangeRatesURL: string = "https://api.exchangeratesapi.io/v1/latest?access_key=fake_access_key_123"
+  ) {
+    this.exchangeRatesURL = exchangeRatesURL;
+  }
+
   getExchangeRatesURL(): string {
-    return "https://api.exchangeratesapi.io/v1/latest?access_key=fake_access_key_123";
+    return this.exchangeRatesURL;
   }
 }
