@@ -1,4 +1,5 @@
 import type { EnvironmentService } from "./EnvironmentService";
+import { TEST_DATA } from "../../tests/TestData";
 
 /**
  * Fake implementation of {@link EnvironmentService} for unit testing.
@@ -7,10 +8,16 @@ import type { EnvironmentService } from "./EnvironmentService";
  * variables (`VITE_API_URL` or `VITE_EXCHANGE_RATES_API_KEY`) to be set.
  */
 export class EnvironmentServiceFake implements EnvironmentService {
+  public static readonly DEFAULT_URL = TEST_DATA.DEFAULT_EXCHANGE_RATES_URL;
+
+  /**
+   * The exchange rates API URL returned by this fake service.
+   * Can be modified directly in tests.
+   */
   public exchangeRatesURL: string;
 
   constructor (
-    exchangeRatesURL: string = "https://api.exchangeratesapi.io/v1/latest?access_key=fake_access_key_123"
+    exchangeRatesURL: string = EnvironmentServiceFake.DEFAULT_URL
   ) {
     this.exchangeRatesURL = exchangeRatesURL;
   }
