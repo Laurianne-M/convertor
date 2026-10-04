@@ -54,7 +54,12 @@ export class ExchangeRateServiceImp implements ExchangeRateService {
     if (!data || this.areDataOutdated(data && data.receivedAt)) {
        this.dependencies.logger.debug('fetching from API...');
       try {
-        const urlWithParams = this.dependencies.environmentService.getExchangeRatesURL();
+        const params = {
+          access_key: AppConstants.API.apiKey,
+        };
+
+        const queryString = new URLSearchParams(params).toString();
+        const urlWithParams = `${AppConstants.API.baseURL}?${queryString}`;
         const res = await this.dependencies.fetch.call(window, urlWithParams);
         const jsonData = await res.json();
 
