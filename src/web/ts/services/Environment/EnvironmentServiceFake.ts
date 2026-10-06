@@ -8,8 +8,6 @@ import { TEST_DATA } from "../../tests/TestData";
  * variables (`VITE_API_URL` or `VITE_EXCHANGE_RATES_API_KEY`) to be set.
  */
 export class EnvironmentServiceFake implements EnvironmentService {
-  public static readonly DEFAULT_URL = TEST_DATA.DEFAULT_EXCHANGE_RATES_URL;
-
   /**
    * The exchange rates API URL returned by this fake service.
    * Can be modified directly in tests.
@@ -17,7 +15,7 @@ export class EnvironmentServiceFake implements EnvironmentService {
   public exchangeRatesURL: string;
 
   constructor (
-    exchangeRatesURL: string = EnvironmentServiceFake.DEFAULT_URL
+    exchangeRatesURL: string = TEST_DATA.DEFAULT_EXCHANGE_RATES_URL
   ) {
     this.exchangeRatesURL = exchangeRatesURL;
   }
