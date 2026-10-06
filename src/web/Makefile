@@ -13,7 +13,7 @@ serve:
 	npx serve build --listen 5174
 
 prod: build
-	npx serve build --listen 5174
+	npx serve build --listen 5174 --no-clipboard
 
 test-unit:
 	npx vitest
