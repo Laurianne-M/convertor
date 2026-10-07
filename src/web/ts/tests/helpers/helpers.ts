@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 
 export const loadPage = async ({ page }: { page: Page })  => {
-  await page.route('https://*api.exchangeratesapi.io/v1/latest**', async route => {
+  await page.route('**/*exchangeratesapi.io/**', async route => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
@@ -21,6 +21,9 @@ export const loadPage = async ({ page }: { page: Page })  => {
     });
   });
   await page.goto('http://localhost:5174/');
+
+  await page.waitForSelector('#baseCurrency option[value="EUR"]', { timeout: 5000 });
+
   await page.selectOption('#baseCurrency', 'EUR');
   await page.selectOption('#desiredCurrency', 'USD');
 }
