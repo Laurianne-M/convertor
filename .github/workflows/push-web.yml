@@ -43,6 +43,8 @@ jobs:
     defaults:
       run:
         working-directory: src/web
+    env:
+      VITE_EXCHANGE_RATES_API_KEY: ${{ secrets.VITE_EXCHANGE_RATES_API_KEY }}
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
