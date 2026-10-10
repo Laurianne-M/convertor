@@ -8,14 +8,12 @@ import type { TimeProviderServiceImpl } from "../TimeProvider/TImeProviderServic
 import { AppConstants } from "../../constants.js"
 import type { StorageService } from "../Storage/StorageService";
 import type { LoggerService } from "../Logger/LoggerService";
-import type { EnvironmentService } from "../Environment/EnvironmentService";
 
 interface ExchangeRateServiceImplDependencies {
   timeProvider: TimeProviderServiceImpl
   storage: StorageService
   fetch: (url: string) => Promise<Response>
   logger: LoggerService;
-  environmentService: EnvironmentService;
 }
 
 export class ExchangeRateServiceImp implements ExchangeRateService {
