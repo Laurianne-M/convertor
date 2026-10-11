@@ -5,7 +5,6 @@ import { StorageServiceImpl } from "../../services/Storage/StorageServiceImpl";
 import { ExchangeRateServiceImp } from "../../services/ExchangeRate/ExchangeRateServiceImp";
 import { DOMServiceImpl } from "../../services/DOM/DOMServiceImpl";
 
-
 export class ServiceContainerImpl implements ServiceContainer {
   public readonly timeProvider: TimeProviderServiceImpl;
   public readonly logger: LoggerServiceImpl;
@@ -21,7 +20,7 @@ export class ServiceContainerImpl implements ServiceContainer {
       fetch,
       timeProvider: this.timeProvider,
       storage: this.storage,
-      logger: this.logger,
+      logger: this.logger
     });
     this.dom = new DOMServiceImpl;
   }

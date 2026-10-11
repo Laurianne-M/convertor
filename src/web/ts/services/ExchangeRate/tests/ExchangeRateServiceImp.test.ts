@@ -8,7 +8,6 @@ import { StorageServiceFake } from "../../Storage/StorageServiceFake";
 import { LoggerServiceFake } from "../../Logger/LoggerServiceFake";
 import { FakeFetch, FakeErrorFetch } from "../FakeFetch";
 import { TimeProviderServiceFake } from "../../TimeProvider/TimeProviderServiceFake";
-import { EnvironmentServiceFake } from "../../Environment/EnvironmentServiceFake";
 
 const dom = new JSDOM('', { url: 'http://localhost' });
 global.localStorage = dom.window.localStorage;
@@ -28,7 +27,6 @@ const errorFetch = new FakeErrorFetch();
 
 const localStorage = new StorageServiceFake();
 const fakeLogger = new LoggerServiceFake();
-const fakeEnvironmentService = new EnvironmentServiceFake();
 
 describe('exchangeRateService', () => {
   let exchangeRateService: ExchangeRateServiceImpl;
@@ -47,7 +45,6 @@ describe('exchangeRateService', () => {
       timeProvider: fakeTimeProvider,
       storage: localStorage,
       logger: fakeLogger,
-      environmentService: fakeEnvironmentService,
     });
     localStorage.clear();
   });
@@ -110,7 +107,6 @@ describe('exchangeRateService', () => {
     timeProvider: fakeTimeProvider,
     storage: localStorage,
     logger: fakeLogger,
-    environmentService: fakeEnvironmentService,
   });
 
   const result = await exchangeRateService.loadRates();
@@ -127,8 +123,7 @@ describe('exchangeRateService', () => {
       fetch: limitFetch.fetch,
       timeProvider: fakeTimeProvider,
       storage: localStorage,
-      logger: fakeLogger,
-      environmentService: fakeEnvironmentService,
+      logger: fakeLogger
     })
 
     // When: The user loads the exchange rates
@@ -146,8 +141,7 @@ describe('exchangeRateService', () => {
       fetch: errorFetch.fetch,
       timeProvider: fakeTimeProvider,
       storage: localStorage,
-      logger: fakeLogger,
-      environmentService: fakeEnvironmentService,
+      logger: fakeLogger
     });
 
     const response = await exchangeRateService.loadRates();
