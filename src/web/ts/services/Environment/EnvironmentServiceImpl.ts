@@ -1,0 +1,64 @@
+import type { EnvironmentService, EnvironmentServiceDependencies } from "./EnvironmentService";
+
+/**
+ * Implementation of the EnvironmentService interface.
+ * Validates and provides access to environment variables and fully formatted API URLs.
+ */ 
+export class EnvironmentServiceImpl implements EnvironmentService {
+  private readonly exchangeRatesBaseURL: string; 
+  private readonly exchangeRatesAPIKey: string;
+  private readonly dependencies: EnvironmentServiceDependencies;
+
+  constructor(dependencies: EnvironmentServiceDependencies) {
+    this.dependencies = dependencies;
+    const { logger } = this.dependencies;
+
+    logger.debug('[EnvironmentService] Verifying environment variables...');
+    logger.debug(`[EnvironmentService] Active Vite Mode: ${import.meta.env.MODE}`);
+
+    this.exchangeRatesBaseURL = this.readAPIURL();
+    this.exchangeRatesAPIKey = this.readAPIKey();
+
+    logger.debug('[EnvironmentService] Environment initialization successful.');
+  }
+
+  private readAPIURL(): string {
+    const { logger } = this.dependencies;
+
+    logger.debug('[EnvironmentService] Checking for VITE_API_URL...');
+    const exchangeRatesBaseURL = import.meta.env.VITE_API_URL;
+
+    if (!exchangeRatesBaseURL) {
+      throw new Error("[Environment Service] Missing required environment variable: VITE_API_URL");
+    }
+
+    logger.debug('[EnvironmentService] Validating VITE_API_URL format...');
+
+    try {
+      new URL(exchangeRatesBaseURL);
+    } catch (error) {
+      logger.error(error);
+    }
+
+    return exchangeRatesBaseURL;
+  }
+
+  private readAPIKey(): string {
+    const { logger } = this.dependencies;
+
+    logger.debug('[EnvironmentService] Checking for VITE_EXCHANGE_RATES_API_KEY...');
+    const exchangeRatesAPIKey = import.meta.env.VITE_EXCHANGE_RATES_API_KEY;
+
+    if (!exchangeRatesAPIKey) {
+      throw new Error("[Environment Service] Missing required environment variable: VITE_EXCHANGE_RATES_API_KEY");
+    }
+
+    return exchangeRatesAPIKey;
+  }
+
+  getExchangeRatesURL(): string {
+    const cleanBaseUrl = this.exchangeRatesBaseURL.replace(/\/$/, '');
+    const params = new URLSearchParams({ access_key: this.exchangeRatesAPIKey });
+    return `${cleanBaseUrl}/v1/latest?${params.toString()}`;
+  }
+}

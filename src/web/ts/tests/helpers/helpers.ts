@@ -21,6 +21,7 @@ export const loadPage = async ({ page }: { page: Page })  => {
     });
   });
   await page.goto('http://localhost:5174/');
+
   await page.selectOption('#baseCurrency', 'EUR');
   await page.selectOption('#desiredCurrency', 'USD');
 }

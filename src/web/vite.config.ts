@@ -1,13 +1,18 @@
 import { defineConfig } from 'vite';
 import path from 'path';
 
-// Production build configuration for Firebase Hosting
+
 export default defineConfig({
+  // Tells Vite to look in the workspace root for .env, .env.dev, .env.prod, etc.
   envDir: path.resolve(__dirname, '../../'),
+
+  // Server options for local development & internal proxying
   server: {
     allowedHosts: ['.internal.jabaridash.com'],
-    host: true, 
+    host: true,
   },
+
+  // Production build configuration for Firebase Hosting
   build: {
     outDir: 'build',
     emptyOutDir: true,
