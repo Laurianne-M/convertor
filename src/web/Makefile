@@ -1,10 +1,12 @@
 .PHONY: build
 
+BUILD_MODE ?= prod
+
 lint:
 	npx eslint .
 
 build:
-	npx vite build --mode prod
+	npx vite build --mode $(BUILD_MODE)
 
 start:
 	npx vite --port 5174 --host --mode dev

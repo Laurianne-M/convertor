@@ -52,7 +52,7 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
     webServer: {
-      command: 'make prod',
+      command: 'BUILD_MODE=test make prod',
       url: 'http://localhost:5174',
       reuseExistingServer: !process.env.CI,
       timeout:  120000
