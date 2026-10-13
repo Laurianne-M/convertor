@@ -1,7 +1,7 @@
 import type { Page } from '@playwright/test';
 
 export const loadPage = async ({ page }: { page: Page })  => {
-  await page.route('https://*api.exchangeratesapi.io/v1/latest**', async route => {
+  await page.route('**/v1/latest**', async route => {
     await route.fulfill({
       status: 200,
       contentType: 'application/json',
