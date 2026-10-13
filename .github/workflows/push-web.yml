@@ -86,6 +86,7 @@ jobs:
         run: make -C src/web build
         env:
           VITE_EXCHANGE_RATES_API_KEY: ${{ secrets.VITE_EXCHANGE_RATES_API_KEY}}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
       - name: Deploy to Firebase Live
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
