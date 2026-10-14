@@ -19,10 +19,7 @@ build: validate-env
 start: validate-env
 	npx vite --port 5174 --host --mode dev
 
-serve:
-	npx serve build --listen 5174
-
-prod: build
+serve: build
 	npx serve build --listen 5174
 
 test-unit: BUILD_MODE = test
