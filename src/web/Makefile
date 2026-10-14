@@ -25,12 +25,15 @@ serve:
 prod: build
 	npx serve build --listen 5174
 
+test-unit: BUILD_MODE = test
 test-unit: validate
 	npx vitest
 
+test-run: BUILD_MODE = test
 test-run: validate
 	npx vitest run
 
+test-ui: BUILD_MODE = test
 test-ui: validate
 	npx vitest --ui
 
