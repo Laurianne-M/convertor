@@ -3,7 +3,7 @@
 BUILD_MODE ?= prod
 ENV_FILE = ../../.env.$(BUILD_MODE)
 
-validate:
+validate-env:
 	@if [ -f "$(ENV_FILE)" ]; then \
 		npx tsx --env-file=$(ENV_FILE) scripts/validate-env.ts; \
 	else \
@@ -13,10 +13,10 @@ validate:
 lint:
 	npx eslint .
 
-build: validate
+build: validate-env
 	npx vite build --mode $(BUILD_MODE)
 
-start: validate
+start: validate-env
 	npx vite --port 5174 --host --mode dev
 
 serve:
@@ -26,22 +26,22 @@ prod: build
 	npx serve build --listen 5174
 
 test-unit: BUILD_MODE = test
-test-unit: validate
+test-unit: validate-env
 	npx vitest
 
 test-run: BUILD_MODE = test
-test-run: validate
+test-run: validate-env
 	npx vitest run
 
 test-ui: BUILD_MODE = test
-test-ui: validate
+test-ui: validate-env
 	npx vitest --ui
 
-test-coverage: validate
+test-coverage: validate-env
 	npx vitest run --coverage
 
 test-e2e: BUILD_MODE = test
-test-e2e: validate
+test-e2e: validate-env
 	npx playwright test
 
 report-e2e:
