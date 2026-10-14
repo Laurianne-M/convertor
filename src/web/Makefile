@@ -1,9 +1,14 @@
 .PHONY: build
 
 BUILD_MODE ?= prod
+ENV_FILE := ../../.env.$(BUILD_MODE)
 
 validate:
-	npx tsx --env-file=../../.env.$(BUILD_MODE) scripts/validate-env.ts
+	@if [ -f "$(ENV_FILE)" ]; then \
+		npx tsx --env-file=$(ENV_FILE) scripts/validate-env.ts; \
+	else \
+		npx tsx scripts/validate-env.ts; \
+	fi
 
 lint:
 	npx eslint .
