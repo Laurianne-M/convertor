@@ -37,6 +37,7 @@ test-ui: BUILD_MODE = test
 test-ui: validate-env
 	npx vitest --ui
 
+test-coverage: BUILD_MODE = test
 test-coverage: validate-env
 	npx vitest run --coverage
 
