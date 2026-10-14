@@ -37,6 +37,7 @@ test-ui: validate
 test-coverage: validate
 	npx vitest run --coverage
 
+test-e2e: BUILD_MODE = test
 test-e2e: validate
 	npx playwright test
 
