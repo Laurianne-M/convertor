@@ -1,7 +1,7 @@
 .PHONY: build
 
 BUILD_MODE ?= prod
-ENV_FILE := ../../.env.$(BUILD_MODE)
+ENV_FILE = ../../.env.$(BUILD_MODE)
 
 validate:
 	@if [ -f "$(ENV_FILE)" ]; then \
