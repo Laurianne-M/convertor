@@ -2,13 +2,16 @@
 
 BUILD_MODE ?= prod
 
+validate:
+	npx tsx --env-file=../../.env.$(BUILD_MODE) scripts/validate-env.ts
+
 lint:
 	npx eslint .
 
-build:
+build: validate
 	npx vite build --mode $(BUILD_MODE)
 
-start:
+start: validate
 	npx vite --port 5174 --host --mode dev
 
 serve:
@@ -17,19 +20,19 @@ serve:
 prod: build
 	npx serve build --listen 5174
 
-test-unit:
+test-unit: validate
 	npx vitest
 
-test-run:
+test-run: validate
 	npx vitest run
 
-test-ui:
+test-ui: validate
 	npx vitest --ui
 
-test-coverage:
+test-coverage: validate
 	npx vitest run --coverage
 
-test-e2e:
+test-e2e: validate
 	npx playwright test
 
 report-e2e:
