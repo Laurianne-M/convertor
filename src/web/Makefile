@@ -4,11 +4,11 @@ BUILD_MODE ?= prod
 ENV_FILE = ../../.env.$(BUILD_MODE)
 
 validate-env:
-	@if [ -f "$(ENV_FILE)" ]; then \
-		npx tsx --env-file=$(ENV_FILE) scripts/validate-env.ts; \
-	else \
-		npx tsx scripts/validate-env.ts; \
+	@if [ ! -f "$(ENV_FILE)" ]; then \
+		echo "\033[31mError: Environment file $(ENV_FILE) not found.\033[0m"; \
+		exit 1; \
 	fi
+	npx tsx --env-file=$(ENV_FILE) scripts/validate-env.ts
 
 lint:
 	npx eslint .
