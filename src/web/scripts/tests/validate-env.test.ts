@@ -59,8 +59,8 @@ describe('printValidationErrors', () => {
 
     expect(consoleErrorSpy).toHaveBeenCalledWith('Environment Configuration Error [.env.test]:');
     expect(consoleErrorSpy).toHaveBeenCalledWith('The following required environment variables are missing or empty:');
-    expect(consoleErrorSpy).toHaveBeenCalledWith('- API_KEY');
-    expect(consoleErrorSpy).toHaveBeenCalledWith('- API_URL');
+    expect(consoleErrorSpy).toHaveBeenCalledWith('  - API_KEY');
+    expect(consoleErrorSpy).toHaveBeenCalledWith('  - API_URL');
   });
 
   test('should print formatting errors correctly', () => {
@@ -68,6 +68,6 @@ describe('printValidationErrors', () => {
 
     expect(consoleErrorSpy).toHaveBeenCalledWith('Environment Configuration Error [.env.test]:');
     expect(consoleErrorSpy).toHaveBeenCalledWith('The following environment variables have formatting errors:');
-    expect(consoleErrorSpy).toHaveBeenCalledWith('- API_URL must be a valid URL');
+    expect(consoleErrorSpy).toHaveBeenCalledWith('  - API_URL must be a valid URL');
   });
 });
