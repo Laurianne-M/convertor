@@ -1,28 +1,23 @@
 import fs from 'fs';
 
-function validateUrlVariable(varName: string, urlValue: string, formattingErrors: string[]): void {
-  if (urlValue.endsWith('/')) {
-    formattingErrors.push(`${varName} must not have a trailing slash (received: "${urlValue}")`);
+export function validateURLVariable(varName: string, URLValue: string, formattingErrors: string[]): void {
+  if (URLValue.endsWith('/')) {
+    formattingErrors.push(`${varName} must not have a trailing slash (received: "${URLValue}")`);
     return;
   }
 
   try {
-    const urlObj = new URL(urlValue);
-    const hostname = urlObj.hostname;
-    const isLocal = hostname === 'localhost' || hostname === '127.0.0.1';
+    const URLObj = new URL(URLValue);
 
-    const isFirebaseDomain = hostname.endsWith('.cloudfunctions.net');
-    const hasValidDotStructure = hostname.includes('.') && !hostname.endsWith('.');
-
-    if (!isLocal && !isFirebaseDomain && !hasValidDotStructure) {
-      formattingErrors.push(`${varName} appears to be incomplete or malformed (received: "${urlValue}")`);
+    if (URLObj.protocol !== 'http:' && URLObj.protocol !== 'https:') {
+      formattingErrors.push(`${varName} must use http or https protocol (received: "${URLValue}")`);
     }
   } catch {
-    formattingErrors.push(`${varName} must be a valid URL (received: "${urlValue}")`);
+    formattingErrors.push(`${varName} must be a valid URL (received: "${URLValue}")`);
   }
 }
 
-function printValidationErrors(envFileName: string, missingEnvVars: string[], formattingErrors: string[]): void {
+export function printValidationErrors(envFileName: string, missingEnvVars: string[], formattingErrors: string[]): void {
   console.error(`Environment Configuration Error [${envFileName}]:`);
 
   if (missingEnvVars.length > 0) {
@@ -51,15 +46,15 @@ function main(): number {
   const formattingErrors: string[] = [];
 
   requiredEnvVars.forEach(envVar => {
-    const urlValue = process.env[envVar]?.trim();
+    const URLValue = process.env[envVar]?.trim();
 
-    if (!urlValue) {
+    if (!URLValue) {
       missingEnvVars.push(envVar);
       return;
     }
 
     if (envVar.includes('URL')) {
-      validateUrlVariable(envVar, urlValue, formattingErrors);
+      validateURLVariable(envVar, URLValue, formattingErrors);
     }
   });
 
@@ -72,4 +67,6 @@ function main(): number {
   return 0;
 }
 
-process.exit(main());
+if (require.main === module) {
+  process.exit(main());
+}
