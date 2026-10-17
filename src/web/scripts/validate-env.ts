@@ -33,7 +33,7 @@ function printValidationErrors(envFileName: string, missingEnvVars: string[], fo
   console.error(`\nPlease check your ${envFileName} file.`);
 }
 
-export function main(args: string[] = process.argv.slice(2)): number {
+export function main(args: string[]): number {
   const [envFileName, ...requiredEnvVars] = args;
 
   if (!envFileName || !fs.existsSync(envFileName)) {
@@ -67,5 +67,5 @@ export function main(args: string[] = process.argv.slice(2)): number {
 }
 
 if (require.main === module) {
-  process.exit(main(process.argv));
+  process.exit(main(process.argv.slice(2)));
 }
