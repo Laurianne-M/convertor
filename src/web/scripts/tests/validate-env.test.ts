@@ -19,20 +19,18 @@ describe('main ', () => {
   afterEach(() => {
     consoleErrorSpy.mockRestore();
     consoleLogSpy.mockRestore();
-    delete process.env.API_KEY;
-    delete process.env.API_URL;
   });
 
   test('should return exit code 1 when URL is missing', () => {
     process.env.API_KEY = 'secret-123';
-    delete process.env.API_URL;
+    process.env.API_URL = '';
 
     const exitCode = main(['.env.test', 'API_KEY', 'API_URL']);
     expect(exitCode).toBe(1);
   })
 
   test('should return exit code 1 when API key is missing', () => {
-    delete process.env.API_KEY;
+    process.env.API_KEY = '';
     process.env.API_URL = 'https://api.example.com/v1';
 
     const exitCode = main(['.env.test', 'API_KEY', 'API_URL']);
@@ -40,8 +38,8 @@ describe('main ', () => {
   });
 
   test('should return exit code 1 when both are missing', () => {
-    delete process.env.API_KEY;
-    delete process.env.API_URL;
+    process.env.API_KEY = '';
+    process.env.API_URL = '';
 
     const exitCode = main(['.env.test', 'API_KEY', 'API_URL']);
     expect(exitCode).toBe(1);

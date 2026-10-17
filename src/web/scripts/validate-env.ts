@@ -67,5 +67,5 @@ export function main(args: string[] = process.argv.slice(2)): number {
 }
 
 if (require.main === module) {
-  process.exit(main());
+  process.exit(main(process.argv));
 }
