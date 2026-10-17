@@ -21,11 +21,19 @@ describe('main ', () => {
     consoleLogSpy.mockRestore();
   });
 
+  test('should return exit code 1 when array has fewer than 3 values', () => {
+    const exitCode = main(['node', 'script.js']);
+    expect(exitCode).toBe(1);
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Environment Configuration Error: Insufficient arguments provided.'
+    );
+  });
+
   test('should return exit code 1 when URL is missing', () => {
     process.env.API_KEY = 'secret-123';
     process.env.API_URL = '';
 
-    const exitCode = main(['.env.test', 'API_KEY', 'API_URL']);
+    const exitCode = main(['node', 'script.js','.env.test', 'API_KEY', 'API_URL']);
     expect(exitCode).toBe(1);
   })
 
@@ -33,7 +41,7 @@ describe('main ', () => {
     process.env.API_KEY = '';
     process.env.API_URL = 'https://api.example.com/v1';
 
-    const exitCode = main(['.env.test', 'API_KEY', 'API_URL']);
+    const exitCode = main(['node', 'script.js','.env.test', 'API_KEY', 'API_URL']);
     expect(exitCode).toBe(1);
   });
 
@@ -41,7 +49,7 @@ describe('main ', () => {
     process.env.API_KEY = '';
     process.env.API_URL = '';
 
-    const exitCode = main(['.env.test', 'API_KEY', 'API_URL']);
+    const exitCode = main(['node', 'script.js','.env.test', 'API_KEY', 'API_URL']);
     expect(exitCode).toBe(1);
   });
 
@@ -49,7 +57,7 @@ describe('main ', () => {
     process.env.API_KEY = 'secret-123';
     process.env.API_URL = 'not-a-valid-url';
 
-    const exitCode = main(['.env.test', 'API_KEY', 'API_URL']);
+    const exitCode = main(['node', 'script.js','.env.test', 'API_KEY', 'API_URL']);
     expect(exitCode).toBe(1);
   });
 
@@ -57,7 +65,7 @@ describe('main ', () => {
     process.env.API_KEY = 'secret-123';
     process.env.API_URL = 'https://api.example.com';
 
-    const exitCode = main(['.env.test', 'API_KEY', 'API_URL']);
+    const exitCode = main(['node', 'script.js','.env.test', 'API_KEY', 'API_URL']);
     expect(exitCode).toBe(0);
   });
 })

@@ -34,7 +34,12 @@ function printValidationErrors(envFileName: string, missingEnvVars: string[], fo
 }
 
 export function main(args: string[]): number {
-  const [envFileName, ...requiredEnvVars] = args;
+  if (!args || args.length < 3) {
+    console.error('Environment Configuration Error: Insufficient arguments provided.');
+    return 1;
+  }
+
+  const [, , envFileName, ...requiredEnvVars] = args;
 
   if (!envFileName || !fs.existsSync(envFileName)) {
     console.error(`Environment Configuration Error: File "${envFileName}" not found.`);
@@ -67,5 +72,7 @@ export function main(args: string[]): number {
 }
 
 if (require.main === module) {
-  process.exit(main(process.argv.slice(2)));
+  const processArgs = process.argv;
+  const exitCode = main(processArgs);
+  process.exit(exitCode);
 }
