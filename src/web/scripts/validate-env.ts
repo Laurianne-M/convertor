@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-export function validateURLVariable(varName: string, URLValue: string, formattingErrors: string[]): void {
+function validateURLVariable(varName: string, URLValue: string, formattingErrors: string[]): void {
   if (URLValue.endsWith('/')) {
     formattingErrors.push(`${varName} must not have a trailing slash (received: "${URLValue}")`);
     return;
@@ -17,7 +17,7 @@ export function validateURLVariable(varName: string, URLValue: string, formattin
   }
 }
 
-export function printValidationErrors(envFileName: string, missingEnvVars: string[], formattingErrors: string[]): void {
+function printValidationErrors(envFileName: string, missingEnvVars: string[], formattingErrors: string[]): void {
   console.error(`Environment Configuration Error [${envFileName}]:`);
 
   if (missingEnvVars.length > 0) {
@@ -33,8 +33,7 @@ export function printValidationErrors(envFileName: string, missingEnvVars: strin
   console.error(`\nPlease check your ${envFileName} file.`);
 }
 
-function main(): number {
-  const args = process.argv.slice(2);
+export function main(args: string[] = process.argv.slice(2)): number {
   const [envFileName, ...requiredEnvVars] = args;
 
   if (!envFileName || !fs.existsSync(envFileName)) {

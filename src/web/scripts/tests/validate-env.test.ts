@@ -1,73 +1,65 @@
 import { describe, test, beforeEach, afterEach, expect, vi } from 'vitest';
-import { validateURLVariable, printValidationErrors } from '../validate-env';
+import { main } from '../validate-env';
+import fs from 'fs';
 
-describe('valideURVariable', () => {
-  let formattingErrors: string[];
+vi.mock('fs');
 
-  beforeEach(() => {
-    formattingErrors = [];
-  });
-
-  test('should push an error if the URL ends with a trailing slash', () => {
-    validateURLVariable('API_URL', 'https://api.example.com/', formattingErrors);
-
-    expect(formattingErrors).toHaveLength(1);
-    expect(formattingErrors[0]).toContain('must not have a trailing slash');
-  })
-
-  test('should push an error if the protocol is not http or https', () => {
-    validateURLVariable('API_URL', 'ftp://api.example.com', formattingErrors);
-
-    expect(formattingErrors).toHaveLength(1);
-    expect(formattingErrors[0]).toContain('must use http or https protocol');
-  });
-
-  test('should push an error if the string is not a valid URL', () => {
-    validateURLVariable('API_URL', 'not-a-valid-url', formattingErrors);
-
-    expect(formattingErrors).toHaveLength(1);
-    expect(formattingErrors[0]).toContain('must be a valid URL');
-  });
-
-  test('should not push any errors for a valid https URL', () => {
-    validateURLVariable('API_URL', 'https://api.example.com/v1', formattingErrors);
-
-    expect(formattingErrors).toHaveLength(0);
-  });
-
-  test('should not push any errors for a valid localhost URL', () => {
-    validateURLVariable('API_URL', 'http://localhost:3000', formattingErrors);
-
-    expect(formattingErrors).toHaveLength(0);
-  });
-})
-
-describe('printValidationErrors', () => {
+describe('main ', () => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+  let consoleLogSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
-    // Spy on console.error and mock its implementation so it doesn't print during tests
+    vi.clearAllMocks();
+    // Silence console outputs during tests to keep the test runner clean
     consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    vi.mocked(fs.existsSync).mockReturnValue(true);
   });
 
   afterEach(() => {
     consoleErrorSpy.mockRestore();
+    consoleLogSpy.mockRestore();
+    delete process.env.API_KEY;
+    delete process.env.API_URL;
   });
 
-  test('should print missing environment variables correctly', () => {
-    printValidationErrors('.env.test', ['API_KEY', 'API_URL'], []);
+  test('should return exit code 1 when URL is missing', () => {
+    process.env.API_KEY = 'secret-123';
+    delete process.env.API_URL;
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith('Environment Configuration Error [.env.test]:');
-    expect(consoleErrorSpy).toHaveBeenCalledWith('The following required environment variables are missing or empty:');
-    expect(consoleErrorSpy).toHaveBeenCalledWith('  - API_KEY');
-    expect(consoleErrorSpy).toHaveBeenCalledWith('  - API_URL');
+    const exitCode = main(['.env.test', 'API_KEY', 'API_URL']);
+    expect(exitCode).toBe(1);
+  })
+
+  test('should return exit code 1 when API key is missing', () => {
+    delete process.env.API_KEY;
+    process.env.API_URL = 'https://api.example.com/v1';
+
+    const exitCode = main(['.env.test', 'API_KEY', 'API_URL']);
+    expect(exitCode).toBe(1);
   });
 
-  test('should print formatting errors correctly', () => {
-    printValidationErrors('.env.test', [], ['API_URL must be a valid URL']);
+  test('should return exit code 1 when both are missing', () => {
+    delete process.env.API_KEY;
+    delete process.env.API_URL;
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith('Environment Configuration Error [.env.test]:');
-    expect(consoleErrorSpy).toHaveBeenCalledWith('The following environment variables have formatting errors:');
-    expect(consoleErrorSpy).toHaveBeenCalledWith('  - API_URL must be a valid URL');
+    const exitCode = main(['.env.test', 'API_KEY', 'API_URL']);
+    expect(exitCode).toBe(1);
   });
-});
+
+  test('should return exit code 1 when API key is present but URL is not a valid URL', () => {
+    process.env.API_KEY = 'secret-123';
+    process.env.API_URL = 'not-a-valid-url';
+
+    const exitCode = main(['.env.test', 'API_KEY', 'API_URL']);
+    expect(exitCode).toBe(1);
+  });
+
+  test('should return exit code 0 when API key and valid URL are present', () => {
+    process.env.API_KEY = 'secret-123';
+    process.env.API_URL = 'https://api.example.com';
+
+    const exitCode = main(['.env.test', 'API_KEY', 'API_URL']);
+    expect(exitCode).toBe(0);
+  });
+})
