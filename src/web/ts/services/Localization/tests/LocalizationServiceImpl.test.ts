@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, test } from "vitest";
 import { LocalizationServiceImpl } from "../LocalizationServiceImpl";
 import { StringKey } from "../LocalizationService";
 
@@ -10,13 +10,13 @@ describe("LocalizationServiceImpl", () => {
     localization = new LocalizationServiceImpl();
   });
 
-  it("persists and returns the selected locale", () => {
+  test("persists and returns the selected locale", () => {
     localization.setLocale("fr");
 
     expect(localization.getLocale()).toBe("fr");
   });
 
-  it("uses the browser language when no locale is stored", () => {
+  test("uses the browser language when no locale is stored", () => {
     Object.defineProperty(navigator, "language", {
       configurable: true,
       value: "es-MX"
@@ -25,13 +25,13 @@ describe("LocalizationServiceImpl", () => {
     expect(localization.getLocale()).toBe("es");
   });
 
-  it("translates a key using the selected locale", () => {
+  test("translates a key using the selected locale", () => {
     localization.setLocale("fr");
 
     expect(localization.t(StringKey.lang_en)).toBe("Anglais");
   });
 
-  it("falls back to English for an unsupported locale", () => {
+  test("falls back to English for an unsupported locale", () => {
     localization.setLocale("de");
 
     expect(localization.t(StringKey.lang_en)).toBe("English");
