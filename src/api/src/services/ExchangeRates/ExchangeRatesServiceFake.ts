@@ -46,4 +46,14 @@ export class ExchangeRatesServiceFake implements ExchangeRatesService {
       ),
     };
   }
+
+  /** @inheritdoc */
+  async fetchAndStoreExchangeRates(): Promise<ExchangeRateAPIResponse> {
+    const {data, response} = await this.getExchangeRates();
+    if (!response.ok || !data.success) {
+      throw new Error("Could not fetch exchange rates successfully");
+    }
+
+    return data;
+  }
 }
