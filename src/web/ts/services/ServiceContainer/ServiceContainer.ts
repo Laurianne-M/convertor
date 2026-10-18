@@ -3,6 +3,7 @@ import type { LoggerService } from "../../services/Logger/LoggerService";
 import type { StorageService } from "../../services/Storage/StorageService";
 import type { ExchangeRateService } from "../../services/ExchangeRate/ExchangeRateService";
 import type { DOMService } from "../../services/DOM/DOMService";
+import type { LocalizationService } from "../../services/Localization/LocalizationService";
 
 /**
  * Centralizes the creation and wiring of all services used by the application.
@@ -24,4 +25,6 @@ export interface ServiceContainer {
   exchangeRateService: ExchangeRateService;
 
   dom: DOMService;
+
+  localization: LocalizationService;
 }

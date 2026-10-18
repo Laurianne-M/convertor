@@ -1,7 +1,8 @@
 import { AppConstants} from '../../constants.js'
 import type { LoggerService } from '../../services/Logger/LoggerService.js';
 import type { ConvertOperation, RatesResponse, UIStringItem } from './homepage.types.js';
-import { StringKey, t, getLocale } from '../../i18n/i18n.js';
+import type { LocalizationService } from '../../services/Localization/LocalizationService.js';
+import { StringKey } from '../../services/Localization/LocalizationService.js';
 
 
 
@@ -25,10 +26,11 @@ export function populateLangSelector(
     flag: string,
     active: boolean
   }[],
-  onLangChange: (lang: string) => void
+  onLangChange: (lang: string) => void,
+  localization: LocalizationService
 ): void {
   const select = document.getElementById('langSelect') as HTMLSelectElement;
-  const currentLocale = getLocale();
+  const currentLocale = localization.getLocale();
 
   languages.forEach(({ id, label, flag, active} ) => {
     const option = document.createElement('option'); 
@@ -43,7 +45,7 @@ export function populateLangSelector(
 }
 
 export function populateLiveNavbar({ rates, logger }: { rates: Record<string, number>, logger: LoggerService }) {
-  const usdRate = rates[AppConstants.currencies.USD.code];
+  const usdRate = rates[AppConstants.currencyCodes.USD];
   if (!usdRate) throw new Error('USD rate is missing or zero');
 
   Object.keys(AppConstants.metalCode).forEach(id => {
@@ -64,8 +66,8 @@ export function populateLiveNavbar({ rates, logger }: { rates: Record<string, nu
       select.textContent = `${metalName}: $${formattedPrice}`;
 
     } else {
-      logger.warn(AppConstants.UI_STRINGS.navBarError);
-      window.alert(AppConstants.UI_STRINGS.navBarError);
+          logger.warn(AppConstants.NAVBAR_ERROR);
+          window.alert(AppConstants.NAVBAR_ERROR);
     };
   });
 };
@@ -109,7 +111,8 @@ export const convert = (operation: ConvertOperation) => {
     reverse = false,
     fromCurrency: string,
     toCurrency: string,
-    logger: LoggerService
+    logger: LoggerService,
+    localization: LocalizationService
   ) {
     // Safety check: Make sure data and data.rates actually exist
     if (!data || !data.rates) {
@@ -121,7 +124,7 @@ export const convert = (operation: ConvertOperation) => {
     const secondInputValue = parseFloat(amountFromSecondCurrencyInput.value)
 
     if (firstInputValue < 0) {
-      window.alert(t(StringKey.window_alert_negative_number));
+      window.alert(localization.t(StringKey.window_alert_negative_number));
       return;
     }
 
