@@ -1,0 +1,11 @@
+@use 'tokens' as *;
+
+footer {
+  padding: $space-footer-block $space-footer-inline;
+  text-align: center;
+  font-size: $font-size-footer;
+  color: var(--color-text-secondary);
+  letter-spacing: $tracking-footer;
+  border-top: 1px solid var(--border-glass);
+  background: $surface-footer-background;
+}

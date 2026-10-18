@@ -1,0 +1,190 @@
+@use 'tokens' as *;
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - #{$layout-header-height});
+  padding: $space-page-block $space-page-inline;
+  gap: $space-main-gap;
+}
+
+.bulle-1 {
+  display: block;
+  font-family: 'Space Mono', monospace;
+  font-size: clamp($font-size-title-min, $font-size-title-fluid, $font-size-title-max);
+  font-weight: 700;
+  letter-spacing: $tracking-title;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, var(--color-accent-violet), var(--color-accent-sky), var(--color-accent-pink), var(--color-accent-violet));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-decoration: none;
+  text-align: center;
+  order: -1;
+  animation: shimmer $motion-title-shimmer-duration linear infinite;
+  background-size: $motion-title-shimmer-distance auto;
+}
+
+@keyframes shimmer {
+  0% { background-position: 0% center; }
+  100% { background-position: $motion-title-shimmer-distance center; }
+}
+
+.conversion-container {
+  width: 100%;
+  max-width: $layout-converter-max-width;
+  order: 0;
+}
+
+.container {
+  background: var(--surface-glass);
+  border: 1px solid var(--border-glass);
+  border-radius: $radius-card;
+  padding: $space-card-block $space-card-inline;
+  backdrop-filter: blur($effect-card-backdrop-blur);
+  box-shadow: $shadow-converter-card;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $effect-card-highlight-height;
+  background: linear-gradient(90deg, transparent, $color-currency-card-highlight, transparent);
+}
+
+.base-currency,
+.desired-currency {
+  display: flex;
+  gap: $space-control-gap;
+  align-items: center;
+  background: var(--surface-input);
+  border: 1px solid var(--border-input);
+  border-radius: $radius-control;
+  padding: $space-currency-row-block $space-currency-row-inline;
+  transition: border-color $motion-fast, box-shadow $motion-fast;
+}
+
+.base-currency:focus-within,
+.desired-currency:focus-within {
+  border-color: var(--border-input-focus);
+  box-shadow: $shadow-currency-row-focus;
+}
+
+.swap-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-swap-row-block 0;
+  position: relative;
+  z-index: $layer-swap-control;
+}
+
+.swap-btn {
+  width: $layout-swap-control-size;
+  height: $layout-swap-control-size;
+  border-radius: $layout-swap-orb-radius;
+  background: linear-gradient(135deg, var(--color-accent-violet), var(--color-accent-sky));
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: $shadow-swap-control;
+  transition: transform $motion-slow ease, box-shadow $motion-swap-shadow ease;
+  color: var(--color-white);
+  font-size: $font-size-swap-icon;
+  line-height: 1;
+  user-select: none;
+}
+
+.swap-btn:hover {
+  transform: rotate(180deg);
+  box-shadow: $shadow-swap-control-hover;
+}
+
+input.amount,
+select.amount {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--color-text-primary);
+  font-family: 'Outfit', sans-serif;
+  font-size: $font-size-control;
+  font-weight: 500;
+}
+
+input.amount {
+  flex: 1;
+  min-width: 0;
+}
+
+input.amount::placeholder {
+  color: var(--color-text-secondary);
+  font-weight: 400;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+select.amount {
+  flex-shrink: 0;
+  cursor: pointer;
+  color: var(--color-accent-violet);
+  font-weight: 600;
+  font-size: $font-size-currency;
+  letter-spacing: $tracking-currency-select;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a78bfa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0 center;
+  padding-right: $space-currency-select-end;
+}
+
+select.amount option {
+  background: var(--color-background-raised);
+  color: var(--color-text-primary);
+}
+
+@media (max-width: $layout-mobile-breakpoint) {
+  .container {
+    padding: $space-card-block-mobile $space-card-inline-mobile;
+    border-radius: $radius-card-mobile;
+  }
+
+  .base-currency,
+  .desired-currency {
+    padding: $space-currency-row-block-mobile $space-currency-row-inline-mobile;
+  }
+
+  select.amount {
+    max-width: $layout-mobile-select-width;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  main {
+    min-height: calc(100vh - #{$layout-header-height-mobile});
+    padding: $space-page-block-mobile $space-page-inline-mobile;
+    gap: $space-main-gap-mobile;
+    justify-content: flex-start;
+  }
+}
