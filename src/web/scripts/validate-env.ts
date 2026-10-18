@@ -1,16 +1,16 @@
 import fs from 'fs';
 
 function validateURLVariable(varName: string, URL: string, formattingErrors: string[]): void {
- const validURLPattern = /^https?:\/\/([a-zA-Z0-9_.-]+)+(?:\/[a-zA-Z0-9_.-]*)*[^/]$/;
+  const cleanURL = URL.replace(/^["']|["']$/g, '').trim();
+  const validURLPattern = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\/.+[^/]$/;
 
- const domainOnlyPattern = /^https?:\/\/([a-zA-Z0-9_.-]+)$/;
+  const domainOnlyPattern = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\/[^/]+$/;
 
- if (!validURLPattern.test(URL) && !domainOnlyPattern.test(URL)) {
+  if (!validURLPattern.test(cleanURL) && !domainOnlyPattern.test(cleanURL)) {
     formattingErrors.push(
-      `Environment Configuration Error: '${varName}' must be a valid URL using http/https and must not have a trailing slash (received: "${URL}").`
+      `Environment Configuration Error: '${varName}' must be a valid URL and must not have a trailing slash (received: "${URL}").`
     );
   }
-
 }
 
 function printValidationErrors(envFileName: string, missingEnvVars: string[], formattingErrors: string[]): void {
