@@ -7,8 +7,6 @@ import {
   populateLangSelector
 } from "./features/homepage/homepage.js";
 
-import { setLocale } from "./i18n/i18n.js";
-
 import {
   AppConstants,
 } from './constants.js'
@@ -25,22 +23,23 @@ export const setupHomepage = async (
   amountFromFirstCurrencyInput: HTMLInputElement,
   amountFromSecondCurrencyInput: HTMLInputElement
 ) => {
-  container.dom.populateSelect(baseCurrencySelect, AppConstants.currencies);
-  container.dom.populateSelect(desiredCurrencySelect, AppConstants.currencies);
+  container.dom.populateSelect(baseCurrencySelect, AppConstants.getCurrencies(container.localization));
+  container.dom.populateSelect(desiredCurrencySelect, AppConstants.getCurrencies(container.localization));
   
   const data = await container.exchangeRateService.loadRates();
-  const subtitle = AppConstants.UI_STRINGS.subtitle;
-  const liveCurrencies = AppConstants.UI_STRINGS.liveCurrencies;
-  const title = AppConstants.UI_STRINGS.title;
+  const uiStrings = AppConstants.getUIStrings(container.localization);
+  const subtitle = uiStrings.subtitle;
+  const liveCurrencies = uiStrings.liveCurrencies;
+  const title = uiStrings.title;
 
   populateContainer(liveCurrenciesContainer, liveCurrencies); 
   populateContainer(subtitleContainer, subtitle);
   populateTitle(title);
-  populateLiveNavbar( { rates: data.rates, logger: container.logger } );
-  populateLangSelector(AppConstants.UI_STRINGS.language, (lang) => {
-    setLocale(lang);
+  populateLiveNavbar({ rates: data.rates, logger: container.logger });
+  populateLangSelector(uiStrings.language, (lang) => {
+    container.localization.setLocale(lang);
     location.reload();
-  })
+  }, container.localization)
 
   amountFromFirstCurrencyInput.value = "1";
   desiredCurrencySelect.value = 'EUR';
@@ -52,7 +51,8 @@ export const setupHomepage = async (
     false,
     baseCurrencySelect?.value,
     desiredCurrencySelect?.value,
-    container.logger
+    container.logger,
+    container.localization
   );
 
   container.dom.addEventListener(
@@ -65,7 +65,8 @@ export const setupHomepage = async (
         false,
         baseCurrencySelect?.value,
         desiredCurrencySelect?.value,
-        container.logger
+        container.logger,
+        container.localization
       ))
     }
   );
@@ -80,7 +81,8 @@ export const setupHomepage = async (
         false,
         baseCurrencySelect?.value,
         desiredCurrencySelect?.value,
-        container.logger
+        container.logger,
+        container.localization
       ))
     }
   );
@@ -95,7 +97,8 @@ export const setupHomepage = async (
         false,
         baseCurrencySelect?.value,
         desiredCurrencySelect?.value,
-        container.logger
+        container.logger,
+        container.localization
       ))
     }
   );
@@ -110,7 +113,8 @@ export const setupHomepage = async (
         true,
         baseCurrencySelect?.value,
         desiredCurrencySelect?.value,
-        container.logger
+        container.logger,
+        container.localization
       ))
     }
   );
