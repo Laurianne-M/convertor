@@ -5,7 +5,7 @@ import { AppConstants } from "../../constants";
   export const fallbackData = (timeProvider: TimeProvider): ExchangeRateAPIResponse => ({
     success: true,
     timestamp: timeProvider.currentDate().getTime(),
-    base: AppConstants.currencies.EUR.code,
+    base: AppConstants.currencyCodes.EUR,
     date: timeProvider.currentDate().toISOString().split('T')[0]?? '',
     rates: {
       USD: 1.09,

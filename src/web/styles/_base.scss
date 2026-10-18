@@ -1,0 +1,36 @@
+@use 'tokens' as *;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: 'Outfit', sans-serif;
+  color: var(--color-text-primary);
+  background: var(--color-background-deep);
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    var(--color-background-deep) 0%,
+    var(--color-background-raised) 50%,
+    var(--color-background-muted) 100%
+  );
+  position: relative;
+}
+
+header,
+main,
+footer {
+  position: relative;
+  z-index: $layer-content;
+}
