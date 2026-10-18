@@ -1,0 +1,34 @@
+@use 'tokens' as *;
+
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  border-radius: $layout-swap-orb-radius;
+  filter: blur($effect-background-glow-blur);
+  pointer-events: none;
+  z-index: 0;
+  animation: drift $motion-background-drift-duration ease-in-out infinite alternate;
+}
+
+body::before {
+  width: $layout-background-glow-primary-size;
+  height: $layout-background-glow-primary-size;
+  background: radial-gradient(circle, $color-background-glow-primary 0%, transparent $effect-background-gradient-radius);
+  top: $layout-background-glow-primary-top;
+  left: $layout-background-glow-primary-left;
+}
+
+body::after {
+  width: $layout-background-glow-secondary-size;
+  height: $layout-background-glow-secondary-size;
+  background: radial-gradient(circle, $color-background-glow-secondary 0%, transparent $effect-background-gradient-radius);
+  bottom: $layout-background-glow-secondary-bottom;
+  right: $layout-background-glow-secondary-right;
+  animation-delay: $motion-background-drift-delay;
+}
+
+@keyframes drift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate($motion-background-drift-x, $motion-background-drift-y) scale($motion-background-drift-scale); }
+}

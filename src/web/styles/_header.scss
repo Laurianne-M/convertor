@@ -1,0 +1,148 @@
+@use 'tokens' as *;
+
+header {
+  padding: $space-header-block $space-header-inline;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: $effect-header-border-width solid var(--border-glass);
+  backdrop-filter: blur($effect-header-backdrop-blur);
+  background: $surface-header-background;
+}
+
+.live-currencies {
+  display: flex;
+  align-items: center;
+  gap: $space-live-currency-gap;
+}
+
+.currencies {
+  display: flex;
+  gap: $space-currency-list-gap;
+  align-items: center;
+}
+
+.currencies a {
+  display: inline-flex;
+  align-items: center;
+  padding: $space-currency-chip-block $space-currency-chip-inline;
+  border-radius: $radius-pill;
+  border: 1px solid var(--border-glass);
+  background: $surface-currency-chip;
+  color: var(--color-text-secondary);
+  font-size: $font-size-currency;
+  font-weight: 600;
+  letter-spacing: $tracking-currency;
+  text-decoration: none;
+  cursor: pointer;
+  backdrop-filter: blur($effect-control-backdrop-blur);
+  transition: all $motion-standard ease;
+  box-shadow: $shadow-currency-chip;
+}
+
+.currencies a:hover {
+  transform: translateY($layout-currency-chip-hover-lift);
+}
+
+#gold {
+  box-shadow: $shadow-currency-chip-gold;
+}
+
+#gold:hover {
+  border-color: var(--color-market-gold);
+  color: var(--color-market-gold);
+  box-shadow: $shadow-currency-chip-gold-hover;
+}
+
+#silver {
+  box-shadow: $shadow-currency-chip-silver;
+}
+
+#silver:hover {
+  border-color: var(--color-market-silver);
+  color: var(--color-market-silver);
+  box-shadow: $shadow-currency-chip-silver-hover;
+}
+
+#btc {
+  box-shadow: $shadow-currency-chip-bitcoin;
+}
+
+#btc:hover {
+  border-color: var(--color-market-bitcoin);
+  color: var(--color-market-bitcoin);
+  box-shadow: $shadow-currency-chip-bitcoin-hover;
+}
+
+.lang-selector {
+  flex-shrink: 0;
+}
+
+.lang-select {
+  background-color: var(--color-background-raised);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23a78bfa' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $space-language-indicator-offset center;
+  border: 1px solid var(--border-glass);
+  color: var(--color-accent-violet);
+  padding: $space-language-select-block $space-language-select-indicator $space-language-select-block $space-language-select-inline;
+  border-radius: $radius-pill;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  font-size: $font-size-language;
+  font-weight: 600;
+  letter-spacing: $tracking-language;
+  backdrop-filter: blur($effect-control-backdrop-blur);
+  transition: all $motion-fast ease;
+  box-shadow: $shadow-language-select;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.lang-select:hover {
+  border-color: var(--border-input-focus);
+  transform: translateY($layout-language-select-hover-lift);
+}
+
+.lang-select option {
+  background: var(--color-background-raised);
+  color: var(--color-text-primary);
+}
+
+@media (max-width: $layout-mobile-breakpoint) {
+  header {
+    padding: $space-header-mobile;
+    flex-direction: column;
+    gap: $space-control-gap;
+  }
+
+  .live-currencies {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .live-currencies::-webkit-scrollbar {
+    display: none;
+  }
+
+  .currencies {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: $space-currency-list-gap-mobile;
+    width: max-content;
+  }
+
+  .currencies a {
+    padding: $space-currency-chip-block-mobile $space-currency-chip-inline-mobile;
+    font-size: $font-size-currency-mobile;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .lang-selector,
+  .lang-select {
+    width: 100%;
+  }
+}
