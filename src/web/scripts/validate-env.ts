@@ -1,20 +1,16 @@
 import fs from 'fs';
 
-function validateURLVariable(varName: string, URLValue: string, formattingErrors: string[]): void {
-  if (URLValue.endsWith('/')) {
-    formattingErrors.push(`${varName} must not have a trailing slash (received: "${URLValue}")`);
-    return;
+function validateURLVariable(varName: string, URL: string, formattingErrors: string[]): void {
+ const validURLPattern = /^https?:\/\/([a-zA-Z0-9_.-]+)+(?:\/[a-zA-Z0-9_.-]*)*[^/]$/;
+
+ const domainOnlyPattern = /^https?:\/\/([a-zA-Z0-9_.-]+)$/;
+
+ if (!validURLPattern.test(URL) && !domainOnlyPattern.test(URL)) {
+    formattingErrors.push(
+      `Environment Configuration Error: '${varName}' must be a valid URL using http/https and must not have a trailing slash (received: "${URL}").`
+    );
   }
 
-  try {
-    const URLObj = new URL(URLValue);
-
-    if (URLObj.protocol !== 'http:' && URLObj.protocol !== 'https:') {
-      formattingErrors.push(`${varName} must use http or https protocol (received: "${URLValue}")`);
-    }
-  } catch {
-    formattingErrors.push(`${varName} must be a valid URL (received: "${URLValue}")`);
-  }
 }
 
 function printValidationErrors(envFileName: string, missingEnvVars: string[], formattingErrors: string[]): void {
@@ -50,15 +46,15 @@ export function main(args: string[]): number {
   const formattingErrors: string[] = [];
 
   requiredEnvVars.forEach(envVar => {
-    const URLValue = process.env[envVar]?.trim();
+    const URL = process.env[envVar]?.trim();
 
-    if (!URLValue) {
+    if (!URL) {
       missingEnvVars.push(envVar);
       return;
     }
 
     if (envVar.includes('URL')) {
-      validateURLVariable(envVar, URLValue, formattingErrors);
+      validateURLVariable(envVar, URL, formattingErrors);
     }
   });
 
@@ -72,7 +68,5 @@ export function main(args: string[]): number {
 }
 
 if (require.main === module) {
-  const processArgs = process.argv;
-  const exitCode = main(processArgs);
-  process.exit(exitCode);
+  process.exit(main(process.argv));
 }
