@@ -4,6 +4,7 @@ import { ExchangeRateServiceFake, TEST_EXCHANGE_RATES_FAKE_OVERRIDES } from "../
 import { StorageServiceFake } from "../../services/Storage/StorageServiceFake";
 import { TimeProviderServiceFake } from "../../services/TimeProvider/TimeProviderServiceFake";
 import { DOMServiceFake } from "../../services/DOM/DOMServiceFake";
+import { LocalizationServiceFake } from "../../services/Localization/LocalizationServiceFake";
 
 /**
  * Fake implementation of ServiceContainer, used in tests.
@@ -14,6 +15,7 @@ export class ServiceContainerFake implements ServiceContainer {
   public readonly storage: StorageServiceFake;
   public readonly exchangeRateService: ExchangeRateServiceFake;
   public readonly dom: DOMServiceFake;
+  public readonly localization: LocalizationServiceFake;
 
   constructor () {
     this.timeProvider = new TimeProviderServiceFake();
@@ -24,5 +26,6 @@ export class ServiceContainerFake implements ServiceContainer {
       this.timeProvider
     );
     this.dom = new DOMServiceFake; 
+    this.localization = new LocalizationServiceFake();
   }
 }

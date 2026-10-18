@@ -13,7 +13,7 @@ export type ExchangeRatePairs = {
   XAG: number
 }
 
-export type CurrencyCode = keyof typeof AppConstants.currencies;
+export type CurrencyCode = keyof typeof AppConstants.currencyCodes;
 
 
 export interface ExchangeRateAPIResponse extends ExchangeRates {

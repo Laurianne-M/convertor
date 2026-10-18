@@ -5,6 +5,7 @@ import { StorageServiceImpl } from "../../services/Storage/StorageServiceImpl";
 import { ExchangeRateServiceImp } from "../../services/ExchangeRate/ExchangeRateServiceImp";
 import { DOMServiceImpl } from "../../services/DOM/DOMServiceImpl";
 import { EnvironmentServiceImpl } from "../Environment/EnvironmentServiceImpl";
+import { LocalizationServiceImpl } from "../Localization/LocalizationServiceImpl";
 
 export class ServiceContainerImpl implements ServiceContainer {
   public readonly timeProvider: TimeProviderServiceImpl;
@@ -12,6 +13,7 @@ export class ServiceContainerImpl implements ServiceContainer {
   public readonly storage: StorageServiceImpl;
   public readonly exchangeRateService: ExchangeRateServiceImp;
   public readonly dom: DOMServiceImpl;
+  public readonly localization: LocalizationServiceImpl;
   public readonly environment : EnvironmentServiceImpl
 
   constructor() {
@@ -26,5 +28,6 @@ export class ServiceContainerImpl implements ServiceContainer {
       logger: this.logger
     });
     this.dom = new DOMServiceImpl;
+    this.localization = new LocalizationServiceImpl();
   }
 }

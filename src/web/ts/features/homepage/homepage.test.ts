@@ -16,6 +16,7 @@ import {
 
 import { ServiceContainerFake } from "../../services/ServiceContainer/ServiceContainerFake";
 import type { ExchangeRates } from "../../services/ExchangeRate/ExchangeRateService";
+import { StringKey } from "../../services/Localization/LocalizationService";
 
 
 
@@ -183,11 +184,11 @@ describe("logic", () => {
     const secondInput = { value: '' } as unknown as HTMLInputElement;
     const data = await container.exchangeRateService.loadRates();
 
-    await updateAmount(data, firstInput, secondInput, false, 'EUR', 'USD', logger);
+    await updateAmount(data, firstInput, secondInput, false, 'EUR', 'USD', logger, container.localization);
 
     expect(alertSpy).toHaveBeenCalled();
 
-    expect(alertSpy).toHaveBeenCalledWith('Amount must be positive');
+    expect(alertSpy).toHaveBeenCalledWith(container.localization.t(StringKey.window_alert_negative_number));
 
     alertSpy.mockRestore();
   });
@@ -197,7 +198,7 @@ describe("logic", () => {
     const secondInput = { value: '' } as unknown as HTMLInputElement;
     const data = await container.exchangeRateService.loadRates();
 
-    await updateAmount(data, firstInput, secondInput, false, 'EUR', 'USD', logger);
+    await updateAmount(data, firstInput, secondInput, false, 'EUR', 'USD', logger, container.localization);
 
     expect(secondInput.value).toBe('110.00');
   });
@@ -207,7 +208,7 @@ describe("logic", () => {
     const secondInput = { value: 110 } as unknown as HTMLInputElement;
     const data = await container.exchangeRateService.loadRates();
 
-    await updateAmount(data, firstInput, secondInput, true, 'EUR', 'USD', logger);
+    await updateAmount(data, firstInput, secondInput, true, 'EUR', 'USD', logger, container.localization);
 
     expect(firstInput.value).toBe('100.00');
   });
@@ -224,7 +225,7 @@ describe("logic", () => {
       // expected — loadRates is set to fail for this test
     }
 
-    await updateAmount(data, firstInput, secondInput, true, 'EUR', 'USD', logger);
+    await updateAmount(data, firstInput, secondInput, true, 'EUR', 'USD', logger, container.localization);
 
     expect(firstInput.value).toBe('');
   });
