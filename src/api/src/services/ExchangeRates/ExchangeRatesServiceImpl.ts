@@ -1,7 +1,10 @@
-import ExchangeRatesService from "./ExchangeRatesService.js";
+import ExchangeRatesService, {
+  EXCHANGE_RATES_COLLECTION,
+} from "./ExchangeRatesService.js";
 import EnvironmentService from "../Environment/EnvironmentService.js";
 import {ExchangeRateAPIResponse}
   from "../../models/ExchangeRateAPIResponse.js";
+import FirestoreService from "../Firestore/FirestoreService.js";
 
 /**
  * Dependencies for the ExchangeRatesServiceImpl.
@@ -17,6 +20,9 @@ export interface ExchangeRatesServiceImplDependencies {
    * The environment service to use for getting the exchange rates URL.
    */
   environmentService: EnvironmentService,
+
+  /** The Firestore service used to persist exchange rates. */
+  firestoreService: FirestoreService,
 }
 
 /**
@@ -52,5 +58,20 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
     const data = await response.json();
 
     return {data, response};
+  }
+
+  /** @inheritdoc */
+  async fetchAndStoreExchangeRates(): Promise<ExchangeRateAPIResponse> {
+    const {data, response} = await this.getExchangeRates();
+    if (!response.ok || !data.success) {
+      throw new Error("Could not fetch exchange rates successfully");
+    }
+
+    await this.dependencies.firestoreService.create(
+      EXCHANGE_RATES_COLLECTION,
+      data,
+      data.date
+    );
+    return data;
   }
 }
