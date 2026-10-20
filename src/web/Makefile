@@ -1,35 +1,41 @@
 .PHONY: build
 
 BUILD_MODE ?= prod
+ENV_FILE = ../../.env.$(BUILD_MODE)
+
+validate-env:
+	npx tsx --env-file=$(ENV_FILE) scripts/validate-env.ts $(ENV_FILE) VITE_API_URL VITE_EXCHANGE_RATES_API_KEY
 
 lint:
 	npx eslint .
 
-build:
+build: validate-env
 	npx vite build --mode $(BUILD_MODE)
 
-start:
+start: validate-env
 	npx vite --port 5174 --host --mode dev
 
-serve:
+serve: build
 	npx serve build --listen 5174
 
-prod: build
-	npx serve build --listen 5174
-
-test-unit:
+test-unit: BUILD_MODE = test
+test-unit: validate-env
 	npx vitest
 
-test-run:
+test-run: BUILD_MODE = test
+test-run: validate-env
 	npx vitest run
 
-test-ui:
+test-ui: BUILD_MODE = test
+test-ui: validate-env
 	npx vitest --ui
 
-test-coverage:
+test-coverage: BUILD_MODE = test
+test-coverage: validate-env
 	npx vitest run --coverage
 
-test-e2e:
+test-e2e: BUILD_MODE = test
+test-e2e: validate-env
 	npx playwright test
 
 report-e2e:
