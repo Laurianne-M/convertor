@@ -1,19 +1,31 @@
 import { describe, test, beforeEach, afterEach, expect, vi } from 'vitest';
 import { main } from '../validate-env';
+import { EnvironmentVariableType } from '../env-types';
+import type { Environment } from '../env-types';
 import fs from 'fs';
 
-vi.mock('fs');
+
 
 describe('main ', () => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
   let consoleLogSpy: ReturnType<typeof vi.spyOn>;
+  let config: Environment;
 
   beforeEach(() => {
+    vi.mock('fs');
     vi.clearAllMocks();
     // Silence console outputs during tests to keep the test runner clean
     consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
     vi.mocked(fs.existsSync).mockReturnValue(true);
+
+    config = {
+      path: '.env.test',
+      values: {
+        API_KEY: EnvironmentVariableType.STRING,
+        API_URL: EnvironmentVariableType.URL,
+      },
+    };
   });
 
   afterEach(() => {
@@ -21,11 +33,11 @@ describe('main ', () => {
     consoleLogSpy.mockRestore();
   });
 
-  test('should return exit code 1 when array has fewer than 3 values', () => {
-    const exitCode = main(['node', 'script.js']);
+  test('should return exit code 1 when environment configuration is invalid or empty', () => {
+    const exitCode = main({ path: '', values: {} } as Environment);
     expect(exitCode).toBe(1);
     expect(consoleErrorSpy).toHaveBeenCalledWith(
-      'Environment Configuration Error: Insufficient arguments provided.'
+      'Environment Configuration Error: Invalid or empty environment configuration provided.'
     );
   });
 
@@ -33,7 +45,7 @@ describe('main ', () => {
     process.env.API_KEY = 'secret-123';
     process.env.API_URL = '';
 
-    const exitCode = main(['node', 'script.js','.env.test', 'API_KEY', 'API_URL']);
+    const exitCode = main(config);
     expect(exitCode).toBe(1);
   })
 
@@ -41,7 +53,7 @@ describe('main ', () => {
     process.env.API_KEY = '';
     process.env.API_URL = 'https://api.example.com/v1';
 
-    const exitCode = main(['node', 'script.js','.env.test', 'API_KEY', 'API_URL']);
+    const exitCode = main(config);
     expect(exitCode).toBe(1);
   });
 
@@ -49,7 +61,7 @@ describe('main ', () => {
     process.env.API_KEY = '';
     process.env.API_URL = '';
 
-    const exitCode = main(['node', 'script.js','.env.test', 'API_KEY', 'API_URL']);
+    const exitCode = main(config);
     expect(exitCode).toBe(1);
   });
 
@@ -57,7 +69,7 @@ describe('main ', () => {
     process.env.API_KEY = 'secret-123';
     process.env.API_URL = 'not-a-valid-url';
 
-    const exitCode = main(['node', 'script.js','.env.test', 'API_KEY', 'API_URL']);
+    const exitCode = main(config);
     expect(exitCode).toBe(1);
   });
 
@@ -65,7 +77,7 @@ describe('main ', () => {
     process.env.API_KEY = 'secret-123';
     process.env.API_URL = 'https://api.example.com';
 
-    const exitCode = main(['node', 'script.js','.env.test', 'API_KEY', 'API_URL']);
+    const exitCode = main(config);
     expect(exitCode).toBe(0);
   });
 })
