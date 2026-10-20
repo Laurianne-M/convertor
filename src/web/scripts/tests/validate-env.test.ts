@@ -4,8 +4,6 @@ import { EnvironmentVariableType } from '../env-types';
 import type { Environment } from '../env-types';
 import fs from 'fs';
 
-
-
 describe('main', () => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
   let consoleLogSpy: ReturnType<typeof vi.spyOn>;

@@ -5,7 +5,6 @@ import type { Environment } from './env-types';
 function validateURLVariable(varName: string, URL: string, formattingErrors: string[]): void {
   const cleanURL = URL.replace(/^["']|["']$/g, '').trim();
   const validURLPattern = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\/.+[^/]$/;
-
   const domainOnlyPattern = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\/[^/]+$/;
 
   if (!validURLPattern.test(cleanURL) && !domainOnlyPattern.test(cleanURL)) {
@@ -31,13 +30,13 @@ function printValidationErrors(envFileName: string, missingEnvVars: string[], fo
   console.error(`\nPlease check your ${envFileName} file.`);
 }
 
-export function main(envConfig: Environment): number {
-  if (!envConfig || !envConfig.path || !envConfig.values || Object.keys(envConfig.values).length === 0) {
+export function main(environment: Environment): number {
+  if (!environment || !environment.path || !environment.values || Object.keys(environment.values).length === 0) {
     console.error('Environment Configuration Error: Invalid or empty environment configuration provided.');
     return 1;
   }
 
-  const envFileName = envConfig.path;
+  const envFileName = environment.path;
 
   if (!envFileName || !fs.existsSync(envFileName)) {
     console.error(`Environment Configuration Error: File "${envFileName}" not found.`);
@@ -47,7 +46,7 @@ export function main(envConfig: Environment): number {
   const missingEnvVars: string[] = [];
   const formattingErrors: string[] = [];
 
-  for (const [envVar, expectedType] of Object.entries(envConfig.values)) {
+  for (const [envVar, expectedType] of Object.entries(environment.values)) {
     const value = process.env[envVar]?.trim();
 
     if (!value) {
