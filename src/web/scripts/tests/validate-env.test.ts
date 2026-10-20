@@ -6,7 +6,7 @@ import fs from 'fs';
 
 
 
-describe('main ', () => {
+describe('main', () => {
   let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
   let consoleLogSpy: ReturnType<typeof vi.spyOn>;
   let config: Environment;
@@ -31,6 +31,9 @@ describe('main ', () => {
   afterEach(() => {
     consoleErrorSpy.mockRestore();
     consoleLogSpy.mockRestore();
+
+    delete process.env.API_KEY;
+    delete process.env.API_URL;
   });
 
   test('should return exit code 1 when environment configuration is invalid or empty', () => {
