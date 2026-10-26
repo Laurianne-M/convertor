@@ -10,7 +10,7 @@ build-watch:
 	npx tsc --watch
 
 serve: build
-	npx firebase emulators:start --only functions
+	npx firebase --config ../../firebase.json emulators:start --only functions,firestore
 
 start: build
 	npx firebase functions:shell
