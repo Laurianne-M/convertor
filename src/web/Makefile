@@ -1,5 +1,9 @@
 .PHONY: build
 
+SERVE_PORT ?= 5174
+E2E_REPORT_HOST ?= 0.0.0.0
+E2E_REPORT_PORT ?= 9323	
+
 BUILD_MODE ?= prod
 ENV_FILE = ../../.env.$(BUILD_MODE)
 
@@ -13,10 +17,10 @@ build: validate-env
 	npx vite build --mode $(BUILD_MODE)
 
 start: validate-env
-	npx vite --port 5174 --host --mode dev
+	npx vite --port $(SERVE_PORT) --host --mode dev
 
 serve: build
-	npx serve build --listen 5174
+	npx serve build --listen $(SERVE_PORT)
 
 test-unit: BUILD_MODE = test
 test-unit: validate-env
@@ -39,7 +43,7 @@ test-e2e: validate-env
 	npx playwright test
 
 report-e2e:
-	npx playwright show-report playwright-report --host 0.0.0.0 --port 9323
+	npx playwright show-report playwright-report --host $(E2E_REPORT_HOST) --port $(E2E_REPORT_PORT)
 
 install:
 	npm ci
