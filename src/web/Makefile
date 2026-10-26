@@ -22,13 +22,12 @@ start: validate-env
 serve: build
 	npx serve build --listen $(SERVE_PORT)
 
+serve-e2e: BUILD_MODE = test
+serve-e2e: serve
+
 test-unit: BUILD_MODE = test
 test-unit: validate-env
 	npx vitest
-
-test-run: BUILD_MODE = test
-test-run: validate-env
-	npx vitest run
 
 test-ui: BUILD_MODE = test
 test-ui: validate-env
