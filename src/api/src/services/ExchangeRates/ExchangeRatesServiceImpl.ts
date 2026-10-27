@@ -61,7 +61,7 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
     console.debug(`Will desereialize HTTP response: \n${stringifiedResponse}`);
     const data = await response.json();
     const stringifiedData = JSON.stringify(data, null, 2);
-    console.debug(`Deserialized JSON response: ${data}`);
+    console.debug(`Deserialized JSON response: ${stringifiedData}`);
 
     // TODO - throw if (!response.ok || !data.success)
     return {data, response};
