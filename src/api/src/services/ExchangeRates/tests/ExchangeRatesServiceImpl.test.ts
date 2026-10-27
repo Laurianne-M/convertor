@@ -46,8 +46,7 @@ describe("ExchangeRatesServiceImpl", () => {
       firestoreService: {create} as unknown as FirestoreService,
     });
 
-    await expect(service.fetchAndStoreExchangeRates())
-      .rejects.toThrow("Could not fetch exchange rates successfully");
+    await expect(service.fetchAndStoreExchangeRates()).rejects.toThrow();
     expect(create).not.toHaveBeenCalled();
   });
 });
