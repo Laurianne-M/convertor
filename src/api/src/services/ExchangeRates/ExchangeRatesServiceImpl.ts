@@ -68,7 +68,6 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
   /** @inheritdoc */
   async fetchAndStoreExchangeRates(): Promise<ExchangeRateAPIResponse> {
     console.debug("Will fetch an storate exchange rates from public API");
-    
     const {data, response} = await this.getExchangeRates();
 
     // TODO - Allow getExchangeRates() to throw so that we get this behavior
@@ -95,7 +94,6 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
     );
 
     console.debug(`Stored data in collection: ${EXCHANGE_RATES_COLLECTION}`);
-    
     return data;
   }
 }
