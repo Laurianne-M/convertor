@@ -19,8 +19,10 @@ describe("/v1/latest", () => {
   test("should return 200 with rates data when fetch succeed", async () => {
     // Uses default TestData.responses.success and 200 status automatically
     const response = await request(routes).get("/v1/latest");
+    // TODO - Use HTTPStatus instead for consistency.
+    const expectedStatus = 200;
 
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(expectedStatus);
     expect(response.body).toEqual(TestData.responses.success);
   });
 
