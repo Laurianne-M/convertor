@@ -58,11 +58,11 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
       this.dependencies.environmentService.getExchangeRatesURL()
     );
 
-    console.debug(`Did recieve response from public API. Will deserialized:\n${response}`);
+    console.debug(`Will desereialize HTTP response: \n${response}`);
     
     const data = await response.json();
 
-    console.debug(`Successfully deserialized JSON response: ${data}`);
+    console.debug(`Deserialized JSON response: ${data}`);
 
     // TODO - throw if (!response.ok || !data.success)
     return {data, response};
@@ -70,7 +70,7 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
 
   /** @inheritdoc */
   async fetchAndStoreExchangeRates(): Promise<ExchangeRateAPIResponse> {
-    console.debug("Will fetch an storage exchange rates from public API");
+    console.debug("Will fetch an storate exchange rates from public API");
     
     const {data, response} = await this.getExchangeRates();
 
@@ -78,7 +78,7 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
     // for all clients of getExchangeRates() instead of only performing status
     // checks for call paths to this function (/v2 only)
     if (!response.ok) {
-      const message = `Non 2xx status code recieved for request: ${response.status}`;
+      const message = `Non 2xx status code recieved: ${response.status}`;
       console.error(message);
       throw new Error(message);
     }
@@ -89,7 +89,7 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
       throw new Error(message);
     }
 
-    console.debug(`Storing successfully fetched data in collection: ${EXCHANGE_RATES_COLLECTION}`);
+    console.debug(`Storing data in collection: ${EXCHANGE_RATES_COLLECTION}`);
 
     await this.dependencies.firestoreService.create(
       EXCHANGE_RATES_COLLECTION,
@@ -97,7 +97,7 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
       data.date
     );
 
-    console.debug(`Successfully stored data in collection: ${EXCHANGE_RATES_COLLECTION}`);
+    console.debug(`Stored data in collection: ${EXCHANGE_RATES_COLLECTION}`);
     
     return data;
   }
