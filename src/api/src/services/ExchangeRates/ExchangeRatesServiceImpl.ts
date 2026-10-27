@@ -52,17 +52,17 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
     data: ExchangeRateAPIResponse;
     response: Response;
   }> {
-    console.debug("Fetching exchange rates from public API")
+    console.debug("Fetching exchange rates from public API");
     
     const response = await this.dependencies.fetch(
       this.dependencies.environmentService.getExchangeRatesURL()
     );
 
-    console.debug(`Did recieve response from public API. Will deserialized:\n${response}`)
+    console.debug(`Did recieve response from public API. Will deserialized:\n${response}`);
     
     const data = await response.json();
 
-    console.debug(`Successfully deserialized JSON response: ${data}`)
+    console.debug(`Successfully deserialized JSON response: ${data}`);
 
     // TODO - throw if (!response.ok || !data.success)
 
@@ -71,19 +71,36 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
 
   /** @inheritdoc */
   async fetchAndStoreExchangeRates(): Promise<ExchangeRateAPIResponse> {
+    console.debug("Will fetch an storage exchange rates from public API")
+    
     const { data, response } = await this.getExchangeRates();
 
-    // TODO - Allow getExchangeRates() to throw so that we get this behavior for all clients of getExchangeRates()
-    // instead of only performing status checks for call paths to this function (/v2 only)
-    if (!response.ok || !data.success) {
-      throw new Error("Could not fetch exchange rates successfully");
+    // TODO - Allow getExchangeRates() to throw so that we get this behavior
+    // for all clients of getExchangeRates() instead of only performing status
+    // checks for call paths to this function (/v2 only)
+    
+    if (!response.ok) {
+      const message = `Non 2xx status code recieved for request: ${response.status}`;
+      console.error(message);
+      throw new Error(message);
     }
+
+    if (!data.success) {
+      const message = `Public API indicated a failure`;
+      console.error(message);
+      throw new Error(message);
+    }
+
+    console.debug(`Storing successfully fetched data in collection: ${EXCHANGE_RATES_COLLECTION}`);
 
     await this.dependencies.firestoreService.create(
       EXCHANGE_RATES_COLLECTION,
       data,
       data.date
     );
+
+    console.debug(`Successfully stored data in collection: ${EXCHANGE_RATES_COLLECTION}`);
+    
     return data;
   }
 }
