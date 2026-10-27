@@ -53,15 +53,12 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
     response: Response;
   }> {
     console.debug("Fetching exchange rates from public API");
-    
     const response = await this.dependencies.fetch(
       this.dependencies.environmentService.getExchangeRatesURL()
     );
 
     console.debug(`Will desereialize HTTP response: \n${response}`);
-    
     const data = await response.json();
-
     console.debug(`Deserialized JSON response: ${data}`);
 
     // TODO - throw if (!response.ok || !data.success)
@@ -84,7 +81,7 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
     }
 
     if (!data.success) {
-      const message = `Public API indicated a failure`;
+      const message = `Public API indicated a failure: ${data}`;
       console.error(message);
       throw new Error(message);
     }
