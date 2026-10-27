@@ -57,9 +57,11 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
       this.dependencies.environmentService.getExchangeRatesURL()
     );
 
-    console.debug(`Will desereialize HTTP response: \n${response}`);
+    const stringifiedResponse = JSON.stringify(response, null, 2);
+    console.debug(`Will desereialize HTTP response: \n${stringifiedResponse}`);
     const data = await response.json();
-    console.debug(`Deserialized JSON response: ${data}`);
+    const stringifiedData = JSON.stringify(data, null, 2);
+    console.debug(`Deserialized JSON response: ${stringifiedData}`);
 
     // TODO - throw if (!response.ok || !data.success)
     return {data, response};
@@ -80,7 +82,8 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
     }
 
     if (!data.success) {
-      const message = `Public API indicated a failure: ${data}`;
+      const stringifiedData = JSON.stringify(data, null, 2);
+      const message = `Public API indicated a failure: ${stringifiedData}`;
       console.error(message);
       throw new Error(message);
     }
