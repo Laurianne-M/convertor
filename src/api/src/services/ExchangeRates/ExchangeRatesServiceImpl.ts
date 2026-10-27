@@ -65,20 +65,18 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
     console.debug(`Successfully deserialized JSON response: ${data}`);
 
     // TODO - throw if (!response.ok || !data.success)
-
-    return { data, response };
+    return {data, response};
   }
 
   /** @inheritdoc */
   async fetchAndStoreExchangeRates(): Promise<ExchangeRateAPIResponse> {
-    console.debug("Will fetch an storage exchange rates from public API")
+    console.debug("Will fetch an storage exchange rates from public API");
     
-    const { data, response } = await this.getExchangeRates();
+    const {data, response} = await this.getExchangeRates();
 
     // TODO - Allow getExchangeRates() to throw so that we get this behavior
     // for all clients of getExchangeRates() instead of only performing status
     // checks for call paths to this function (/v2 only)
-    
     if (!response.ok) {
       const message = `Non 2xx status code recieved for request: ${response.status}`;
       console.error(message);
