@@ -52,26 +52,48 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
     data: ExchangeRateAPIResponse;
     response: Response;
   }> {
+    console.debug("Fetching exchange rates from public API");
     const response = await this.dependencies.fetch(
       this.dependencies.environmentService.getExchangeRatesURL()
     );
-    const data = await response.json();
 
+    console.debug(`Will desereialize HTTP response: \n${response}`);
+    const data = await response.json();
+    console.debug(`Deserialized JSON response: ${data}`);
+
+    // TODO - throw if (!response.ok || !data.success)
     return {data, response};
   }
 
   /** @inheritdoc */
   async fetchAndStoreExchangeRates(): Promise<ExchangeRateAPIResponse> {
+    console.debug("Will fetch an storate exchange rates from public API");
     const {data, response} = await this.getExchangeRates();
-    if (!response.ok || !data.success) {
-      throw new Error("Could not fetch exchange rates successfully");
+
+    // TODO - Allow getExchangeRates() to throw so that we get this behavior
+    // for all clients of getExchangeRates() instead of only performing status
+    // checks for call paths to this function (/v2 only)
+    if (!response.ok) {
+      const message = `Non 2xx status code recieved: ${response.status}`;
+      console.error(message);
+      throw new Error(message);
     }
+
+    if (!data.success) {
+      const message = `Public API indicated a failure: ${data}`;
+      console.error(message);
+      throw new Error(message);
+    }
+
+    console.debug(`Storing data in collection: ${EXCHANGE_RATES_COLLECTION}`);
 
     await this.dependencies.firestoreService.create(
       EXCHANGE_RATES_COLLECTION,
       data,
       data.date
     );
+
+    console.debug(`Stored data in collection: ${EXCHANGE_RATES_COLLECTION}`);
     return data;
   }
 }
