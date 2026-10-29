@@ -1,5 +1,7 @@
 import {ExchangeRateAPIResponse} from "../../models/ExchangeRateAPIResponse.js";
 
+export const EXCHANGE_RATES_COLLECTION = "exchangeRates";
+
 /**
  * The exchange rates service interface.
  */
@@ -15,6 +17,12 @@ interface ExchangeRatesService {
     data: ExchangeRateAPIResponse;
     response: Response;
   }>;
+
+  /**
+   * Fetches exchange rates and stores a successful response by date.
+   * @return {Promise<ExchangeRateAPIResponse>} The stored exchange rates.
+   */
+  fetchAndStoreExchangeRates(): Promise<ExchangeRateAPIResponse>;
 }
 
 export default ExchangeRatesService;
