@@ -22,3 +22,11 @@ export interface Environment {
   /** environment values at runtime. */
   values: Record<string, any>;
 }
+
+/**
+ * Interface defining the command-line arguments and environment values injected into the validator.
+ */
+export interface EnvironmentCliOptions {
+  argv: string[];
+  env: Record<string, string | undefined>;
+}

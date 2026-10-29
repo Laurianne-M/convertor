@@ -1,23 +1,18 @@
 import { describe, test, beforeEach, afterEach, expect, vi } from 'vitest';
 import { main } from '../validate-env';
-import { EnvironmentVariableType } from '../env-types';
-import type { Environment } from '../env-types';
+import type { EnvironmentCliOptions } from '../env-types';
 import fs from 'fs';
 
 describe('main', () => {
-  let environment: Environment;
+  let cliOptions: EnvironmentCliOptions;
 
   beforeEach(() => {
     vi.mock('fs');
     vi.mocked(fs.existsSync).mockReturnValue(true);
 
-    environment = {
-      path: '.env.test',
-      variables: {
-        API_KEY: EnvironmentVariableType.STRING,
-        API_URL: EnvironmentVariableType.URL,
-      },
-      values: process.env,
+    cliOptions = {
+      argv: ['node', 'validate-env.ts', 'path=.env.test', 'API_KEY=string', 'API_URL=url'],
+      env: process.env,
     };
   });
 
@@ -29,7 +24,18 @@ describe('main', () => {
   });
 
   test('should return exit code 1 when environment configuration is invalid or empty', () => {
-    const exitCode = main({ path: '', variables: {}, values: {} } as Environment);
+    const exitCode = main({ argv: ['node', 'validate-env.ts'], env: {} });
+    expect(exitCode).toBe(1);
+  });
+
+  test('should return exit code 1 when path argument is missing', () => {
+    const exitCode = main({ argv: ['node', 'validate-env.ts', 'API_KEY=string'], env: {} });
+    expect(exitCode).toBe(1);
+  });
+
+  test('should return exit code 1 when file does not exist', () => {
+    vi.mocked(fs.existsSync).mockReturnValue(false);
+    const exitCode = main(cliOptions);
     expect(exitCode).toBe(1);
   });
 
@@ -37,7 +43,7 @@ describe('main', () => {
     process.env.API_KEY = 'secret-123';
     process.env.API_URL = '';
 
-    const exitCode = main(environment);
+    const exitCode = main(cliOptions);
     expect(exitCode).toBe(1);
   })
 
@@ -45,7 +51,7 @@ describe('main', () => {
     process.env.API_KEY = '';
     process.env.API_URL = 'https://api.example.com/v1';
 
-    const exitCode = main(environment);
+    const exitCode = main(cliOptions);
     expect(exitCode).toBe(1);
   });
 
@@ -53,7 +59,7 @@ describe('main', () => {
     process.env.API_KEY = '';
     process.env.API_URL = '';
 
-    const exitCode = main(environment);
+    const exitCode = main(cliOptions);
     expect(exitCode).toBe(1);
   });
 
@@ -61,7 +67,7 @@ describe('main', () => {
     process.env.API_KEY = 'secret-123';
     process.env.API_URL = 'not-a-valid-url';
 
-    const exitCode = main(environment);
+    const exitCode = main(cliOptions);
     expect(exitCode).toBe(1);
   });
 
@@ -69,7 +75,7 @@ describe('main', () => {
     process.env.API_KEY = 'secret-123';
     process.env.API_URL = 'https://api.example.com';
 
-    const exitCode = main(environment);
+    const exitCode = main(cliOptions);
     expect(exitCode).toBe(0);
   });
 })
