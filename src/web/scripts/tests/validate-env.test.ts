@@ -10,9 +10,6 @@ describe('main', () => {
   });
 
   afterEach(() => {
-    delete process.env.API_KEY;
-    delete process.env.API_URL;
-
     vi.clearAllMocks();
   });
 
@@ -36,7 +33,7 @@ describe('main', () => {
 
   test('should return exit code 1 when file does not exist', () => {
     vi.mocked(fs.existsSync).mockReturnValue(false);
-    
+
     const exitCode = main({
       argv: ['node', 'validate-env.ts', 'path=.env.test', 'API_KEY=string', 'API_URL=url'],
       env: { API_KEY: 'secret-123', API_URL: 'https://api.example.com' },
