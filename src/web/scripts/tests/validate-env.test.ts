@@ -53,7 +53,8 @@ describe('main', () => {
       argv: ['node', 'validate-env.ts', 'path=.env.test', 'API_KEY=string', 'API_URL=url'],
       env: {
         API_KEY: 'secret-123',
-        API_URL: '' },
+        API_URL: '',
+      },
     });
 
     expect(exitCode).toBe(1);
@@ -71,7 +72,7 @@ describe('main', () => {
     expect(exitCode).toBe(1);
   });
 
-  test('should return exit code 1 when both are missing', () => {
+  test('should return exit code 1 when API_KEY and API_URL are empty string', () => {
     const exitCode = main({
       argv: ['node', 'validate-env.ts', 'path=.env.test', 'API_KEY=string', 'API_URL=url'],
       env: {
@@ -103,6 +104,7 @@ describe('main', () => {
         API_URL: 'https://api.example.com',
       },
     });
+    
     expect(exitCode).toBe(0);
   });
 })
