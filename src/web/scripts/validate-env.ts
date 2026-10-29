@@ -46,7 +46,7 @@ export function main(options: EnvironmentCliOptions): number {
   }
 
   let envPath = '';
-  const variables: Record<string, EnvironmentVariableType> = {};
+  const keys: Record<string, EnvironmentVariableType> = {};
 
   // parse arguments like path=... and API_URL=url
   for (const arg of args) {
@@ -56,7 +56,7 @@ export function main(options: EnvironmentCliOptions): number {
       const [key, rawType] = arg.split('=');
       if (key && rawType) {
         const normalizedType = rawType.toLowerCase();
-        variables[key] = normalizedType === 'url' 
+        keys[key] = normalizedType === 'url' 
           ? EnvironmentVariableType.URL 
           : EnvironmentVariableType.STRING;
       }
@@ -68,7 +68,7 @@ export function main(options: EnvironmentCliOptions): number {
     return 1;
   }
 
-  if (Object.keys(variables).length === 0) {
+  if (Object.keys(keys).length === 0) {
     console.error('Environment Configuration Error: No variables specified for validation.');
     return 1;
   }
@@ -80,11 +80,11 @@ export function main(options: EnvironmentCliOptions): number {
 
   const environment: Environment = {
     path: envPath,
-    variables,
+    keys,
     values: options.env,
   };
 
-  if (!environment || !environment.path || !environment.variables || Object.keys(environment.variables).length === 0) {
+  if (!environment || !environment.path || !environment.keys || Object.keys(environment.keys).length === 0) {
     console.error('Environment Configuration Error: Invalid or empty environment configuration provided.');
     return 1;
   }
@@ -97,7 +97,7 @@ export function main(options: EnvironmentCliOptions): number {
   const missingEnvVars: string[] = [];
   const formattingErrors: string[] = [];
 
-  for (const [envVar, expectedType] of Object.entries(environment.variables)) {
+  for (const [envVar, expectedType] of Object.entries(environment.keys)) {
     const value = environment.values[envVar]?.trim();
 
     if (!value) {

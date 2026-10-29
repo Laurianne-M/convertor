@@ -16,10 +16,10 @@ export interface Environment {
   /** The file path of the environment file being validated. */
   path: string;
 
-  /** A environment variable map names to their expected validation types. */
-  variables: Record<string, EnvironmentVariableType>;
+  /** Names of expected environment variables and their expected concrete types. */
+  keys: Record<string, EnvironmentVariableType>;
 
-  /** environment values at runtime. */
+  /** Environment variable values. */
   values: Record<string, any>;
 }
 

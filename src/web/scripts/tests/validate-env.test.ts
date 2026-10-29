@@ -13,7 +13,7 @@ describe('main', () => {
     vi.clearAllMocks();
   });
 
-  test('should return exit code 1 when environment configuration is invalid or empty', () => {
+  test('should return exit code 1 when all environment variables are missing', () => {
     const exitCode = main({
       argv: ['node', 'validate-env.ts', 'path=.env.test', 'API_KEY=string', 'API_URL=url'],
       env: {},
@@ -34,7 +34,7 @@ describe('main', () => {
     expect(exitCode).toBe(1);
   });
 
-  test('should return exit code 1 when file does not exist', () => {
+  test('should return exit code 1 when env file does not exist', () => {
     vi.mocked(fs.existsSync).mockReturnValue(false);
 
     const exitCode = main({
@@ -48,7 +48,7 @@ describe('main', () => {
     expect(exitCode).toBe(1);
   });
 
-  test('should return exit code 1 when URL is missing', () => {
+  test('should return exit code 1 when API_URL value is missing', () => {
     const exitCode = main({
       argv: ['node', 'validate-env.ts', 'path=.env.test', 'API_KEY=string', 'API_URL=url'],
       env: {
@@ -60,7 +60,7 @@ describe('main', () => {
     expect(exitCode).toBe(1);
   })
 
-  test('should return exit code 1 when API key is missing', () => {
+  test('should return exit code 1 when API_KEY value is missing', () => {
     const exitCode = main({
       argv: ['node', 'validate-env.ts', 'path=.env.test', 'API_KEY=string', 'API_URL=url'],
       env: {
@@ -104,7 +104,7 @@ describe('main', () => {
         API_URL: 'https://api.example.com',
       },
     });
-    
+
     expect(exitCode).toBe(0);
   });
 })
