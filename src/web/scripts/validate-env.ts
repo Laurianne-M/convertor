@@ -1,6 +1,17 @@
 import fs from 'fs';
 import { EnvironmentVariableType } from './env-types';
-import type { Environment, EnvironmentCliOptions } from './env-types';
+import type { EnvironmentCLIOptions } from './env-types';
+
+interface Environment {
+  /** The file path of the environment file being validated. */
+  path: string;
+
+  /** Names of expected environment variables and their expected concrete types. */
+  keys: Record<string, EnvironmentVariableType>;
+
+  /** Environment variable values. */
+  values: Record<string, any>;
+}
 
 function validateURL({ name, value }: { name: string; value: string }): string | null {
   const cleanURL = value.replace(/^["']|["']$/g, '').trim();
@@ -36,7 +47,7 @@ function printValidationErrors(envFileName: string, missingEnvVars: string[], fo
   console.error(`\nPlease check your ${envFileName} file.`);
 }
 
-export function main(options: EnvironmentCliOptions): number {
+export function main(options: EnvironmentCLIOptions): number {
   const args = options.argv.slice(2);
 
   if (args.length === 0) {
