@@ -13,6 +13,9 @@ export enum EnvironmentVariableType {
  * Interface defining the command-line arguments and environment values injected into the validator.
  */
 export interface EnvironmentCLIOptions {
+  /** Command-line argument vector passed to the execution context (e.g., process.argv). */
   argv: string[];
+
+  /** Key-value pairs representing environment variables available during validation. */
   env: Record<string, string | undefined>;
 }

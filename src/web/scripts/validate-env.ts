@@ -2,6 +2,9 @@ import fs from 'fs';
 import { EnvironmentVariableType } from './env-types';
 import type { EnvironmentCLIOptions } from './env-types';
 
+/**
+ * Configuration interface defining the environment file path, required keys, and loaded values.
+ */
 interface Environment {
   /** The file path of the environment file being validated. */
   path: string;
@@ -13,6 +16,14 @@ interface Environment {
   values: Record<string, any>;
 }
 
+/**
+ * Validates whether a given environment variable value conforms to URL formatting rules.
+ * 
+ * @param param0 - An object containing the variable name and its string value.
+ * @param param0.name - The name of the environment variable.
+ * @param param0.value - The string value to evaluate as a URL.
+ * @returns An error message string if validation fails, or null if the URL is valid.
+ */
 function validateURL({ name, value }: { name: string; value: string }): string | null {
   const cleanURL = value.replace(/^["']|["']$/g, '').trim();
   const validURLPattern = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\/.+[^/]$/;
@@ -25,12 +36,25 @@ function validateURL({ name, value }: { name: string; value: string }): string |
   return null;
 }
 
+/**
+ * Prints a titled error section followed by an indented list of specific error messages to stderr.
+ * 
+ * @param description - The heading describing the category of errors being reported.
+ * @param errors - List of individual error details to log under the section heading.
+ */
 function printErrorSection(description: string, errors: string[]): void {
   if (errors.length === 0) return;
   console.error(description);
   errors.forEach(error => console.error(`\t- ${error}`));
 }
 
+/**
+ * Prints formatted environment validation errors to the standard error output.
+ * 
+ * @param envFileName - The name or path of the environment file being validated.
+ * @param missingEnvVars - Array of environment variable names that are missing.
+ * @param formattingErrors - Array of description strings for variables failing format checks.
+ */
 function printValidationErrors(envFileName: string, missingEnvVars: string[], formattingErrors: string[]): void {
   console.error(`Environment Configuration Error [${envFileName}]:`);
 
@@ -47,6 +71,12 @@ function printValidationErrors(envFileName: string, missingEnvVars: string[], fo
   console.error(`\nPlease check your ${envFileName} file.`);
 }
 
+/**
+ * Executes the environment validation workflow using injected CLI options and environment variables.
+ * 
+ * @param options - The command-line arguments and environment values to validate.
+ * @returns The process exit code (`0` on success, `1` if validation fails or an error occurs).
+ */
 export function main(options: EnvironmentCLIOptions): number {
   const args = options.argv.slice(2);
 
