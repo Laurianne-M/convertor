@@ -5,6 +5,7 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   changes:
@@ -82,6 +83,11 @@ jobs:
           node-version: 20
       - name: Install Node dependencies
         run: make -C src/web install
+      - name: Create production environment file
+        run: |
+          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env.prod
+          echo "VITE_EXCHANGE_RATES_API_KEY=${{ secrets.VITE_EXCHANGE_RATES_API_KEY }}" >> .env.prod
+        working-directory: src/web
       - name: Build
         run: make -C src/web build
         env:
