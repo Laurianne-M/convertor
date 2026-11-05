@@ -22,7 +22,7 @@ export class ServiceContainerImpl implements ServiceContainer {
     this.storage = new StorageServiceImpl(this.logger);
     this.environment = new EnvironmentServiceImpl({ logger: this.logger});
     this.exchangeRateService = new ExchangeRateServiceImp({
-      fetch,
+      fetch: window.fetch.bind(window),
       timeProvider: this.timeProvider,
       storage: this.storage,
       logger: this.logger

@@ -8,6 +8,7 @@ import type { TimeProviderServiceImpl } from "../TimeProvider/TImeProviderServic
 import { AppConstants } from "../../constants.js"
 import type { StorageService } from "../Storage/StorageService";
 import type { LoggerService } from "../Logger/LoggerService";
+import { config } from "../../config/env";
 
 interface ExchangeRateServiceImplDependencies {
   timeProvider: TimeProviderServiceImpl
@@ -50,18 +51,13 @@ export class ExchangeRateServiceImp implements ExchangeRateService {
     this.dependencies.logger.debug(`storage data: ${JSON.stringify(data)}`);
 
     if (!data || this.areDataOutdated(data && data.receivedAt)) {
-       this.dependencies.logger.debug('fetching from API...');
+       this.dependencies.logger.debug('fetching from internal API...');
       try {
-        const params = {
-          access_key: AppConstants.API.apiKey,
-        };
+        const url = `${config.apiBaseUrl}/v1/latest`;
+        const res = await this.dependencies.fetch(url);
+        const jsonData = (await res.json()) as ExchangeRateAPIResponse;
 
-        const queryString = new URLSearchParams(params).toString();
-        const urlWithParams = `${AppConstants.API.baseURL}?${queryString}`;
-        const res = await this.dependencies.fetch.call(window, urlWithParams);
-        const jsonData = await res.json();
-
-        if (!jsonData.rates) { // API returned an error
+        if (!res.ok || !jsonData.rates) { // API returned an error
           this.dependencies.logger.warn("API unavailable — using mock data");
           const mockData = this.getMockRates();
           this.dependencies.storage.set(
