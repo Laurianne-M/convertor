@@ -86,7 +86,6 @@ jobs:
         run: |
           echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env.prod
           echo "VITE_EXCHANGE_RATES_API_KEY=${{ secrets.VITE_EXCHANGE_RATES_API_KEY }}" >> .env.prod
-        working-directory: src/web
       - name: Build
         run: make -C src/web build
         env:
