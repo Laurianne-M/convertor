@@ -9,29 +9,42 @@ on:
 jobs:
   test:
     runs-on: ubuntu-24.04
-    defaults:
-      run:
-        working-directory: src/web
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
         node-version: 24
+        
     - name: Install dependencies
-      run: make install
+      run: make -C src/web install
+
     - name: Run linter
-      run: make lint
+      run: make -C src/web lint
 
     - name: Install Playwright browsers and dependencies  
-      run:  npx playwright install-deps webkit && npx playwright install webkit
+      run:  make -C src/web install-e2e
       
     - name: E2E tests
-      run: make test-e2e
+      run: make -C src/web test-e2e
 
     - name: Unit tests
-      run: make test-unit
+      run: make -C src/web test-unit
 
-  # Required status check job for Web branch protection
+    - name: Create production environment file
+      run: |
+        echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env.prod
+        echo "VITE_EXCHANGE_RATES_API_KEY=${{ secrets.VITE_EXCHANGE_RATES_API_KEY }}" >> .env.prod
+
+    - name: Production build
+      run: make -C src/web build
+  
+    - name: Upload production build
+      uses: actions/upload-artifact@v4
+      with:
+        name: production-build
+        path: src/web/build
+        retention-days: 1
+
   status-check:
     runs-on: ubuntu-24.04
     needs: [test]
@@ -48,24 +61,21 @@ jobs:
     steps:
       - name: Clone repository for production build
         uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - name: Install Node dependencies
-        run: make -C src/web install
-      - name: Create production environment file
-        run: |
-          echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env.prod
-          echo "VITE_EXCHANGE_RATES_API_KEY=${{ secrets.VITE_EXCHANGE_RATES_API_KEY }}" >> .env.prod
-      - name: Build
-        run: make -C src/web build
-        env:
-          VITE_EXCHANGE_RATES_API_KEY: ${{ secrets.VITE_EXCHANGE_RATES_API_KEY}}
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
-      - name: Deploy to Firebase Live
-        uses: FirebaseExtended/action-hosting-deploy@v0
+
+      - name: Download production build
+        uses: actions/download-artifact@v4
         with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CONVERTOR_2B5DD }}
-          projectId: convertor-2b5dd
-          channelId: live
+          name: production-build
+          path: src/web/build
+
+      - name: Install Firebase
+        run: make -C src/web install-firebase
+
+      - name: Deploy Firebase Hosting
+        run: make -C src/web deploy
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}

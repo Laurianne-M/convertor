@@ -44,6 +44,13 @@ test-e2e: validate-env
 report-e2e:
 	npx playwright show-report playwright-report --host $(E2E_REPORT_HOST) --port $(E2E_REPORT_PORT)
 
+install-e2e:
+	npx playwright install-deps webkit
+	npx playwright install webkit
+
+install-firebase:
+	npm install -g firebase-tools
+
 install:
 	npm ci
 	npm install -g firebase-tools
@@ -53,3 +60,10 @@ install:
 		echo "Running in GitHub Actions, skipping Playwright dependency installation."; \
 	fi
 	npx playwright install
+
+deploy:
+	@if [ -z "$(FIREBASE_TOKEN)" ]; then \
+		echo "Error: FIREBASE_TOKEN is not set."; \
+		exit 1; \
+	fi
+	FIREBASE_TOKEN=$(FIREBASE_TOKEN) npx firebase deploy --only hosting
