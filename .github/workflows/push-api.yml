@@ -7,21 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  changes:
-    runs-on: ubuntu-24.04
-    outputs:
-      api: ${{ steps.filter.outputs.api }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            api:
-              - 'src/api/**'
-  lint:
-    needs: changes
-    if: ${{ needs.changes.outputs.api == 'true' }}
+  test:
     runs-on: ubuntu-24.04
     steps:
     - uses: actions/checkout@v4
@@ -33,25 +19,13 @@ jobs:
     - name: Run linter
       run: make -C src/api lint
 
-  test:
-    needs: changes
-    if: ${{ needs.changes.outputs.api == 'true' }}
-    runs-on: ubuntu-24.04
-    steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: 20
-    - name: Install dependencies
-      run: make -C src/api install
-
     - name: Unit tests
       run: make -C src/api test
 
   # Required status check job for API branch protection
-  api-ci:
+  status-check:
     runs-on: ubuntu-24.04
-    needs: [lint, test]
+    needs: [test]
     if: always()
     steps:
       - uses: actions/checkout@v4
@@ -60,8 +34,8 @@ jobs:
 
   deploy:
     runs-on: ubuntu-24.04
-    needs: [api-ci]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.changes.outputs.api == 'true'
+    needs: [status-check]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
