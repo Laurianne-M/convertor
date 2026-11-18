@@ -7,21 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  changes:
-    runs-on: ubuntu-24.04
-    outputs:
-      web: ${{ steps.filter.outputs.web }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            web:
-              - 'src/web/**'
-  lint:
-    needs: changes
-    if: ${{ needs.changes.outputs.web == 'true' }}
+  test:
     runs-on: ubuntu-24.04
     defaults:
       run:
@@ -36,21 +22,6 @@ jobs:
     - name: Run linter
       run: make lint
 
-  test:
-    needs: changes
-    if: ${{ needs.changes.outputs.web == 'true' }}
-    runs-on: ubuntu-24.04
-    defaults:
-      run:
-        working-directory: src/web
-    steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: 20
-    - name: Install dependencies
-      run: make install
-
     - name: Install Playwright browsers and dependencies  
       run:  npx playwright install-deps webkit && npx playwright install webkit
       
@@ -61,19 +32,19 @@ jobs:
       run: make test-unit
 
   # Required status check job for Web branch protection
-  web-ci:
+  status-check:
     runs-on: ubuntu-24.04
-    needs: [lint, test]
+    needs: [test]
     if: always()
     steps:
       - uses: actions/checkout@v4
       - name: Evaluate Status
         run:  .github/scripts/evaluate-workflow-status.sh "${{ join(needs.*.result, ' ') }}"
 
-  production-deployment:
+  deployment:
     runs-on: ubuntu-24.04
-    needs: [web-ci]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.changes.outputs.web == 'true'
+    needs: [status-check]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Clone repository for production build
         uses: actions/checkout@v4
