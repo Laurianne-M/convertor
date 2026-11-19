@@ -1,5 +1,5 @@
 import { describe, test, beforeEach, afterEach, expect, vi } from 'vitest';
-import { main } from '../../../shared/scripts/validate-env';
+import { main } from './validate-env';
 import fs from 'fs';
 
 describe('main', () => {
