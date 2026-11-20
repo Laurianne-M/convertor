@@ -5,7 +5,7 @@ E2E_REPORT_HOST ?= 0.0.0.0
 E2E_REPORT_PORT ?= 9323	
 
 BUILD_MODE ?= prod
-ENV_FILE = ../../.env.$(BUILD_MODE)
+ENV_FILE = ./.env.$(BUILD_MODE)
 
 validate-env:
 	npx tsx --env-file=$(ENV_FILE) ../shared/scripts/validate-env.ts path=$(ENV_FILE) VITE_API_URL=url VITE_EXCHANGE_RATES_API_KEY=string

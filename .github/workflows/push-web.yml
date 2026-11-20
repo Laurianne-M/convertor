@@ -32,8 +32,8 @@ jobs:
 
     - name: Create production environment file
       run: |
-        echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> .env.prod
-        echo "VITE_EXCHANGE_RATES_API_KEY=${{ secrets.VITE_EXCHANGE_RATES_API_KEY }}" >> .env.prod
+        echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" >> src/web/.env.prod
+        echo "VITE_EXCHANGE_RATES_API_KEY=${{ secrets.VITE_EXCHANGE_RATES_API_KEY }}" >> src/web/.env.prod
 
     - name: Production build
       run: make -C src/web build
