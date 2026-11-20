@@ -14,8 +14,15 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: 24
+
     - name: Install dependencies
       run: make -C src/api install
+
+    - name: Create production environment file
+      run: make -C src/api generate-env
+      env: 
+        EXCHANGE_RATES_API_KEY: ${{ secrets.VITE_EXCHANGE_RATES_API_KEY }}
+
     - name: Run linter
       run: make -C src/api lint
 
@@ -46,7 +53,9 @@ jobs:
       run: make -C src/api install
 
     - name: Create production environment file
-      run: echo "EXCHANGE_RATES_API_KEY=${{ secrets.VITE_EXCHANGE_RATES_API_KEY }}" >> src/api/.env
+      run: make -C src/api generate-env
+      env: 
+        EXCHANGE_RATES_API_KEY: ${{ secrets.VITE_EXCHANGE_RATES_API_KEY }}
 
     - name: Deploy Firebase Functions
       run: make -C src/api deploy
