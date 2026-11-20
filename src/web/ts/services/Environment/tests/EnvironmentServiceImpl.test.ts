@@ -42,4 +42,13 @@ describe('EnvironmentServiceImpl', () => {
     );
   });
 
+  test('logs and re-throws when VITE_API_URL is invalid', () => {
+    vi.stubEnv("VITE_API_URL", "not-a-valid-url");
+    vi.stubEnv("VITE_EXCHANGE_RATES_API_KEY", TEST_DATA.VALID_API_KEY);
+
+    const errorSpy = vi.spyOn(logger, "error");
+
+    expect(() => new EnvironmentServiceImpl({ logger })).toThrow();
+    expect(errorSpy).toHaveBeenCalledOnce();
+  });
 });
