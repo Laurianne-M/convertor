@@ -22,9 +22,6 @@ jobs:
     - name: Install dependencies
       run: make -C src/api install
 
-    - name: Create production environment file
-      run: make -C src/api generate-env
-
     - name: Run linter
       run: make -C src/api lint
 
