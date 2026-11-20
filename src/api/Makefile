@@ -29,7 +29,7 @@ deploy:
 		echo "Error: FIREBASE_TOKEN is not set."; \
 		exit 1; \
 	fi
-	FIREBASE_TOKEN=$(FIREBASE_TOKEN) npx firebase deploy --only functions
+	FIREBASE_TOKEN=$(FIREBASE_TOKEN) npx firebase deploy --only functions,firestore
 
 logs:
 	npx firebase functions:log
