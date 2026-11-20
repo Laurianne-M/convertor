@@ -47,10 +47,10 @@ jobs:
 
     - name: Create production environment file
       run: |
-        echo "EXCHANGE_RATES_API_KEY=${{ secrets.EXCHANGE_RATES_API_KEY }}" >> .env
+        echo "EXCHANGE_RATES_API_KEY=${{ secrets.VITE_EXCHANGE_RATES_API_KEY }}" >> .env
 
     - name: Deploy Firebase Functions
       run: make -C src/api deploy
       env: 
-        VITE_EXCHANGE_RATES_API_KEY: ${{ secrets.EXCHANGE_RATES_API_KEY }}
+        EXCHANGE_RATES_API_KEY: ${{ secrets.VITE_EXCHANGE_RATES_API_KEY }}
         FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
