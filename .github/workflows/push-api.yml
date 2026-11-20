@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main ]
 
+env: 
+  EXCHANGE_RATES_API_KEY: ${{ secrets.VITE_EXCHANGE_RATES_API_KEY }}
+  FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
 jobs:
   test:
     runs-on: ubuntu-24.04
@@ -20,8 +24,6 @@ jobs:
 
     - name: Create production environment file
       run: make -C src/api generate-env
-      env: 
-        EXCHANGE_RATES_API_KEY: ${{ secrets.VITE_EXCHANGE_RATES_API_KEY }}
 
     - name: Run linter
       run: make -C src/api lint
@@ -52,13 +54,5 @@ jobs:
     - name: Install dependencies
       run: make -C src/api install
 
-    - name: Create production environment file
-      run: make -C src/api generate-env
-      env: 
-        EXCHANGE_RATES_API_KEY: ${{ secrets.VITE_EXCHANGE_RATES_API_KEY }}
-
     - name: Deploy Firebase Functions
       run: make -C src/api deploy
-      env: 
-        EXCHANGE_RATES_API_KEY: ${{ secrets.VITE_EXCHANGE_RATES_API_KEY }}
-        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
