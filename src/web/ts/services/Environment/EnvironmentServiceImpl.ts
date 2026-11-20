@@ -38,6 +38,7 @@ export class EnvironmentServiceImpl implements EnvironmentService {
       new URL(exchangeRatesBaseURL);
     } catch (error) {
       logger.error(error);
+      throw error;
     }
 
     return exchangeRatesBaseURL;
