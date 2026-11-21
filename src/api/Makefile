@@ -7,7 +7,7 @@ EXCHANGE_RATES_API_KEY ?= test_api_key_placeholder_12345
 EXCHANGE_RATES_API_URL ?= https://api.exchangeratesapi.io/v1
 
 generate-env:
-	echo "EXCHANGE_RATES_API_KEY=$(EXCHANGE_RATES_API_KEY)" >> $(ENV_FILE)
+	echo "EXCHANGE_RATES_API_KEY=$(EXCHANGE_RATES_API_KEY)" > $(ENV_FILE)
 	echo "EXCHANGE_RATES_API_URL=$(EXCHANGE_RATES_API_URL)" >> $(ENV_FILE)
 
 validate-env: generate-env

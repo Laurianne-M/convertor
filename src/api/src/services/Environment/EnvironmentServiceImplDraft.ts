@@ -1,24 +1,33 @@
 import type EnvironmentService from "./EnvironmentService.ts";
-import type { EnvironmentServiceDependencies } from "./EnvironmentService.ts";
+
+/**
+ * Dependencies required by EnvironmentServiceImpl.
+ */
+export interface EnvironmentServiceDependencies {
+  /** Key-value pairs representing environment variables available during initialization. */
+  env?: Record<string, string | undefined>;
+}
 
 /**
  * Implementation of the EnvironmentService interface.
  * Validates and provides access to environment variables and fully formatted API URLs.
  */
 export class EnvironmentServiceImpl implements EnvironmentService {
+  private readonly env: Record<string, string | undefined>;
   private readonly exchangeRatesBaseURL: string;
   private readonly exchangeRatesAPIKey: string;
-
-  constructor(_dependencies: EnvironmentServiceDependencies = {}) {
+  
+  constructor(dependencies: EnvironmentServiceDependencies = {}) {
+    this.env = dependencies.env ?? process.env;
     this.exchangeRatesBaseURL = this.readAPIURL();
     this.exchangeRatesAPIKey = this.readAPIKey();
   }
 
   private readAPIURL(): string {
-    const exchangeRatesBaseURL = process.env.API_URL;
+    const exchangeRatesBaseURL = this.env.EXCHANGE_RATES_API_URL;
 
     if (!exchangeRatesBaseURL) {
-      throw new Error("[Environment Service] Missing required environment variable: API_URL");
+      throw new Error("[Environment Service] Missing required environment variable: EXCHANGE_RATES_API_URL");
     }
 
     try {
@@ -31,7 +40,7 @@ export class EnvironmentServiceImpl implements EnvironmentService {
   }
 
   private readAPIKey(): string {
-    const exchangeRatesAPIKey = process.env.EXCHANGE_RATES_API_KEY;
+    const exchangeRatesAPIKey = this.env.EXCHANGE_RATES_API_KEY;
 
     if (!exchangeRatesAPIKey) {
       throw new Error("[Environment Service] Missing required environment variable: EXCHANGE_RATES_API_KEY");

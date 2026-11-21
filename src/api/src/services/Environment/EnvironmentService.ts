@@ -1,9 +1,4 @@
 /**
- * Dependencies required by EnvironmentServiceImpl.
- */
-export interface EnvironmentServiceDependencies {}
-
-/**
  * The environment service interface.
  */
 interface EnvironmentService {

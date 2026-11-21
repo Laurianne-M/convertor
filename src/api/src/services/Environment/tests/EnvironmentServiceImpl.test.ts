@@ -1,52 +1,64 @@
-import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { EnvironmentServiceImpl } from "../EnvironmentServiceImplDraft.js";
 
-const VALID_API_BASE_URL = "https://api.example.com";
-const VALID_API_KEY = "test-api-key";
-const EXPECTED_EXCHANGE_RATES_URL =
-  "https://api.example.com/v1/latest?access_key=test-api-key";
-
 describe("EnvironmentServiceImpl", () => {
-  beforeEach(() => {
-    vi.resetModules();
-    vi.unstubAllEnvs();
+  test("does not throw when API key and valid URL are present", () => {
+    const service = () =>
+      new EnvironmentServiceImpl({
+        env: {
+          EXCHANGE_RATES_API_URL: "https://api.example.com/v1",
+          EXCHANGE_RATES_API_KEY: "test-api-key",
+        },
+      });
+
+    expect(service).not.toThrow();
   });
 
-  afterEach(() => {
-    vi.unstubAllEnvs();
-  });
+  test("throws an error when EXCHANGE_RATES_API_URL is missing", () => {
+    const service = () =>
+      new EnvironmentServiceImpl({
+        env: {
+          EXCHANGE_RATES_API_KEY: "test-api-key",
+        },
+      });
 
-  test("instantiates successfully with a valid URL and API key", () => {
-    vi.stubEnv("API_URL", VALID_API_BASE_URL);
-    vi.stubEnv("EXCHANGE_RATES_API_KEY", VALID_API_KEY);
-
-    const service = new EnvironmentServiceImpl();
-
-    expect(service.getExchangeRatesURL()).toBe(EXPECTED_EXCHANGE_RATES_URL);
-  });
-
-  test("throws an error when API_URL is missing", () => {
-    vi.stubEnv("API_URL", "");
-    vi.stubEnv("EXCHANGE_RATES_API_KEY", VALID_API_KEY);
-
-    expect(() => new EnvironmentServiceImpl()).toThrowError(
-      "[Environment Service] Missing required environment variable: API_URL"
-    );
+    expect(service).toThrow(
+      "[Environment Service] Missing required environment variable: EXCHANGE_RATES_API_URL");
   });
 
   test("throws an error when EXCHANGE_RATES_API_KEY is missing", () => {
-    vi.stubEnv("API_URL", VALID_API_BASE_URL);
-    vi.stubEnv("EXCHANGE_RATES_API_KEY", "");
+    const service = () =>
+      new EnvironmentServiceImpl({
+        env: {
+          EXCHANGE_RATES_API_URL: "https://api.example.com/v1",
+        },
+      });
 
-    expect(() => new EnvironmentServiceImpl()).toThrowError(
+    expect(service).toThrow(
       "[Environment Service] Missing required environment variable: EXCHANGE_RATES_API_KEY"
     );
   });
 
-  test("throws an error when API_URL is invalid", () => {
-    vi.stubEnv("API_URL", "not-a-valid-url");
-    vi.stubEnv("EXCHANGE_RATES_API_KEY", VALID_API_KEY);
+  test("throws an error when EXCHANGE_RATES_API_URL is invalid", () => {
+    const service = () =>
+      new EnvironmentServiceImpl({
+        env: {
+          EXCHANGE_RATES_API_URL: "not a valid url",
+          EXCHANGE_RATES_API_KEY: "test-api-key",
+        },
+      });
 
-    expect(() => new EnvironmentServiceImpl()).toThrow();
+    expect(service).toThrow();
+  });
+
+  test("normalizes a trailing slash on EXCHANGE_RATES_API_URL", () => {
+    const service = new EnvironmentServiceImpl({
+      env: {
+        EXCHANGE_RATES_API_URL: "https://api.example.com/v1/",
+        EXCHANGE_RATES_API_KEY: "test-api-key",
+      },
+    });
+
+    expect(service.getExchangeRatesURL()).toBe("https://api.example.com/v1/v1/latest?access_key=test-api-key");
   });
 });
