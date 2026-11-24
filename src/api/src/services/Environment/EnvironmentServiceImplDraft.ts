@@ -5,8 +5,12 @@ import type EnvironmentService from "./EnvironmentService.ts";
  */
 export interface EnvironmentServiceDependencies {
   /** Key-value pairs representing environment variables available during initialization. */
-  env?: Record<string, string | undefined>;
+  env: Record<string, string | undefined>;
 }
+
+const DEFAULT_DEPENDENCIES: EnvironmentServiceDependencies = {
+  env: process.env,
+};
 
 /**
  * Implementation of the EnvironmentService interface.
@@ -17,8 +21,8 @@ export class EnvironmentServiceImpl implements EnvironmentService {
   private readonly exchangeRatesBaseURL: string;
   private readonly exchangeRatesAPIKey: string;
   
-  constructor(dependencies: EnvironmentServiceDependencies = {}) {
-    this.env = dependencies.env ?? process.env;
+  constructor(dependencies: EnvironmentServiceDependencies = DEFAULT_DEPENDENCIES) {
+    this.env = dependencies.env;
     this.exchangeRatesBaseURL = this.readAPIURL();
     this.exchangeRatesAPIKey = this.readAPIKey();
   }
@@ -30,11 +34,14 @@ export class EnvironmentServiceImpl implements EnvironmentService {
       throw new Error("[Environment Service] Missing required environment variable: EXCHANGE_RATES_API_URL");
     }
 
-    try {
-      new URL(exchangeRatesBaseURL);
-    } catch (error) {
-      throw error;
-    }
+    // TODO: Log invalid URL details once the logger service PR is added.
+    new URL(exchangeRatesBaseURL);
+
+    if (exchangeRatesBaseURL.endsWith("/")) {
+    throw new Error(
+      "[Environment Service] EXCHANGE_RATES_API_URL must not end with a trailing slash",
+    );
+  }
 
     return exchangeRatesBaseURL;
   }
@@ -50,8 +57,7 @@ export class EnvironmentServiceImpl implements EnvironmentService {
   }
 
   getExchangeRatesURL(): string {
-    const cleanBaseUrl = this.exchangeRatesBaseURL.replace(/\/$/, "");
     const params = new URLSearchParams({ access_key: this.exchangeRatesAPIKey });
-    return `${cleanBaseUrl}/v1/latest?${params.toString()}`;
+    return `${this.exchangeRatesBaseURL}/v1/latest?${params.toString()}`;
   }
 }

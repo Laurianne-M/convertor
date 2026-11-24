@@ -51,14 +51,15 @@ describe("EnvironmentServiceImpl", () => {
     expect(service).toThrow();
   });
 
-  test("normalizes a trailing slash on EXCHANGE_RATES_API_URL", () => {
-    const service = new EnvironmentServiceImpl({
-      env: {
-        EXCHANGE_RATES_API_URL: "https://api.example.com/v1/",
-        EXCHANGE_RATES_API_KEY: "test-api-key",
-      },
-    });
+  test("throws when EXCHANGE_RATES_API_URL has a trailing slash", () => {
+    const service = () =>
+      new EnvironmentServiceImpl({
+        env: {
+          EXCHANGE_RATES_API_URL: "https://api.example.com/v1/",
+          EXCHANGE_RATES_API_KEY: "test-api-key",
+        },
+      });
 
-    expect(service.getExchangeRatesURL()).toBe("https://api.example.com/v1/v1/latest?access_key=test-api-key");
+    expect(service).toThrow("[Environment Service] EXCHANGE_RATES_API_URL must not end with a trailing slash");
   });
 });
