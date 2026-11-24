@@ -1,5 +1,5 @@
-import { describe, expect, test, vi } from "vitest";
-import { EnvironmentServiceImpl } from "../EnvironmentServiceImplDraft.js";
+import {describe, expect, test} from "vitest";
+import {EnvironmentServiceImpl} from "../EnvironmentServiceImplDraft.js";
 
 describe("EnvironmentServiceImpl", () => {
   test("does not throw when API key and valid URL are present", () => {
@@ -23,7 +23,9 @@ describe("EnvironmentServiceImpl", () => {
       });
 
     expect(service).toThrow(
-      "[Environment Service] Missing required environment variable: EXCHANGE_RATES_API_URL");
+      "[Environment Service] Missing required environment variable: " +
+      "EXCHANGE_RATES_API_URL"
+    );
   });
 
   test("throws an error when EXCHANGE_RATES_API_KEY is missing", () => {
@@ -35,7 +37,8 @@ describe("EnvironmentServiceImpl", () => {
       });
 
     expect(service).toThrow(
-      "[Environment Service] Missing required environment variable: EXCHANGE_RATES_API_KEY"
+      "[Environment Service] Missing required environment variable: " +
+      "EXCHANGE_RATES_API_KEY"
     );
   });
 
@@ -60,6 +63,9 @@ describe("EnvironmentServiceImpl", () => {
         },
       });
 
-    expect(service).toThrow("[Environment Service] EXCHANGE_RATES_API_URL must not end with a trailing slash");
+    expect(service).toThrow(
+      "[Environment Service] " +
+      "EXCHANGE_RATES_API_URL must not end with a trailing slash"
+    );
   });
 });
