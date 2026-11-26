@@ -1,6 +1,6 @@
 import {ExchangeRateAPIResponse} from "../../models/ExchangeRateAPIResponse.js";
-
-export const EXCHANGE_RATES_COLLECTION = "exchangeRates";
+import {ExchangeRateSuccessResponse} from
+  "../../models/ExchangeRateSuccessResponse.js";
 
 /**
  * The exchange rates service interface.
@@ -23,6 +23,16 @@ interface ExchangeRatesService {
    * @return {Promise<ExchangeRateAPIResponse>} The stored exchange rates.
    */
   fetchAndStoreExchangeRates(): Promise<ExchangeRateAPIResponse>;
+
+  /**
+   * Returns stored exchange rates for an inclusive date range.
+   * @param {{startDate: Date, endDate: Date}} dateRange The requested range.
+   * @return {Promise<ExchangeRateSuccessResponse[]>} Matching daily rates.
+   */
+  getHistoricalExchangeRates(dateRange: {
+    startDate: Date;
+    endDate: Date;
+  }): Promise<ExchangeRateSuccessResponse[]>;
 }
 
 export default ExchangeRatesService;

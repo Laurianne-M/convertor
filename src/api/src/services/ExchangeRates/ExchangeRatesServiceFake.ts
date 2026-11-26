@@ -1,6 +1,8 @@
 import ExchangeRatesService from "./ExchangeRatesService.js";
 import {TestData} from "../../models/testing/TestData.js";
 import {ExchangeRateAPIResponse} from "../../models/ExchangeRateAPIResponse.js";
+import {ExchangeRateSuccessResponse} from
+  "../../models/ExchangeRateSuccessResponse.js";
 /**
  * Fake implementation of ExchangeRatesService for testing.
  */
@@ -55,5 +57,19 @@ export class ExchangeRatesServiceFake implements ExchangeRatesService {
     }
 
     return data;
+  }
+
+  /** @inheritdoc */
+  async getHistoricalExchangeRates(dateRange: {
+    startDate: Date;
+    endDate: Date;
+  }): Promise<ExchangeRateSuccessResponse[]> {
+    if (!this.data.success) {
+      return [];
+    }
+
+    const date = new Date(`${this.data.date}T00:00:00.000Z`);
+    return date >= dateRange.startDate && date <= dateRange.endDate ?
+      [this.data] : [];
   }
 }

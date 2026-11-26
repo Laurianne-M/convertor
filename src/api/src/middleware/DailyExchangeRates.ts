@@ -1,6 +1,5 @@
 import {type NextFunction, type Request, type Response} from "express";
-import {EXCHANGE_RATES_COLLECTION} from
-  "../services/ExchangeRates/ExchangeRatesService.js";
+import {HTTPStatusCode} from "../models/HTTP.js";
 
 /**
  * Returns exchange rates for the requested date, or the current UTC date.
@@ -18,10 +17,10 @@ const dailyExchangeRates = (
     new Date().toISOString().slice(0, 10);
 
   req.app.locals.firestoreService
-    .read(EXCHANGE_RATES_COLLECTION, date)
+    .read(date)
     .then((data: unknown) => {
       if (data === undefined) {
-        res.status(404).json({
+        res.status(HTTPStatusCode.NOT_FOUND).json({
           success: false,
           error: `Exchange rates not found for ${date}`,
         });

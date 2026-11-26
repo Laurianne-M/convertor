@@ -1,9 +1,9 @@
-import ExchangeRatesService, {
-  EXCHANGE_RATES_COLLECTION,
-} from "./ExchangeRatesService.js";
+import ExchangeRatesService from "./ExchangeRatesService.js";
 import EnvironmentService from "../Environment/EnvironmentService.js";
 import {ExchangeRateAPIResponse}
   from "../../models/ExchangeRateAPIResponse.js";
+import {ExchangeRateSuccessResponse}
+  from "../../models/ExchangeRateSuccessResponse.js";
 import FirestoreService from "../Firestore/FirestoreService.js";
 
 /**
@@ -22,7 +22,7 @@ export interface ExchangeRatesServiceImplDependencies {
   environmentService: EnvironmentService,
 
   /** The Firestore service used to persist exchange rates. */
-  firestoreService: FirestoreService,
+  firestoreService: FirestoreService<ExchangeRateSuccessResponse>,
 }
 
 /**
@@ -68,10 +68,24 @@ export default class ExchangeRatesServiceImpl implements ExchangeRatesService {
     }
 
     await this.dependencies.firestoreService.create(
-      EXCHANGE_RATES_COLLECTION,
       data,
       data.date
     );
     return data;
+  }
+
+  /** @inheritdoc */
+  async getHistoricalExchangeRates(dateRange: {
+    startDate: Date;
+    endDate: Date;
+  }): Promise<ExchangeRateSuccessResponse[]> {
+    const startDate = dateRange.startDate.toISOString().slice(0, 10);
+    const endDate = dateRange.endDate.toISOString().slice(0, 10);
+
+    return this.dependencies.firestoreService.readRange(
+      "date",
+      startDate,
+      endDate
+    );
   }
 }
