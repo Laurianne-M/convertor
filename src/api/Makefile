@@ -3,10 +3,12 @@
 ENV_FILE = ./.env
 
 generate-env:
+	rm -f $(ENV_FILE)
 	echo "EXCHANGE_RATES_API_KEY=$(EXCHANGE_RATES_API_KEY)" >> $(ENV_FILE)
+	echo "EXCHANGE_RATES_API_URL=$(EXCHANGE_RATES_API_URL)" >> $(ENV_FILE)
 
 validate-env: generate-env
-	npx tsx --env-file=$(ENV_FILE) ../shared/scripts/validate-env.ts path=$(ENV_FILE) EXCHANGE_RATES_API_KEY=string
+	npx tsx --env-file=$(ENV_FILE) ../shared/scripts/validate-env.ts path=$(ENV_FILE) EXCHANGE_RATES_API_KEY=string EXCHANGE_RATES_API_URL=url
 
 lint:
 	npx eslint --ext .js,.ts .
