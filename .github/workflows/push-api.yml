@@ -29,6 +29,9 @@ jobs:
     - name: Unit tests
       run: make -C src/api test
 
+    - name: Validate production environment
+      run: make -C src/api validate-env
+
   # Required status check job for API branch protection
   status-check:
     runs-on: ubuntu-24.04
