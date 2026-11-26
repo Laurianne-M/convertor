@@ -5,7 +5,7 @@ ENV_FILE = ./.env
 generate-env:
 	echo "EXCHANGE_RATES_API_KEY=$(EXCHANGE_RATES_API_KEY)" >> $(ENV_FILE)
 
-validate-env: generate-env
+validate-env:
 	npx tsx --env-file=$(ENV_FILE) ../shared/scripts/validate-env.ts path=$(ENV_FILE) EXCHANGE_RATES_API_KEY=string
 
 lint:
