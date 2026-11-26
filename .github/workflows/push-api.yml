@@ -59,7 +59,7 @@ jobs:
       with:
         node-version: 24
 
-    - name: Download compiled lib
+    - name: Download production build
       uses: actions/download-artifact@v4
       with:
         name: api-lib
