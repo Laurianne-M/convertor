@@ -29,6 +29,16 @@ jobs:
     - name: Unit tests
       run: make -C src/api test
 
+    - name: Production build
+      run: make -C src/api predeploy
+
+    - name: Upload production build
+      uses: actions/upload-artifact@v4
+      with:
+        name: api-lib
+        path: src/api/lib
+        retention-days: 1
+
   # Required status check job for API branch protection
   status-check:
     runs-on: ubuntu-24.04
@@ -49,8 +59,14 @@ jobs:
       with:
         node-version: 24
 
+    - name: Download compiled lib
+      uses: actions/download-artifact@v4
+      with:
+        name: api-lib
+        path: src/api/lib
+
     - name: Install dependencies
-      run: make -C src/api install
+      run: make -C src/api install-firebase
 
     - name: Deploy Firebase Functions
       run: make -C src/api deploy

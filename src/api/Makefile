@@ -42,15 +42,17 @@ start: build
 
 install:
 	npm ci
+
+install-firebase:
 	npm install -g firebase-tools
 
 test: BUILD_MODE = test
 test: validate-env
 	npx vitest
 
-predeploy: lint validate-env build
+predeploy: lint build
 
-deploy: predeploy
+deploy:
 	@if [ -z "$(FIREBASE_TOKEN)" ]; then \
 		echo "Error: FIREBASE_TOKEN is not set."; \
 		exit 1; \
