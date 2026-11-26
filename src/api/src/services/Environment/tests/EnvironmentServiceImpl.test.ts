@@ -1,5 +1,5 @@
 import {describe, expect, test} from "vitest";
-import {EnvironmentServiceImpl} from "../EnvironmentServiceImplDraft.js";
+import {EnvironmentServiceImpl} from "../EnvironmentServiceImplV2.js";
 
 describe("EnvironmentServiceImpl", () => {
   test("does not throw when API key and valid URL are present", () => {

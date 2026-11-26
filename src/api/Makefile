@@ -1,14 +1,9 @@
 .PHONY: build
 
-BUILD_MODE ?= prod
-ENV_FILE = ./.env.$(BUILD_MODE)
-
-EXCHANGE_RATES_API_KEY ?= test_api_key_placeholder_12345
-EXCHANGE_RATES_API_URL ?= https://api.exchangeratesapi.io/v1
+ENV_FILE = ./.env
 
 generate-env:
-	echo "EXCHANGE_RATES_API_KEY=$(EXCHANGE_RATES_API_KEY)" > $(ENV_FILE)
-	echo "EXCHANGE_RATES_API_URL=$(EXCHANGE_RATES_API_URL)" >> $(ENV_FILE)
+	echo "EXCHANGE_RATES_API_KEY=$(EXCHANGE_RATES_API_KEY)" >> $(ENV_FILE)
 
 validate-env: generate-env
 	npx tsx --env-file=$(ENV_FILE) ../shared/scripts/validate-env.ts path=$(ENV_FILE) EXCHANGE_RATES_API_KEY=string

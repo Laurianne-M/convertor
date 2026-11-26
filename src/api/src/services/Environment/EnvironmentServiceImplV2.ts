@@ -1,4 +1,4 @@
-import type EnvironmentService from "./EnvironmentService.ts";
+import type EnvironmentService from "./EnvironmentService.js";
 
 /**
  * Dependencies required by EnvironmentServiceImpl.
@@ -18,7 +18,7 @@ const DEFAULT_DEPENDENCIES: EnvironmentServiceDependencies = {
  * Implementation of the EnvironmentService interface.
  * Validates and provides access to environment variables and formatted API URL.
  */
-export class EnvironmentServiceImpl implements EnvironmentService {
+export class EnvironmentServiceImplV2 implements EnvironmentService {
   private readonly env: Record<string, string | undefined>;
   private readonly exchangeRatesBaseURL: string;
   private readonly exchangeRatesAPIKey: string;
